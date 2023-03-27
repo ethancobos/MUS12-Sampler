@@ -32,7 +32,9 @@ MUS_12_SamplerAudioProcessor::MUS_12_SamplerAudioProcessor()
 
 MUS_12_SamplerAudioProcessor::~MUS_12_SamplerAudioProcessor()
 {
-    mFormatReader = nullptr;
+    if(mFormatReader != nullptr){
+        delete mFormatReader;
+    }
 }
 
 //==============================================================================
@@ -182,6 +184,7 @@ void MUS_12_SamplerAudioProcessor::setStateInformation (const void* data, int si
 // function to get the file to be sampled
 void MUS_12_SamplerAudioProcessor::loadFile()
 {
+    mSampler.clearSounds();
     juce::FileChooser chooser { "Select File" };
     
     if (chooser.browseForFileToOpen()){
@@ -191,6 +194,21 @@ void MUS_12_SamplerAudioProcessor::loadFile()
         mFormatReader = mFormatManager.createReaderFor(file);
     }
     
+    // range of midi notes that can be played
+    juce::BigInteger range;
+    range.setRange(0, 128, true);
+    
+    // parameters in order: name, format reader, range of midi notes, base note (C3 or midi note 60),
+    // attack and delay, sample length
+    mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.1, 0.1, 10));
+}
+
+// function to get the file to be sampled through drag and drop
+void MUS_12_SamplerAudioProcessor::loadFile(const juce::String& path)
+{
+    mSampler.clearSounds();
+    auto file = juce::File(path);
+    mFormatReader = mFormatManager.createReaderFor(file);
     // range of midi notes that can be played
     juce::BigInteger range;
     range.setRange(0, 128, true);
