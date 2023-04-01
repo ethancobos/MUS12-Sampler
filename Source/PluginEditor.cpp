@@ -1,8 +1,6 @@
 /*
   ==============================================================================
-
     This file contains the basic framework code for a JUCE plugin editor.
-
   ==============================================================================
 */
 
@@ -83,19 +81,19 @@ void MUS_12_SamplerAudioProcessorEditor::paintIfFileLoaded (juce::Graphics& g, c
     g.fillRect (thumbnailBounds);
     g.setColour (juce::Colours::red);
     
-    juce::AudioThumbnail* thumbnail = audioProcessor.getThumbnail();
-    auto audioLength = (float) thumbnail->getTotalLength();
+    juce::AudioThumbnail& thumbnail = audioProcessor.getThumbnail();
+    auto audioLength = (float) thumbnail.getTotalLength();
     
-    thumbnail->drawChannels(g, thumbnailBounds, 0.0, audioLength, 1.0f);
+    thumbnail.drawChannels(g, thumbnailBounds, 0.0, audioLength, 1.0f);
     
-    auto playheadPos = juce::jmap<int>(audioProcessor.getSampleCount(),
-                                       0,
-                                       (int) thumbnail->getNumSamplesFinished(),
-                                       thumbnailBounds.getX(),
-                                       thumbnailBounds.getRight());
-
-    g.setColour (juce::Colours::green);
-    g.drawLine (playheadPos, thumbnailBounds.getY(), playheadPos, thumbnailBounds.getBottom(), 2.0f);
+//    auto playheadPos = juce::jmap<int>(audioProcessor.getSampleCount(),
+//                                       0,
+//                                       (int) thumbnail.getNumSamplesFinished(),
+//                                       thumbnailBounds.getX(),
+//                                       thumbnailBounds.getRight());
+//
+//    g.setColour (juce::Colours::green);
+//    g.drawLine (playheadPos, thumbnailBounds.getY(), playheadPos, thumbnailBounds.getBottom(), 2.0f);
 
 //    g.setColour(juce::Colours::black.withAlpha(0.2f));
 //    g.fillRect(thumbnailBounds.getX(), thumbnailBounds.getY(), playheadPos, thumbnailBounds.getHeight());
@@ -105,4 +103,3 @@ void MUS_12_SamplerAudioProcessorEditor::timerCallback()
 {
     repaint();
 }
-

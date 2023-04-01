@@ -157,7 +157,6 @@ void MUS_12_SamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
         if (message.isNoteOn()) {
             // start increasing sample counter
             mIsNotePlayed = true;
-            //note = message.getMidiNoteInHertz(message.getNoteNumber());
         } else if (message.isNoteOff()) {
             // reset sample counter
             mIsNotePlayed = false;
@@ -166,9 +165,7 @@ void MUS_12_SamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
 
     mSampleCount = mIsNotePlayed ? mSampleCount += buffer.getNumSamples() : 0;
     
-    
     mSampler.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
-
 }
 
 //==============================================================================
@@ -213,11 +210,6 @@ void MUS_12_SamplerAudioProcessor::loadFile(const juce::String& path)
     mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.0, 0.1, 10));
     
     thumbnail.setSource (new juce::FileInputSource (file));
-}
-
-juce::AudioThumbnail* MUS_12_SamplerAudioProcessor::getThumbnail()
-{
-    return &thumbnail;
 }
 
 //==============================================================================

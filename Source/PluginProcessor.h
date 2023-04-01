@@ -57,7 +57,7 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     
     //========================== My Functions ======================================
-    juce::AudioThumbnail* getThumbnail();
+    juce::AudioThumbnail& getThumbnail() { return thumbnail; };
     void loadFile(const juce::String& path);
     int getNumSamplerSounds() { return mSampler.getNumSounds(); };
     std::atomic<bool>& isNotePlayed() { return mIsNotePlayed; };
