@@ -19,7 +19,7 @@ MUS_12_SamplerAudioProcessor::MUS_12_SamplerAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), thumbnailCache (5), thumbnail (512, mFormatManager, thumbnailCache)
 #endif
 {
     // support for most audio file formats
@@ -28,6 +28,7 @@ MUS_12_SamplerAudioProcessor::MUS_12_SamplerAudioProcessor()
     for (int i = 0; i < mNumVoices; i++){
         mSampler.addVoice(new juce::SamplerVoice());
     }
+    
 }
 
 MUS_12_SamplerAudioProcessor::~MUS_12_SamplerAudioProcessor()
@@ -181,28 +182,6 @@ void MUS_12_SamplerAudioProcessor::setStateInformation (const void* data, int si
 
 //========================== My Functions ======================================
 
-// function to get the file to be sampled
-void MUS_12_SamplerAudioProcessor::loadFile()
-{
-    mSampler.clearSounds();
-    juce::FileChooser chooser { "Select File" };
-    
-    if (chooser.browseForFileToOpen()){
-        
-        // type inference cause we don't know what file type will be chosen
-        auto file = chooser.getResult();
-        mFormatReader = mFormatManager.createReaderFor(file);
-    }
-    
-    // range of midi notes that can be played
-    juce::BigInteger range;
-    range.setRange(0, 128, true);
-    
-    // parameters in order: name, format reader, range of midi notes, base note (C3 or midi note 60),
-    // attack and delay, sample length
-    mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.1, 0.1, 10));
-}
-
 // function to get the file to be sampled through drag and drop
 void MUS_12_SamplerAudioProcessor::loadFile(const juce::String& path)
 {
@@ -215,8 +194,18 @@ void MUS_12_SamplerAudioProcessor::loadFile(const juce::String& path)
     
     // parameters in order: name, format reader, range of midi notes, base note (C3 or midi note 60),
     // attack and delay, sample length
-    mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.1, 0.1, 10));
+    mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.0, 0.0, 10));
+    
+    thumbnail.setSource (new juce::FileInputSource (file));
 }
+
+void MUS_12_SamplerAudioProcessor::drawWaveForm(juce::Graphics& g, const juce::Rectangle<int> & area)
+{
+    thumbnail.drawChannels (g, area, 0.0, thumbnail.getTotalLength(), 1.0f);
+}
+
+
+
 
 //==============================================================================
 // This creates new instances of the plugin..

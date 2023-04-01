@@ -15,14 +15,13 @@ MUS_12_SamplerAudioProcessorEditor::MUS_12_SamplerAudioProcessorEditor (MUS_12_S
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    mLoadFileButton.onClick = [&](){ audioProcessor.loadFile(); };
-    addAndMakeVisible(mLoadFileButton);
     
-    setSize (200, 200);
+    setSize (800, 400);
 }
 
 MUS_12_SamplerAudioProcessorEditor::~MUS_12_SamplerAudioProcessorEditor()
 {
+    
 }
 
 //==============================================================================
@@ -31,14 +30,13 @@ void MUS_12_SamplerAudioProcessorEditor::paint (juce::Graphics& g)
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (juce::Colours::black);
     g.setColour(juce::Colours::white);
-    g.setFont(15.0f);
     
-    if(audioProcessor.getNumSamplerSounds() > 0){
-        g.fillAll (juce::Colours::blueviolet);
-        
-        g.drawText("Sound Loaded", getWidth() / 2 - 50, getHeight() / 2 - 10, 100, 20, juce::Justification::centred);
-    } else {
-        g.drawText("No Sound Loaded", getWidth() / 2 - 50, getHeight() / 2 - 10, 100, 20, juce::Justification::centred);
+    juce::Rectangle<int> thumbnailBounds (10, 100, getWidth() - 20, getHeight() - 120);
+
+    if (audioProcessor.getNumSamplerSounds() > 0){
+        paintIfFileLoaded (g, thumbnailBounds);
+    } else{
+        paintIfNoFileLoaded (g, thumbnailBounds);
     }
 }
 
@@ -46,8 +44,6 @@ void MUS_12_SamplerAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
-    
-   // mLoadFileButton.setBounds(getWidth() / 2 - 50, getWidth() / 2 - 50, 100, 100);
     
 }
 
@@ -70,4 +66,22 @@ void MUS_12_SamplerAudioProcessorEditor::filesDropped(const juce::StringArray& f
         }
     }
     repaint();
+}
+
+void MUS_12_SamplerAudioProcessorEditor::paintIfNoFileLoaded(juce::Graphics& g, const juce::Rectangle<int>& thumbnailBounds)
+{
+    g.setColour (juce::Colours::darkgrey);
+    g.fillRect (thumbnailBounds);
+    g.setColour (juce::Colours::white);
+    g.drawFittedText ("No File Loaded", thumbnailBounds, juce::Justification::centred, 1);
+}
+
+void MUS_12_SamplerAudioProcessorEditor::paintIfFileLoaded (juce::Graphics& g, const juce::Rectangle<int>& thumbnailBounds)
+{
+    g.setColour (juce::Colours::white);
+    g.fillRect (thumbnailBounds);
+
+    g.setColour (juce::Colours::red);
+
+    audioProcessor.drawWaveForm(g, thumbnailBounds);
 }
