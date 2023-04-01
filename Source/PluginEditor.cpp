@@ -16,12 +16,13 @@ MUS_12_SamplerAudioProcessorEditor::MUS_12_SamplerAudioProcessorEditor (MUS_12_S
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     
+    startTimerHz(30);
     setSize (800, 400);
 }
 
 MUS_12_SamplerAudioProcessorEditor::~MUS_12_SamplerAudioProcessorEditor()
 {
-    
+    stopTimer();
 }
 
 //==============================================================================
@@ -80,18 +81,28 @@ void MUS_12_SamplerAudioProcessorEditor::paintIfFileLoaded (juce::Graphics& g, c
 {
     g.setColour (juce::Colours::white);
     g.fillRect (thumbnailBounds);
-
     g.setColour (juce::Colours::red);
     
-    drawWaveForm(g, thumbnailBounds);
-}
-
-void MUS_12_SamplerAudioProcessorEditor::drawWaveForm(juce::Graphics& g, const juce::Rectangle<int> & area)
-{
     juce::AudioThumbnail* thumbnail = audioProcessor.getThumbnail();
     auto audioLength = (float) thumbnail->getTotalLength();
     
-    thumbnail->drawChannels(g, area, 0.0, audioLength, 1.0f);
+    thumbnail->drawChannels(g, thumbnailBounds, 0.0, audioLength, 1.0f);
+    
+    auto playheadPos = juce::jmap<int>(audioProcessor.getSampleCount(),
+                                       0,
+                                       (int) thumbnail->getNumSamplesFinished(),
+                                       thumbnailBounds.getX(),
+                                       thumbnailBounds.getRight());
 
     g.setColour (juce::Colours::green);
+    g.drawLine (playheadPos, thumbnailBounds.getY(), playheadPos, thumbnailBounds.getBottom(), 2.0f);
+
+//    g.setColour(juce::Colours::black.withAlpha(0.2f));
+//    g.fillRect(thumbnailBounds.getX(), thumbnailBounds.getY(), playheadPos, thumbnailBounds.getHeight());
 }
+
+void MUS_12_SamplerAudioProcessorEditor::timerCallback()
+{
+    repaint();
+}
+

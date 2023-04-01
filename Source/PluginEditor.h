@@ -15,7 +15,8 @@
 /**
 */
 class MUS_12_SamplerAudioProcessorEditor  : public juce::AudioProcessorEditor,
-                                            public juce::FileDragAndDropTarget
+                                            public juce::FileDragAndDropTarget,
+                                            public juce::Timer
 {
 public:
     MUS_12_SamplerAudioProcessorEditor (MUS_12_SamplerAudioProcessor&);
@@ -31,7 +32,7 @@ public:
     void paintIfFileLoaded (juce::Graphics& g, const juce::Rectangle<int>& thumbnailBounds);
     
     //========================== My Functions ======================================
-    void drawWaveForm(juce::Graphics& g, const juce::Rectangle<int> & area);
+    void timerCallback() override;
 
 private:
     // This reference is provided as a quick way for your editor to

@@ -60,6 +60,8 @@ public:
     juce::AudioThumbnail* getThumbnail();
     void loadFile(const juce::String& path);
     int getNumSamplerSounds() { return mSampler.getNumSounds(); };
+    std::atomic<bool>& isNotePlayed() { return mIsNotePlayed; };
+    std::atomic<int>& getSampleCount() { return mSampleCount; };
 
 private:
     
@@ -74,7 +76,6 @@ private:
     juce::AudioThumbnailCache thumbnailCache;
     juce::AudioThumbnail thumbnail;
     
-    std::atomic<bool> mShouldUpdate { false };
     std::atomic<bool> mIsNotePlayed { false };
     std::atomic<int> mSampleCount { 0 };
     

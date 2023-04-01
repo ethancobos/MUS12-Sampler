@@ -151,20 +151,20 @@ void MUS_12_SamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
-//    for (const juce::MidiMessageMetadata m : midiMessages)
-//    {
-//        juce::MidiMessage message = m.getMessage();
-//        if (message.isNoteOn()) {
-//            // start increasing sample counter
-//            mIsNotePlayed = true;
-//            note = message.getMidiNoteInHertz(message.getNoteNumber());
-//        } else if (message.isNoteOff()) {
-//            // reset sample counter
-//            mIsNotePlayed = false;
-//        }
-//    }
-//
-//    mSampleCount = mIsNotePlayed ? mSampleCount += buffer.getNumSamples() : 0;
+    for (const juce::MidiMessageMetadata m : midiMessages)
+    {
+        juce::MidiMessage message = m.getMessage();
+        if (message.isNoteOn()) {
+            // start increasing sample counter
+            mIsNotePlayed = true;
+            //note = message.getMidiNoteInHertz(message.getNoteNumber());
+        } else if (message.isNoteOff()) {
+            // reset sample counter
+            mIsNotePlayed = false;
+        }
+    }
+
+    mSampleCount = mIsNotePlayed ? mSampleCount += buffer.getNumSamples() : 0;
     
     
     mSampler.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
