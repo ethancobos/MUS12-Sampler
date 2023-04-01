@@ -150,7 +150,23 @@ void MUS_12_SamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
-
+    
+//    for (const juce::MidiMessageMetadata m : midiMessages)
+//    {
+//        juce::MidiMessage message = m.getMessage();
+//        if (message.isNoteOn()) {
+//            // start increasing sample counter
+//            mIsNotePlayed = true;
+//            note = message.getMidiNoteInHertz(message.getNoteNumber());
+//        } else if (message.isNoteOff()) {
+//            // reset sample counter
+//            mIsNotePlayed = false;
+//        }
+//    }
+//
+//    mSampleCount = mIsNotePlayed ? mSampleCount += buffer.getNumSamples() : 0;
+    
+    
     mSampler.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
 }
@@ -194,18 +210,15 @@ void MUS_12_SamplerAudioProcessor::loadFile(const juce::String& path)
     
     // parameters in order: name, format reader, range of midi notes, base note (C3 or midi note 60),
     // attack and delay, sample length
-    mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.0, 0.0, 10));
+    mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.0, 0.1, 10));
     
     thumbnail.setSource (new juce::FileInputSource (file));
 }
 
-void MUS_12_SamplerAudioProcessor::drawWaveForm(juce::Graphics& g, const juce::Rectangle<int> & area)
+juce::AudioThumbnail* MUS_12_SamplerAudioProcessor::getThumbnail()
 {
-    thumbnail.drawChannels (g, area, 0.0, thumbnail.getTotalLength(), 1.0f);
+    return &thumbnail;
 }
-
-
-
 
 //==============================================================================
 // This creates new instances of the plugin..

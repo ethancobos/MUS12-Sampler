@@ -57,7 +57,7 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     
     //========================== My Functions ======================================
-    void drawWaveForm(juce::Graphics& g, const juce::Rectangle<int> & area);
+    juce::AudioThumbnail* getThumbnail();
     void loadFile(const juce::String& path);
     int getNumSamplerSounds() { return mSampler.getNumSounds(); };
 
@@ -73,7 +73,10 @@ private:
     juce::AudioFormatReader* mFormatReader { nullptr };
     juce::AudioThumbnailCache thumbnailCache;
     juce::AudioThumbnail thumbnail;
-
+    
+    std::atomic<bool> mShouldUpdate { false };
+    std::atomic<bool> mIsNotePlayed { false };
+    std::atomic<int> mSampleCount { 0 };
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MUS_12_SamplerAudioProcessor)

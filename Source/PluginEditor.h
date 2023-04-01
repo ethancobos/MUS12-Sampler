@@ -29,6 +29,9 @@ public:
     void filesDropped(const juce::StringArray& files, int x, int y) override;
     void paintIfNoFileLoaded (juce::Graphics& g, const juce::Rectangle<int>& thumbnailBounds);
     void paintIfFileLoaded (juce::Graphics& g, const juce::Rectangle<int>& thumbnailBounds);
+    
+    //========================== My Functions ======================================
+    void drawWaveForm(juce::Graphics& g, const juce::Rectangle<int> & area);
 
 private:
     // This reference is provided as a quick way for your editor to

@@ -82,6 +82,16 @@ void MUS_12_SamplerAudioProcessorEditor::paintIfFileLoaded (juce::Graphics& g, c
     g.fillRect (thumbnailBounds);
 
     g.setColour (juce::Colours::red);
+    
+    drawWaveForm(g, thumbnailBounds);
+}
 
-    audioProcessor.drawWaveForm(g, thumbnailBounds);
+void MUS_12_SamplerAudioProcessorEditor::drawWaveForm(juce::Graphics& g, const juce::Rectangle<int> & area)
+{
+    juce::AudioThumbnail* thumbnail = audioProcessor.getThumbnail();
+    auto audioLength = (float) thumbnail->getTotalLength();
+    
+    thumbnail->drawChannels(g, area, 0.0, audioLength, 1.0f);
+
+    g.setColour (juce::Colours::green);
 }
