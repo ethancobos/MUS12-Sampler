@@ -88,9 +88,9 @@ void MUS_12_SamplerAudioProcessorEditor::paintIfFileLoaded (juce::Graphics& g, c
     
     thumbnail.drawChannels(g, thumbnailBounds, 0.0, audioLength, 1.0f);
     
-    auto playheadPos = juce::jmap<int>(audioProcessor.getSampleCount(),
+    auto playheadPos = juce::jmap<int>(audioProcessor.getReducedSC(),
                                        0,
-                                       audioProcessor.getWaveForm()->getNumSamples(),
+                                       audioProcessor.getNumSIWF(),
                                        thumbnailBounds.getX(),
                                        thumbnailBounds.getRight());
 

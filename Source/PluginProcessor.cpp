@@ -154,6 +154,7 @@ void MUS_12_SamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     for (const juce::MidiMessageMetadata m : midiMessages)
     {
         juce::MidiMessage message = m.getMessage();
+        
         if (message.isNoteOn()) {
             // start increasing sample counter
             mIsNotePlayed = true;
@@ -164,6 +165,16 @@ void MUS_12_SamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     }
 
     mSampleCount = mIsNotePlayed ? mSampleCount += buffer.getNumSamples() : 0;
+    
+    if (mIsNotePlayed){
+        if(mSampleCount <= mNumSamplesInWF){
+            mReducedSampleCount += buffer.getNumSamples();
+        } else{
+            mReducedSampleCount = mNumSamplesInWF;
+        }
+    } else{
+        mReducedSampleCount = 0;
+    }
     
     mSampler.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
@@ -214,6 +225,8 @@ void MUS_12_SamplerAudioProcessor::loadFile(const juce::String& path)
     // attack and delay, sample length
     juce::SamplerSound* sampledFile = new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.0, 0.1, sampleTime);
     mWaveForm = sampledFile->getAudioData();
+    mNumSamplesInWF = mWaveForm->getNumSamples();
+    
     mSampler.addSound(sampledFile);
     
     thumbnail.setSource (new juce::FileInputSource (file));

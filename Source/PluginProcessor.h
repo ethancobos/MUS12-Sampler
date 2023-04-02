@@ -62,8 +62,10 @@ public:
     int getNumSamplerSounds() { return mSampler.getNumSounds(); };
     std::atomic<bool>& isNotePlayed() { return mIsNotePlayed; };
     std::atomic<int>& getSampleCount() { return mSampleCount; };
+    std::atomic<int>& getReducedSC() { return mReducedSampleCount; };
     juce::AudioBuffer<float>* getWaveForm() { return mWaveForm; };
     int getSampleTime() { return sampleTime; };
+    int getNumSIWF() { return mNumSamplesInWF; };
 
 private:
     
@@ -79,9 +81,11 @@ private:
     juce::AudioThumbnailCache thumbnailCache;
     juce::AudioThumbnail thumbnail;
     juce::AudioBuffer<float>* mWaveForm { nullptr };
+    int mNumSamplesInWF = 0;
     
     std::atomic<bool> mIsNotePlayed { false };
     std::atomic<int> mSampleCount { 0 };
+    std::atomic<int> mReducedSampleCount { 0 };
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MUS_12_SamplerAudioProcessor)
