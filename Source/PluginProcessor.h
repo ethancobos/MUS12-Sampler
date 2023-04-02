@@ -57,13 +57,11 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     
     //========================== My Functions ======================================
-    juce::AudioThumbnail& getThumbnail() { return thumbnail; };
     void loadFile(const juce::String& path);
     int getNumSamplerSounds() { return mSampler.getNumSounds(); };
     std::atomic<bool>& isNotePlayed() { return mIsNotePlayed; };
     std::atomic<int>& getSampleCount() { return mSampleCount; };
     std::atomic<int>& getReducedSC() { return mReducedSampleCount; };
-    juce::AudioBuffer<float>* getWaveForm() { return mWaveForm; };
     int getSampleTime() { return sampleTime; };
     int getNumSIWF() { return mNumSamplesInWF; };
 
@@ -78,9 +76,6 @@ private:
     
     juce::AudioFormatManager mFormatManager;
     juce::AudioFormatReader* mFormatReader { nullptr };
-    juce::AudioThumbnailCache thumbnailCache;
-    juce::AudioThumbnail thumbnail;
-    juce::AudioBuffer<float>* mWaveForm { nullptr };
     int mNumSamplesInWF = 0;
     
     std::atomic<bool> mIsNotePlayed { false };

@@ -10,12 +10,12 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "WaveFormThumbnail.h"
 
 //==============================================================================
 /**
 */
 class MUS_12_SamplerAudioProcessorEditor  : public juce::AudioProcessorEditor,
-                                            public juce::FileDragAndDropTarget,
                                             public juce::Timer
 {
 public:
@@ -26,19 +26,13 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
     
-    bool isInterestedInFileDrag(const juce::StringArray& files) override;
-    void filesDropped(const juce::StringArray& files, int x, int y) override;
-    void paintIfNoFileLoaded (juce::Graphics& g, const juce::Rectangle<int>& thumbnailBounds);
-    void paintIfFileLoaded (juce::Graphics& g, const juce::Rectangle<int>& thumbnailBounds);
-    
     //========================== My Functions ======================================
     void timerCallback() override;
 
 private:
-    // This reference is provided as a quick way for your editor to
-    // access the processor object that created it.
     
     MUS_12_SamplerAudioProcessor& audioProcessor;
+    WaveFormThumbnail mWaveThumbnail;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MUS_12_SamplerAudioProcessorEditor)
 };

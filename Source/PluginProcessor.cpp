@@ -19,7 +19,7 @@ MUS_12_SamplerAudioProcessor::MUS_12_SamplerAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       ), thumbnailCache (5), thumbnail (512, mFormatManager, thumbnailCache)
+                       )
 #endif
 {
     // support for most audio file formats
@@ -224,12 +224,8 @@ void MUS_12_SamplerAudioProcessor::loadFile(const juce::String& path)
     // parameters in order: name, format reader, range of midi notes, base note (C3 or midi note 60),
     // attack and delay, sample length
     juce::SamplerSound* sampledFile = new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.0, 0.1, sampleTime);
-    mWaveForm = sampledFile->getAudioData();
-    mNumSamplesInWF = mWaveForm->getNumSamples();
-    
+    mNumSamplesInWF = sampledFile->getAudioData()->getNumSamples();
     mSampler.addSound(sampledFile);
-    
-    thumbnail.setSource (new juce::FileInputSource (file));
 }
 
 //==============================================================================
