@@ -27,7 +27,7 @@ MUS_12_SamplerAudioProcessorEditor::~MUS_12_SamplerAudioProcessorEditor()
 void MUS_12_SamplerAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (juce::Colours::black);
+    g.fillAll (juce::Colours::blue);
     g.setColour(juce::Colours::white);
     
     juce::Rectangle<int> thumbnailBounds (10, 100, getWidth() - 20, getHeight() - 120);
@@ -98,7 +98,7 @@ void MUS_12_SamplerAudioProcessorEditor::paintIfFileLoaded (juce::Graphics& g, c
     g.drawLine (playheadPos, thumbnailBounds.getY(), playheadPos, thumbnailBounds.getBottom(), 2.0f);
 
     g.setColour(juce::Colours::black.withAlpha(0.2f));
-    g.fillRect(thumbnailBounds.withRightX(playheadPos));
+    g.fillRect(thumbnailBounds.withRight(playheadPos));
 }
 
 void MUS_12_SamplerAudioProcessorEditor::timerCallback()
