@@ -98,7 +98,7 @@ void MUS_12_SamplerAudioProcessorEditor::paintIfFileLoaded (juce::Graphics& g, c
     g.drawLine (playheadPos, thumbnailBounds.getY(), playheadPos, thumbnailBounds.getBottom(), 2.0f);
 
     g.setColour(juce::Colours::black.withAlpha(0.2f));
-    g.fillRect(thumbnailBounds.withWidth(playheadPos));
+    g.fillRect(thumbnailBounds.withRightX(playheadPos));
 }
 
 void MUS_12_SamplerAudioProcessorEditor::timerCallback()
