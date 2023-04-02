@@ -62,6 +62,8 @@ public:
     int getNumSamplerSounds() { return mSampler.getNumSounds(); };
     std::atomic<bool>& isNotePlayed() { return mIsNotePlayed; };
     std::atomic<int>& getSampleCount() { return mSampleCount; };
+    juce::AudioBuffer<float>* getWaveForm() { return mWaveForm; };
+    int getSampleTime() { return sampleTime; };
 
 private:
     
@@ -70,11 +72,13 @@ private:
     
     // number of voices for the sampler
     const int mNumVoices { 3 };
+    const int sampleTime { 10 };
     
     juce::AudioFormatManager mFormatManager;
     juce::AudioFormatReader* mFormatReader { nullptr };
     juce::AudioThumbnailCache thumbnailCache;
     juce::AudioThumbnail thumbnail;
+    juce::AudioBuffer<float>* mWaveForm { nullptr };
     
     std::atomic<bool> mIsNotePlayed { false };
     std::atomic<int> mSampleCount { 0 };

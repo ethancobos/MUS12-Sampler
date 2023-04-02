@@ -200,14 +200,21 @@ void MUS_12_SamplerAudioProcessor::loadFile(const juce::String& path)
 {
     mSampler.clearSounds();
     auto file = juce::File(path);
+    juce::AudioFormatReader* temp = mFormatReader;
     mFormatReader = mFormatManager.createReaderFor(file);
+    if(temp != nullptr){
+        delete temp;
+    }
+    
     // range of midi notes that can be played
     juce::BigInteger range;
     range.setRange(0, 128, true);
     
     // parameters in order: name, format reader, range of midi notes, base note (C3 or midi note 60),
     // attack and delay, sample length
-    mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.0, 0.1, 10));
+    juce::SamplerSound* sampledFile = new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.0, 0.1, sampleTime);
+    mWaveForm = sampledFile->getAudioData();
+    mSampler.addSound(sampledFile);
     
     thumbnail.setSource (new juce::FileInputSource (file));
 }

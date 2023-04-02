@@ -82,21 +82,23 @@ void MUS_12_SamplerAudioProcessorEditor::paintIfFileLoaded (juce::Graphics& g, c
     g.setColour (juce::Colours::red);
     
     juce::AudioThumbnail& thumbnail = audioProcessor.getThumbnail();
-    auto audioLength = (float) thumbnail.getTotalLength();
+    int sTime = audioProcessor.getSampleTime();
+    float totAudioLen = (float) thumbnail.getTotalLength();
+    float audioLength = totAudioLen < sTime ? totAudioLen : sTime;
     
     thumbnail.drawChannels(g, thumbnailBounds, 0.0, audioLength, 1.0f);
     
-//    auto playheadPos = juce::jmap<int>(audioProcessor.getSampleCount(),
-//                                       0,
-//                                       (int) thumbnail.getNumSamplesFinished(),
-//                                       thumbnailBounds.getX(),
-//                                       thumbnailBounds.getRight());
-//
-//    g.setColour (juce::Colours::green);
-//    g.drawLine (playheadPos, thumbnailBounds.getY(), playheadPos, thumbnailBounds.getBottom(), 2.0f);
+    auto playheadPos = juce::jmap<int>(audioProcessor.getSampleCount(),
+                                       0,
+                                       audioProcessor.getWaveForm()->getNumSamples(),
+                                       thumbnailBounds.getX(),
+                                       thumbnailBounds.getRight());
 
-//    g.setColour(juce::Colours::black.withAlpha(0.2f));
-//    g.fillRect(thumbnailBounds.getX(), thumbnailBounds.getY(), playheadPos, thumbnailBounds.getHeight());
+    g.setColour (juce::Colours::green);
+    g.drawLine (playheadPos, thumbnailBounds.getY(), playheadPos, thumbnailBounds.getBottom(), 2.0f);
+
+    g.setColour(juce::Colours::black.withAlpha(0.2f));
+    g.fillRect(thumbnailBounds.withWidth(playheadPos));
 }
 
 void MUS_12_SamplerAudioProcessorEditor::timerCallback()
