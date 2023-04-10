@@ -13,7 +13,8 @@
 //==============================================================================
 /**
 */
-class MUS_12_SamplerAudioProcessor  : public juce::AudioProcessor
+class MUS_12_SamplerAudioProcessor  : public juce::AudioProcessor,
+                                      public juce::ValueTree::Listener
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
                             #endif
@@ -64,6 +65,8 @@ public:
     std::atomic<int>& getReducedSC() { return mReducedSampleCount; };
     int getSampleTime() { return sampleTime; };
     int getNumSIWF() { return mNumSamplesInWF; };
+    juce::AudioProcessorValueTreeState& getAPVTS(){ return mAPVTS; };
+    void updateAmpEnvelope();
 
 private:
     
@@ -82,6 +85,12 @@ private:
     std::atomic<int> mSampleCount { 0 };
     std::atomic<int> mReducedSampleCount { 0 };
     
+    juce::AudioProcessorValueTreeState mAPVTS;
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
+    
+    juce::ADSR::Parameters mAmpParams;
+    void valueTreePropertyChanged (juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property) override;
+    std::atomic<bool> mShouldUpdate { false };
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MUS_12_SamplerAudioProcessor)
 };

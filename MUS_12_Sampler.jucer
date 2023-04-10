@@ -13,6 +13,10 @@
             file="Source/PluginEditor.cpp"/>
       <FILE id="LXlP0E" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
+    <FILE id="OX91PH" name="AmplitudeEnvelope.cpp" compile="1" resource="0"
+          file="Source/AmplitudeEnvelope.cpp"/>
+    <FILE id="iirOwL" name="AmplitudeEnvelope.h" compile="0" resource="0"
+          file="Source/AmplitudeEnvelope.h"/>
     <FILE id="GjefFR" name="WaveFormThumbnail.cpp" compile="1" resource="0"
           file="Source/WaveFormThumbnail.cpp"/>
     <FILE id="yj1uBC" name="WaveFormThumbnail.h" compile="0" resource="0"
