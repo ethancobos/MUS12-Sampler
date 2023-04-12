@@ -253,7 +253,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout MUS_12_SamplerAudioProcessor
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> parameters;
     
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("AMPATTACK", "Attack", 0.0f, 5.0f, 0.0f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("AMPDECAY", "Decay", 0.0f, 3.0f, 2.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("AMPDECAY", "Decay", 0.0f, 3.0f, 0.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("AMPSUSTAIN", "Sustain", 0.0f, 1.0f, 1.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("AMPRELEASE", "Release", 0.0f, 5.0f, 0.0f));
     

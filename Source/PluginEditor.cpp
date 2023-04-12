@@ -9,13 +9,14 @@
 
 //==============================================================================
 MUS_12_SamplerAudioProcessorEditor::MUS_12_SamplerAudioProcessorEditor (MUS_12_SamplerAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+    : AudioProcessorEditor (&p), audioProcessor (p), mWaveThumbnail(p), mAmpEnv(p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    
+    addAndMakeVisible(mWaveThumbnail);
+    addAndMakeVisible(mAmpEnv);
     startTimerHz(30);
-    setSize (800, 400);
+    setSize (900, 600);
 }
 
 MUS_12_SamplerAudioProcessorEditor::~MUS_12_SamplerAudioProcessorEditor()
@@ -30,75 +31,14 @@ void MUS_12_SamplerAudioProcessorEditor::paint (juce::Graphics& g)
     g.fillAll (juce::Colours::blue);
     g.setColour(juce::Colours::white);
     
-    juce::Rectangle<int> thumbnailBounds (10, 100, getWidth() - 20, getHeight() - 120);
-
-    if (audioProcessor.getNumSamplerSounds() > 0){
-        paintIfFileLoaded (g, thumbnailBounds);
-    } else{
-        paintIfNoFileLoaded (g, thumbnailBounds);
-    }
 }
 
 void MUS_12_SamplerAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
-    
-}
-
-bool MUS_12_SamplerAudioProcessorEditor::isInterestedInFileDrag(const juce::StringArray& files)
-{
-    for(auto file : files){
-        if(file.contains(".wav") || file.contains(".mp3") || file.contains(".aif")){
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-void MUS_12_SamplerAudioProcessorEditor::filesDropped(const juce::StringArray& files, int x, int y)
-{
-    for(auto file : files){
-        if(isInterestedInFileDrag(file)){
-            audioProcessor.loadFile(file);
-        }
-    }
-    repaint();
-}
-
-void MUS_12_SamplerAudioProcessorEditor::paintIfNoFileLoaded(juce::Graphics& g, const juce::Rectangle<int>& thumbnailBounds)
-{
-    g.setColour (juce::Colours::darkgrey);
-    g.fillRect (thumbnailBounds);
-    g.setColour (juce::Colours::white);
-    g.drawFittedText ("No File Loaded", thumbnailBounds, juce::Justification::centred, 1);
-}
-
-void MUS_12_SamplerAudioProcessorEditor::paintIfFileLoaded (juce::Graphics& g, const juce::Rectangle<int>& thumbnailBounds)
-{
-    g.setColour (juce::Colours::white);
-    g.fillRect (thumbnailBounds);
-    g.setColour (juce::Colours::red);
-    
-    juce::AudioThumbnail& thumbnail = audioProcessor.getThumbnail();
-    int sTime = audioProcessor.getSampleTime();
-    float totAudioLen = (float) thumbnail.getTotalLength();
-    float audioLength = totAudioLen < sTime ? totAudioLen : sTime;
-    
-    thumbnail.drawChannels(g, thumbnailBounds, 0.0, audioLength, 1.0f);
-    
-    auto playheadPos = juce::jmap<int>(audioProcessor.getReducedSC(),
-                                       0,
-                                       audioProcessor.getNumSIWF(),
-                                       thumbnailBounds.getX(),
-                                       thumbnailBounds.getRight());
-
-    g.setColour (juce::Colours::green);
-    g.drawLine (playheadPos, thumbnailBounds.getY(), playheadPos, thumbnailBounds.getBottom(), 2.0f);
-
-    g.setColour(juce::Colours::black.withAlpha(0.2f));
-    g.fillRect(thumbnailBounds.withRight(playheadPos));
+    mWaveThumbnail.setBoundsRelative(0.1f, 0.1f, 0.8f, 0.3f);
+    mAmpEnv.setBoundsRelative(0.01f, 0.5f, 0.3f, 0.3f);
 }
 
 void MUS_12_SamplerAudioProcessorEditor::timerCallback()
