@@ -10,13 +10,17 @@
 
 #include "customSamplerVoice.h"
 
+customSamplerVoice::customSamplerVoice() : lowPassFilter(juce::dsp::IIR::Coefficients <float>::makeLowPass(44100, 20000.0f, 0.1f))
+{
+//    *mainChain.get<0>().state = *juce::dsp::IIR::Coefficients <float>::makeLowPass(44100, 20000.0f, 0.1f);
+}
 
 void customSamplerVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startSample, int numSamples)
 {
-    jassert(isPrepared);
+    SamplerVoice::renderNextBlock(outputBuffer, startSample, numSamples);
     juce::dsp::AudioBlock<float>              block (outputBuffer);
     juce::dsp::ProcessContextReplacing<float> context  (block);
-    mainChain.process (context);
+    lowPassFilter.process (context);
 }
 
 void customSamplerVoice::prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannels)
@@ -25,12 +29,10 @@ void customSamplerVoice::prepareToPlay (double sampleRate, int samplesPerBlock, 
     spec.sampleRate = sampleRate;
     spec.maximumBlockSize = samplesPerBlock;
     spec.numChannels = outputChannels;
-    mainChain.prepare(spec);
-    mainChain.reset();
-    isPrepared = true;
+    lowPassFilter.prepare(spec);
 }
 
 void customSamplerVoice::updatefilter(float freq, float res, float sampleRate)
 {
-    *mainChain.get<0>().state = *juce::dsp::IIR::Coefficients<float>::makeLowPass(sampleRate, freq, res);
+    *lowPassFilter.state = *juce::dsp::IIR::Coefficients<float>::makeLowPass(sampleRate, freq, res);
 }
