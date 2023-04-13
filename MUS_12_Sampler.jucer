@@ -5,31 +5,31 @@
               pluginFormats="buildAU,buildVST3" displaySplashScreen="1" defines="JUCE_MODAL_LOOPS_PERMITTED=1">
   <MAINGROUP id="ubyID1" name="MUS_12_Sampler">
     <GROUP id="{F0796A71-ECBA-A4CA-FDC0-72AB17FC9A73}" name="Source">
+      <FILE id="iirOwL" name="AmplitudeEnvelope.h" compile="0" resource="0"
+            file="Source/AmplitudeEnvelope.h"/>
+      <FILE id="Ce4VBw" name="customSamplerSound.h" compile="0" resource="0"
+            file="Source/customSamplerSound.h"/>
+      <FILE id="T3rFZD" name="customSamplerVoice.cpp" compile="1" resource="0"
+            file="Source/customSamplerVoice.cpp"/>
+      <FILE id="NzAMpJ" name="customSamplerVoice.h" compile="0" resource="0"
+            file="Source/customSamplerVoice.h"/>
+      <FILE id="eT4ULS" name="SamplerFilter.cpp" compile="1" resource="0"
+            file="Source/SamplerFilter.cpp"/>
+      <FILE id="kn9fg4" name="SamplerFilter.h" compile="0" resource="0" file="Source/SamplerFilter.h"/>
+      <FILE id="GjefFR" name="WaveFormThumbnail.cpp" compile="1" resource="0"
+            file="Source/WaveFormThumbnail.cpp"/>
+      <FILE id="yj1uBC" name="WaveFormThumbnail.h" compile="0" resource="0"
+            file="Source/WaveFormThumbnail.h"/>
       <FILE id="B9r9ag" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
+      <FILE id="OX91PH" name="AmplitudeEnvelope.cpp" compile="1" resource="0"
+            file="Source/AmplitudeEnvelope.cpp"/>
       <FILE id="nzyO2P" name="PluginProcessor.h" compile="0" resource="0"
             file="Source/PluginProcessor.h"/>
       <FILE id="kjCVsq" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="LXlP0E" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
-    <FILE id="OX91PH" name="AmplitudeEnvelope.cpp" compile="1" resource="0"
-          file="Source/AmplitudeEnvelope.cpp"/>
-    <FILE id="iirOwL" name="AmplitudeEnvelope.h" compile="0" resource="0"
-          file="Source/AmplitudeEnvelope.h"/>
-    <FILE id="Ce4VBw" name="customSamplerSound.h" compile="0" resource="0"
-          file="Source/customSamplerSound.h"/>
-    <FILE id="T3rFZD" name="customSamplerVoice.cpp" compile="1" resource="0"
-          file="Source/customSamplerVoice.cpp"/>
-    <FILE id="NzAMpJ" name="customSamplerVoice.h" compile="0" resource="0"
-          file="Source/customSamplerVoice.h"/>
-    <FILE id="eT4ULS" name="SamplerFilter.cpp" compile="1" resource="0"
-          file="Source/SamplerFilter.cpp"/>
-    <FILE id="kn9fg4" name="SamplerFilter.h" compile="0" resource="0" file="Source/SamplerFilter.h"/>
-    <FILE id="GjefFR" name="WaveFormThumbnail.cpp" compile="1" resource="0"
-          file="Source/WaveFormThumbnail.cpp"/>
-    <FILE id="yj1uBC" name="WaveFormThumbnail.h" compile="0" resource="0"
-          file="Source/WaveFormThumbnail.h"/>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
   <EXPORTFORMATS>
