@@ -14,12 +14,17 @@
 /**
 */
 class MUS_12_SamplerAudioProcessor  : public juce::AudioProcessor,
-                                      public juce::ValueTree::Listener
+                                      public juce::AudioProcessorValueTreeState::Listener
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
                             #endif
 {
 public:
+    
+    static const juce::String filterFreq;
+    static const juce::String filterRes;
+    
+    
     //==============================================================================
     MUS_12_SamplerAudioProcessor();
     ~MUS_12_SamplerAudioProcessor() override;
@@ -66,9 +71,13 @@ public:
     int getSampleTime() { return sampleTime; };
     int getNumSIWF() { return mNumSamplesInWF; };
     juce::AudioProcessorValueTreeState& getAPVTS(){ return mAPVTS; };
-    void updateAmpEnvelope();
+    void parameterChanged (const juce::String& parameter, float newValue) override;
+//    void updateAmpEnvelope();
+    void updatefilter(float freq, float res);
 
 private:
+    
+    double mSampleRate = 44100;
     
     // sampler
     juce::Synthesiser mSampler;
@@ -77,20 +86,20 @@ private:
     const int mNumVoices { 3 };
     const int sampleTime { 10 };
     
+    // boilerplate audiofile input stuff
     juce::AudioFormatManager mFormatManager;
     juce::AudioFormatReader* mFormatReader { nullptr };
-    int mNumSamplesInWF = 0;
     
+    // for waveform math and logic
+    int mNumSamplesInWF = 0;
     std::atomic<bool> mIsNotePlayed { false };
     std::atomic<int> mSampleCount { 0 };
     std::atomic<int> mReducedSampleCount { 0 };
     
+    // for parameters
     juce::AudioProcessorValueTreeState mAPVTS;
     juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
     
-    juce::ADSR::Parameters mAmpParams;
-    void valueTreePropertyChanged (juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property) override;
-    std::atomic<bool> mShouldUpdate { false };
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MUS_12_SamplerAudioProcessor)
 };

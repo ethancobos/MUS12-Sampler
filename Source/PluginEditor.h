@@ -12,6 +12,7 @@
 #include "PluginProcessor.h"
 #include "WaveFormThumbnail.h"
 #include "AmplitudeEnvelope.h"
+#include "SamplerFilter.h"
 
 //==============================================================================
 /**
@@ -34,7 +35,8 @@ private:
     
     MUS_12_SamplerAudioProcessor& audioProcessor;
     WaveFormThumbnail mWaveThumbnail;
-    AmplitudeEnvelope mAmpEnv;
+//    AmplitudeEnvelope mAmpEnv;
+    SamplerFilter mFilter;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MUS_12_SamplerAudioProcessorEditor)
 };

@@ -8,6 +8,15 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "customSamplerVoice.h"
+#include "customSamplerSound.h"
+
+
+
+
+
+const juce::String MUS_12_SamplerAudioProcessor::filterFreq = "FILTERFREQ";
+const juce::String MUS_12_SamplerAudioProcessor::filterRes = "FILTERRES";
 
 //==============================================================================
 MUS_12_SamplerAudioProcessor::MUS_12_SamplerAudioProcessor()
@@ -23,12 +32,12 @@ MUS_12_SamplerAudioProcessor::MUS_12_SamplerAudioProcessor()
 #endif
 {
     mFormatManager.registerBasicFormats();
-    mAPVTS.state.addListener(this);
+    mAPVTS.addParameterListener(filterFreq, this);
+    mAPVTS.addParameterListener(filterRes, this);
     
     for (int i = 0; i < mNumVoices; i++){
-        mSampler.addVoice(new juce::SamplerVoice());
+        mSampler.addVoice(new customSamplerVoice());
     }
-    
 }
 
 MUS_12_SamplerAudioProcessor::~MUS_12_SamplerAudioProcessor()
@@ -106,7 +115,13 @@ void MUS_12_SamplerAudioProcessor::prepareToPlay (double sampleRate, int samples
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
     mSampler.setCurrentPlaybackSampleRate(sampleRate);
-    updateAmpEnvelope();
+    mSampleRate = sampleRate;
+    
+    for (int i = 0; i < mSampler.getNumVoices(); i++) { 
+        if(auto voice = dynamic_cast<customSamplerVoice*>(mSampler.getSound(i).get())){
+            voice->prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
+        }
+    }
 }
 
 void MUS_12_SamplerAudioProcessor::releaseResources()
@@ -174,10 +189,7 @@ void MUS_12_SamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     } else{
         mReducedSampleCount = 0;
     }
-    
-    if(mShouldUpdate){
-        updateAmpEnvelope();
-    }
+
     mSampler.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
 
@@ -209,22 +221,6 @@ void MUS_12_SamplerAudioProcessor::setStateInformation (const void* data, int si
 //========================== My Functions ======================================
 
 
-
-void MUS_12_SamplerAudioProcessor::updateAmpEnvelope()
-{
-    mAmpParams.attack = mAPVTS.getRawParameterValue("AMPATTACK")->load();
-    mAmpParams.decay = mAPVTS.getRawParameterValue("AMPDECAY")->load();
-    mAmpParams.sustain = mAPVTS.getRawParameterValue("AMPSUSTAIN")->load();
-    mAmpParams.release = mAPVTS.getRawParameterValue("AMPRELEASE")->load();
-    
-    for(int i = 0; i < mSampler.getNumSounds(); i++){
-        if(auto sound = dynamic_cast<juce::SamplerSound*>(mSampler.getSound(i).get())){
-            sound->setEnvelopeParameters(mAmpParams);
-        }
-    }
-}
-
-
 // function to get the file to be sampled through drag and drop
 void MUS_12_SamplerAudioProcessor::loadFile(const juce::String& path)
 {
@@ -245,26 +241,40 @@ void MUS_12_SamplerAudioProcessor::loadFile(const juce::String& path)
     juce::SamplerSound* sampledFile = new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.0, 0.1, sampleTime);
     mNumSamplesInWF = sampledFile->getAudioData()->getNumSamples();
     mSampler.addSound(sampledFile);
-    updateAmpEnvelope();
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout MUS_12_SamplerAudioProcessor::createParameters()
 {
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> parameters;
+    juce::NormalisableRange<float> cutoffRange (20.0f, 20000.0f);
+    juce::NormalisableRange<float> resRange (1.0f, 5.0f);
     
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("AMPATTACK", "Attack", 0.0f, 5.0f, 0.0f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("AMPDECAY", "Decay", 0.0f, 3.0f, 0.0f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("AMPSUSTAIN", "Sustain", 0.0f, 1.0f, 1.0f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("AMPRELEASE", "Release", 0.0f, 5.0f, 0.0f));
+    // filter
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(filterFreq, "Frequency", cutoffRange, 600.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(filterRes, "Resonance", resRange, 1.0f));
     
     return { parameters.begin(), parameters.end() };
 }
 
-void MUS_12_SamplerAudioProcessor::valueTreePropertyChanged (juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
+void MUS_12_SamplerAudioProcessor::parameterChanged(const juce::String& parameter, float newValue)
 {
-    mShouldUpdate = true;
+    if(parameter == filterFreq){
+        float res = mAPVTS.getRawParameterValue(filterRes)->load();
+        updatefilter(newValue, res);
+    } else if (parameter == filterRes){
+        float freq = mAPVTS.getRawParameterValue(filterFreq)->load();
+        updatefilter(freq, newValue);
+    }
 }
 
+void MUS_12_SamplerAudioProcessor::updatefilter(float freq, float res)
+{
+    for (int i = 0; i < mSampler.getNumVoices(); i++) {
+        if(auto voice = dynamic_cast<customSamplerVoice*>(mSampler.getSound(i).get())){
+            voice->updatefilter(freq, res, mSampleRate);
+        }
+    }
+}
 
 //==============================================================================
 // This creates new instances of the plugin..
