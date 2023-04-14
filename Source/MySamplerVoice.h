@@ -86,6 +86,7 @@ public:
     void renderNextBlock (AudioBuffer<float>&, int startSample, int numSamples) override;
     using SynthesiserVoice::renderNextBlock;
     void prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannels);
+    void reset();
     
     
     

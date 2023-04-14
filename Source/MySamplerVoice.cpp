@@ -170,8 +170,15 @@ void MySamplerVoice::renderNextBlock (AudioBuffer<float>& outputBuffer, int star
     }
 }
 
+void MySamplerVoice::reset()
+{
+    mGain.reset();
+    //adsr.reset();
+}
+
 void MySamplerVoice::prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannels)
 {
+    reset();
     juce::dsp::ProcessSpec spec;
     spec.sampleRate = sampleRate;
     spec.maximumBlockSize = samplesPerBlock;
