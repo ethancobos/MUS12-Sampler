@@ -66,6 +66,8 @@ public:
     int getSampleTime() { return sampleTime; };
     int getNumSIWF() { return mNumSamplesInWF; };
     juce::AudioProcessorValueTreeState& getAPVTS(){ return mAPVTS; };
+    void updateAmpEnvelope();
+    void updateGain();
 
 private:
     
@@ -73,7 +75,7 @@ private:
     juce::Synthesiser mSampler;
     
     // number of voices for the sampler
-    const int mNumVoices { 3 };
+    const int mNumVoices { 5 };
     const int sampleTime { 10 };
     
     juce::AudioFormatManager mFormatManager;

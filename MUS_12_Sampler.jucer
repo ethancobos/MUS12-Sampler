@@ -5,6 +5,20 @@
               pluginFormats="buildAU,buildVST3" displaySplashScreen="1" defines="JUCE_MODAL_LOOPS_PERMITTED=1">
   <MAINGROUP id="ubyID1" name="MUS_12_Sampler">
     <GROUP id="{F0796A71-ECBA-A4CA-FDC0-72AB17FC9A73}" name="Source">
+      <FILE id="R5MoTM" name="OutputGain.cpp" compile="1" resource="0" file="Source/OutputGain.cpp"/>
+      <FILE id="qr5ric" name="OutputGain.h" compile="0" resource="0" file="Source/OutputGain.h"/>
+      <FILE id="OX91PH" name="AmplitudeEnvelope.cpp" compile="1" resource="0"
+            file="Source/AmplitudeEnvelope.cpp"/>
+      <FILE id="iirOwL" name="AmplitudeEnvelope.h" compile="0" resource="0"
+            file="Source/AmplitudeEnvelope.h"/>
+      <FILE id="hMFe13" name="MySamplerVoice.cpp" compile="1" resource="0"
+            file="Source/MySamplerVoice.cpp"/>
+      <FILE id="WFT1HQ" name="MySamplerVoice.h" compile="0" resource="0"
+            file="Source/MySamplerVoice.h"/>
+      <FILE id="GjefFR" name="WaveFormThumbnail.cpp" compile="1" resource="0"
+            file="Source/WaveFormThumbnail.cpp"/>
+      <FILE id="yj1uBC" name="WaveFormThumbnail.h" compile="0" resource="0"
+            file="Source/WaveFormThumbnail.h"/>
       <FILE id="B9r9ag" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="nzyO2P" name="PluginProcessor.h" compile="0" resource="0"
@@ -13,18 +27,6 @@
             file="Source/PluginEditor.cpp"/>
       <FILE id="LXlP0E" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
-    <FILE id="OX91PH" name="AmplitudeEnvelope.cpp" compile="1" resource="0"
-          file="Source/AmplitudeEnvelope.cpp"/>
-    <FILE id="iirOwL" name="AmplitudeEnvelope.h" compile="0" resource="0"
-          file="Source/AmplitudeEnvelope.h"/>
-    <FILE id="hMFe13" name="MySamplerVoice.cpp" compile="1" resource="0"
-          file="Source/MySamplerVoice.cpp"/>
-    <FILE id="WFT1HQ" name="MySamplerVoice.h" compile="0" resource="0"
-          file="Source/MySamplerVoice.h"/>
-    <FILE id="GjefFR" name="WaveFormThumbnail.cpp" compile="1" resource="0"
-          file="Source/WaveFormThumbnail.cpp"/>
-    <FILE id="yj1uBC" name="WaveFormThumbnail.h" compile="0" resource="0"
-          file="Source/WaveFormThumbnail.h"/>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
   <EXPORTFORMATS>

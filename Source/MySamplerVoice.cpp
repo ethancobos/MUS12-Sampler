@@ -142,10 +142,12 @@ void MySamplerVoice::renderNextBlock (AudioBuffer<float>& outputBuffer, int star
 //
 //            l = myFilter.processSample(l);
 //            r = myFilter.processSample(r);
-
+            
+            // velocity and envelope
             l *= lgain * envelopeValue;
             r *= rgain * envelopeValue;
             
+            // output gain
             l = mGain.processSample(l);
             r = mGain.processSample(r);
             
@@ -185,5 +187,9 @@ void MySamplerVoice::prepareToPlay (double sampleRate, int samplesPerBlock, int 
     spec.numChannels = outputChannels;
     
     mGain.prepare(spec);
-    mGain.setGainLinear(0.01f);
+}
+
+void MySamplerVoice::updateGain(float newVal)
+{
+    mGain.setGainLinear(newVal);
 }

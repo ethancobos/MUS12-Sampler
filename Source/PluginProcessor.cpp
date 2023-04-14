@@ -235,23 +235,55 @@ void MUS_12_SamplerAudioProcessor::loadFile(const juce::String& path)
     MySamplerSound* sampledFile = new MySamplerSound("Sample", *mFormatReader, range, 60, 0.0, 0.1, sampleTime);
     mNumSamplesInWF = sampledFile->getAudioData()->getNumSamples();
     mSampler.addSound(sampledFile);
+    updateAmpEnvelope();
+    updateGain();
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout MUS_12_SamplerAudioProcessor::createParameters()
 {
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> parameters;
     
+    // Amp env
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("AMPATTACK", "Attack", 0.0f, 5.0f, 0.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("AMPDECAY", "Decay", 0.0f, 3.0f, 0.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("AMPSUSTAIN", "Sustain", 0.0f, 1.0f, 1.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("AMPRELEASE", "Release", 0.0f, 5.0f, 0.0f));
     
+    // output gain
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat>("OUTGAIN", "Gain", 0.0f, 5.0f, 1.0f));
+    
     return { parameters.begin(), parameters.end() };
+}
+
+void MUS_12_SamplerAudioProcessor::updateAmpEnvelope()
+{
+    mAmpParams.attack = mAPVTS.getRawParameterValue("AMPATTACK")->load();
+    mAmpParams.decay = mAPVTS.getRawParameterValue("AMPDECAY")->load();
+    mAmpParams.sustain = mAPVTS.getRawParameterValue("AMPSUSTAIN")->load();
+    mAmpParams.release = mAPVTS.getRawParameterValue("AMPRELEASE")->load();
+    
+    for(int i = 0; i < mSampler.getNumSounds(); i++){
+        if(auto sound = dynamic_cast<MySamplerSound*>(mSampler.getSound(i).get())){
+            sound->setEnvelopeParameters(mAmpParams);
+        }
+    }
+}
+
+void MUS_12_SamplerAudioProcessor::updateGain()
+{
+    float newGain = mAPVTS.getRawParameterValue("OUTGAIN")->load();
+    
+    for (int i = 0; i < mSampler.getNumVoices(); i++) {
+        if (auto voice = dynamic_cast<MySamplerVoice*>(mSampler.getVoice(i))){
+            voice->updateGain(newGain);
+        }
+    }
 }
 
 void MUS_12_SamplerAudioProcessor::valueTreePropertyChanged (juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
 {
-
+    updateAmpEnvelope();
+    updateGain();
 }
 
 

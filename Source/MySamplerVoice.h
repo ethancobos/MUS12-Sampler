@@ -87,7 +87,7 @@ public:
     using SynthesiserVoice::renderNextBlock;
     void prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannels);
     void reset();
-    
+    void updateGain(float newVal);
     
     
 private:
@@ -97,6 +97,7 @@ private:
     float lgain = 0, rgain = 0;
     
     dsp::Gain<float> mGain;
+    std::atomic<float> currGain = 1;
     ADSR adsr;
     
     JUCE_LEAK_DETECTOR (MySamplerVoice)
