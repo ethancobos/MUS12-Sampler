@@ -83,9 +83,11 @@ public:
     
     void pitchWheelMoved (int newValue) override;
     void controllerMoved (int controllerNumber, int newValue) override;
-    
     void renderNextBlock (AudioBuffer<float>&, int startSample, int numSamples) override;
     using SynthesiserVoice::renderNextBlock;
+    void prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannels);
+    
+    
     
 private:
     //==============================================================================
@@ -93,6 +95,7 @@ private:
     double sourceSamplePosition = 0;
     float lgain = 0, rgain = 0;
     
+    dsp::Gain<float> mGain;
     ADSR adsr;
     
     JUCE_LEAK_DETECTOR (MySamplerVoice)

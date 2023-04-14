@@ -9,7 +9,6 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "MySamplerVoice.h"
-#include "MySamplerSound.h"
 
 //==============================================================================
 MUS_12_SamplerAudioProcessor::MUS_12_SamplerAudioProcessor()
@@ -108,6 +107,13 @@ void MUS_12_SamplerAudioProcessor::prepareToPlay (double sampleRate, int samples
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
     mSampler.setCurrentPlaybackSampleRate(sampleRate);
+    
+    for (int i = 0; i < mSampler.getNumVoices(); i++) {
+        if (auto voice = dynamic_cast<MySamplerVoice*>(mSampler.getVoice(i))){
+            voice->prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
+        }
+    }
+
 
 }
 
@@ -149,8 +155,9 @@ void MUS_12_SamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
     
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i){
         buffer.clear (i, 0, buffer.getNumSamples());
+    }
     
     for (const juce::MidiMessageMetadata m : midiMessages)
     {

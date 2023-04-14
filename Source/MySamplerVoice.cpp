@@ -133,9 +133,22 @@ void MySamplerVoice::renderNextBlock (AudioBuffer<float>& outputBuffer, int star
 
             auto envelopeValue = adsr.getNextSample();
 
+            
+//            dsp::IIR::Filter<float> myFilter(dsp::IIR::Coefficients<float>::makeHighPass(lastSampleRate, 15000.0f));
+//            dsp::ProcessSpec spec;
+//            spec.sampleRate = lastSampleRate;
+//            spec.maximumBlockSize = maxblocks;
+//            spec.numChannels = 2;
+//
+//            l = myFilter.processSample(l);
+//            r = myFilter.processSample(r);
+
             l *= lgain * envelopeValue;
             r *= rgain * envelopeValue;
-
+            
+            l = mGain.processSample(l);
+            r = mGain.processSample(r);
+            
             if (outR != nullptr)
             {
                 *outL++ += l;
@@ -155,4 +168,15 @@ void MySamplerVoice::renderNextBlock (AudioBuffer<float>& outputBuffer, int star
             }
         }
     }
+}
+
+void MySamplerVoice::prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannels)
+{
+    juce::dsp::ProcessSpec spec;
+    spec.sampleRate = sampleRate;
+    spec.maximumBlockSize = samplesPerBlock;
+    spec.numChannels = outputChannels;
+    
+    mGain.prepare(spec);
+    mGain.setGainLinear(0.01f);
 }

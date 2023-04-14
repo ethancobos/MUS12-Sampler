@@ -17,10 +17,6 @@
           file="Source/AmplitudeEnvelope.cpp"/>
     <FILE id="iirOwL" name="AmplitudeEnvelope.h" compile="0" resource="0"
           file="Source/AmplitudeEnvelope.h"/>
-    <FILE id="U13LMM" name="MySamplerSound.cpp" compile="1" resource="0"
-          file="Source/MySamplerSound.cpp"/>
-    <FILE id="XLGJTh" name="MySamplerSound.h" compile="0" resource="0"
-          file="Source/MySamplerSound.h"/>
     <FILE id="hMFe13" name="MySamplerVoice.cpp" compile="1" resource="0"
           file="Source/MySamplerVoice.cpp"/>
     <FILE id="WFT1HQ" name="MySamplerVoice.h" compile="0" resource="0"
