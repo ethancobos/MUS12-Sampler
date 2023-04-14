@@ -8,6 +8,8 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "MySamplerVoice.h"
+#include "MySamplerSound.h"
 
 //==============================================================================
 MUS_12_SamplerAudioProcessor::MUS_12_SamplerAudioProcessor()
@@ -26,7 +28,7 @@ MUS_12_SamplerAudioProcessor::MUS_12_SamplerAudioProcessor()
     mAPVTS.state.addListener(this);
     
     for (int i = 0; i < mNumVoices; i++){
-        mSampler.addVoice(new juce::SamplerVoice());
+        mSampler.addVoice(new MySamplerVoice());
     }
     
 }
@@ -106,7 +108,7 @@ void MUS_12_SamplerAudioProcessor::prepareToPlay (double sampleRate, int samples
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
     mSampler.setCurrentPlaybackSampleRate(sampleRate);
-    updateAmpEnvelope();
+
 }
 
 void MUS_12_SamplerAudioProcessor::releaseResources()
@@ -175,9 +177,6 @@ void MUS_12_SamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
         mReducedSampleCount = 0;
     }
     
-    if(mShouldUpdate){
-        updateAmpEnvelope();
-    }
     mSampler.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
 
@@ -209,22 +208,6 @@ void MUS_12_SamplerAudioProcessor::setStateInformation (const void* data, int si
 //========================== My Functions ======================================
 
 
-
-void MUS_12_SamplerAudioProcessor::updateAmpEnvelope()
-{
-    mAmpParams.attack = mAPVTS.getRawParameterValue("AMPATTACK")->load();
-    mAmpParams.decay = mAPVTS.getRawParameterValue("AMPDECAY")->load();
-    mAmpParams.sustain = mAPVTS.getRawParameterValue("AMPSUSTAIN")->load();
-    mAmpParams.release = mAPVTS.getRawParameterValue("AMPRELEASE")->load();
-    
-    for(int i = 0; i < mSampler.getNumSounds(); i++){
-        if(auto sound = dynamic_cast<juce::SamplerSound*>(mSampler.getSound(i).get())){
-            sound->setEnvelopeParameters(mAmpParams);
-        }
-    }
-}
-
-
 // function to get the file to be sampled through drag and drop
 void MUS_12_SamplerAudioProcessor::loadFile(const juce::String& path)
 {
@@ -242,10 +225,9 @@ void MUS_12_SamplerAudioProcessor::loadFile(const juce::String& path)
     
     // parameters in order: name, format reader, range of midi notes, base note (C3 or midi note 60),
     // attack and delay, sample length
-    juce::SamplerSound* sampledFile = new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.0, 0.1, sampleTime);
+    MySamplerSound* sampledFile = new MySamplerSound("Sample", *mFormatReader, range, 60, 0.0, 0.1, sampleTime);
     mNumSamplesInWF = sampledFile->getAudioData()->getNumSamples();
     mSampler.addSound(sampledFile);
-    updateAmpEnvelope();
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout MUS_12_SamplerAudioProcessor::createParameters()
@@ -262,7 +244,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout MUS_12_SamplerAudioProcessor
 
 void MUS_12_SamplerAudioProcessor::valueTreePropertyChanged (juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
 {
-    mShouldUpdate = true;
+
 }
 
 

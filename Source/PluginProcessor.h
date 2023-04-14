@@ -66,7 +66,6 @@ public:
     int getSampleTime() { return sampleTime; };
     int getNumSIWF() { return mNumSamplesInWF; };
     juce::AudioProcessorValueTreeState& getAPVTS(){ return mAPVTS; };
-    void updateAmpEnvelope();
 
 private:
     
@@ -90,7 +89,7 @@ private:
     
     juce::ADSR::Parameters mAmpParams;
     void valueTreePropertyChanged (juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property) override;
-    std::atomic<bool> mShouldUpdate { false };
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MUS_12_SamplerAudioProcessor)
 };

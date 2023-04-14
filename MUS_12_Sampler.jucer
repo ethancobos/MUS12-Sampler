@@ -17,6 +17,14 @@
           file="Source/AmplitudeEnvelope.cpp"/>
     <FILE id="iirOwL" name="AmplitudeEnvelope.h" compile="0" resource="0"
           file="Source/AmplitudeEnvelope.h"/>
+    <FILE id="U13LMM" name="MySamplerSound.cpp" compile="1" resource="0"
+          file="Source/MySamplerSound.cpp"/>
+    <FILE id="XLGJTh" name="MySamplerSound.h" compile="0" resource="0"
+          file="Source/MySamplerSound.h"/>
+    <FILE id="hMFe13" name="MySamplerVoice.cpp" compile="1" resource="0"
+          file="Source/MySamplerVoice.cpp"/>
+    <FILE id="WFT1HQ" name="MySamplerVoice.h" compile="0" resource="0"
+          file="Source/MySamplerVoice.h"/>
     <FILE id="GjefFR" name="WaveFormThumbnail.cpp" compile="1" resource="0"
           file="Source/WaveFormThumbnail.cpp"/>
     <FILE id="yj1uBC" name="WaveFormThumbnail.h" compile="0" resource="0"
@@ -42,6 +50,7 @@
         <MODULEPATH id="juce_graphics" path="../../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../../../JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="../../../JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
   </EXPORTFORMATS>
@@ -55,6 +64,7 @@
     <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>

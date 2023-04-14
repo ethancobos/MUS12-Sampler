@@ -34,7 +34,7 @@ private:
     
     MUS_12_SamplerAudioProcessor& audioProcessor;
     WaveFormThumbnail mWaveThumbnail;
-    AmplitudeEnvelope mAmpEnv;
+//    AmplitudeEnvelope mAmpEnv;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MUS_12_SamplerAudioProcessorEditor)
 };
