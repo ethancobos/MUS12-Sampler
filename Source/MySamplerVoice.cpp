@@ -132,20 +132,14 @@ void MySamplerVoice::renderNextBlock (AudioBuffer<float>& outputBuffer, int star
                                        : l;
 
             auto envelopeValue = adsr.getNextSample();
-
-            
-//            dsp::IIR::Filter<float> myFilter(dsp::IIR::Coefficients<float>::makeHighPass(lastSampleRate, 15000.0f));
-//            dsp::ProcessSpec spec;
-//            spec.sampleRate = lastSampleRate;
-//            spec.maximumBlockSize = maxblocks;
-//            spec.numChannels = 2;
-//
-//            l = myFilter.processSample(l);
-//            r = myFilter.processSample(r);
             
             // velocity and envelope
             l *= lgain * envelopeValue;
             r *= rgain * envelopeValue;
+            
+            // filtering
+            l = mFilter.processSample(l);
+            r = mFilter.processSample(r);
             
             // output gain
             l = mGain.processSample(l);
@@ -175,7 +169,7 @@ void MySamplerVoice::renderNextBlock (AudioBuffer<float>& outputBuffer, int star
 void MySamplerVoice::reset()
 {
     mGain.reset();
-    //adsr.reset();
+    mFilter.reset();
 }
 
 void MySamplerVoice::prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannels)
@@ -187,9 +181,20 @@ void MySamplerVoice::prepareToPlay (double sampleRate, int samplesPerBlock, int 
     spec.numChannels = outputChannels;
     
     mGain.prepare(spec);
+    mFilter.prepare(spec);
 }
 
 void MySamplerVoice::updateGain(float newVal)
 {
     mGain.setGainLinear(newVal);
+}
+
+void MySamplerVoice::updateFilter(float srate, float newMenu, float newFreq, float newRes)
+{
+    if (newMenu == 0){
+        mFilter.parameters->type = dsp::StateVariableFilter::Parameters<float>::Type::lowPass;
+    } else {
+        mFilter.parameters->type = dsp::StateVariableFilter::Parameters<float>::Type::highPass;
+    }
+    mFilter.parameters->setCutOffFrequency(srate, newFreq, newRes);
 }

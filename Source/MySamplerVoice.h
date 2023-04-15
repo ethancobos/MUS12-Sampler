@@ -88,6 +88,7 @@ public:
     void prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannels);
     void reset();
     void updateGain(float newVal);
+    void updateFilter(float srate, float newMenu, float newFreq, float newRes);
     
     
 private:
@@ -97,7 +98,7 @@ private:
     float lgain = 0, rgain = 0;
     
     dsp::Gain<float> mGain;
-    std::atomic<float> currGain = 1;
+    dsp::StateVariableFilter::Filter<float> mFilter;
     ADSR adsr;
     
     JUCE_LEAK_DETECTOR (MySamplerVoice)

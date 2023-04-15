@@ -20,6 +20,17 @@ class MUS_12_SamplerAudioProcessor  : public juce::AudioProcessor,
                             #endif
 {
 public:
+    
+    static const juce::String filterFreq;
+    static const juce::String filterRes;
+    static const juce::String filterCoice;
+    static const juce::String ampAttack;
+    static const juce::String ampDecay;
+    static const juce::String ampSustain;
+    static const juce::String ampRelease;
+    static const juce::String outputGain;
+    
+    
     //==============================================================================
     MUS_12_SamplerAudioProcessor();
     ~MUS_12_SamplerAudioProcessor() override;
@@ -68,6 +79,7 @@ public:
     juce::AudioProcessorValueTreeState& getAPVTS(){ return mAPVTS; };
     void updateAmpEnvelope();
     void updateGain();
+    void updateFilter();
 
 private:
     

@@ -24,7 +24,7 @@ AmplitudeEnvelope::AmplitudeEnvelope(MUS_12_SamplerAudioProcessor& p) : audioPro
     mAttackL.attachToComponent(&mAttackS, false);
     
     mAttackAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
-                                                                                          "AMPATTACK",
+                                                                                          audioProcessor.ampAttack,
                                                                                           mAttackS);
     
     mDecayS.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
@@ -37,7 +37,7 @@ AmplitudeEnvelope::AmplitudeEnvelope(MUS_12_SamplerAudioProcessor& p) : audioPro
     mDecayL.attachToComponent(&mDecayS, false);
     
     mDecayAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
-                                                                                          "AMPDECAY",
+                                                                                         audioProcessor.ampDecay,
                                                                                           mDecayS);
     
     mSustainS.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
@@ -50,7 +50,7 @@ AmplitudeEnvelope::AmplitudeEnvelope(MUS_12_SamplerAudioProcessor& p) : audioPro
     mSustainL.attachToComponent(&mSustainS, false);
     
     mSustainAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
-                                                                                          "AMPSUSTAIN",
+                                                                                           audioProcessor.ampSustain,
                                                                                           mSustainS);
     
     mReleaseS.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
@@ -63,7 +63,7 @@ AmplitudeEnvelope::AmplitudeEnvelope(MUS_12_SamplerAudioProcessor& p) : audioPro
     mReleaseL.attachToComponent(&mReleaseS, false);
     
     mReleaseAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
-                                                                                          "AMPRELEASE",
+                                                                                           audioProcessor.ampRelease,
                                                                                           mReleaseS);
 
 }

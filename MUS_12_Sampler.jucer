@@ -5,6 +5,9 @@
               pluginFormats="buildAU,buildVST3" displaySplashScreen="1" defines="JUCE_MODAL_LOOPS_PERMITTED=1">
   <MAINGROUP id="ubyID1" name="MUS_12_Sampler">
     <GROUP id="{F0796A71-ECBA-A4CA-FDC0-72AB17FC9A73}" name="Source">
+      <FILE id="sZGnfq" name="SamplerFilter.cpp" compile="1" resource="0"
+            file="Source/SamplerFilter.cpp"/>
+      <FILE id="lP0oow" name="SamplerFilter.h" compile="0" resource="0" file="Source/SamplerFilter.h"/>
       <FILE id="R5MoTM" name="OutputGain.cpp" compile="1" resource="0" file="Source/OutputGain.cpp"/>
       <FILE id="qr5ric" name="OutputGain.h" compile="0" resource="0" file="Source/OutputGain.h"/>
       <FILE id="OX91PH" name="AmplitudeEnvelope.cpp" compile="1" resource="0"
