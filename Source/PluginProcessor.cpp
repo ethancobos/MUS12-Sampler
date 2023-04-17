@@ -25,6 +25,11 @@ const juce::String MUS_12_SamplerAudioProcessor::filterCoice = "FILTERCHOSE";
 
 const juce::String MUS_12_SamplerAudioProcessor::outputGain = "OUTGAIN";
 
+const juce::String MUS_12_SamplerAudioProcessor::compAttack = "COMPATT";
+const juce::String MUS_12_SamplerAudioProcessor::compRelease = "COMPREL";
+const juce::String MUS_12_SamplerAudioProcessor::compThresh = "COMPTHRESH";
+const juce::String MUS_12_SamplerAudioProcessor::compRatio = "COMPRATIO";
+
 
 MUS_12_SamplerAudioProcessor::MUS_12_SamplerAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -253,6 +258,7 @@ void MUS_12_SamplerAudioProcessor::loadFile(const juce::String& path)
     updateAmpEnvelope();
     updateGain();
     updateFilter();
+    updateCompressor();
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout MUS_12_SamplerAudioProcessor::createParameters()
@@ -273,6 +279,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout MUS_12_SamplerAudioProcessor
     
     // output gain
     parameters.push_back (std::make_unique<juce::AudioParameterFloat>(outputGain, "Gain", 0.0f, 2.0f, 0.5f));
+    
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(compAttack, "comp attack", 0.0f, 200.0f, 10.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(compRelease, "comp release", 0.0f, 200.0f, 10.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(compRatio, "comp ratio", 1.0f, 5.0f, 2.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(compThresh, "comp thresh", -40.0f, 0.0f, -10.0f));
     
     return { parameters.begin(), parameters.end() };
 }
@@ -315,11 +326,26 @@ void MUS_12_SamplerAudioProcessor::updateFilter()
     }
 }
 
+void MUS_12_SamplerAudioProcessor::updateCompressor()
+{
+    float thresh = mAPVTS.getRawParameterValue(compThresh)->load();
+    float ratio = mAPVTS.getRawParameterValue(compRatio)->load();
+    float attack = mAPVTS.getRawParameterValue(compAttack)->load();
+    float release = mAPVTS.getRawParameterValue(compRelease)->load();
+    
+    for (int i = 0; i < mSampler.getNumVoices(); i++) {
+        if (auto voice = dynamic_cast<MySamplerVoice*>(mSampler.getVoice(i))){
+            voice->updateCompressor(thresh, ratio, attack, release);
+        }
+    }
+}
+
 void MUS_12_SamplerAudioProcessor::valueTreePropertyChanged (juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
 {
     updateAmpEnvelope();
     updateGain();
     updateFilter();
+    updateCompressor();
 }
 
 

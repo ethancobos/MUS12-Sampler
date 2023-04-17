@@ -14,6 +14,7 @@
 #include "AmplitudeEnvelope.h"
 #include "OutputGain.h"
 #include "SamplerFilter.h"
+#include "SamplerCompresh.h"
 
 //==============================================================================
 /**
@@ -39,6 +40,7 @@ private:
     AmplitudeEnvelope mAmpEnv;
     OutputGain mGain;
     SamplerFilter mFilter;
+    SamplerCompresh mCompresh;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MUS_12_SamplerAudioProcessorEditor)
 };

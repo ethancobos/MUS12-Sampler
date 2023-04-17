@@ -137,6 +137,9 @@ void MySamplerVoice::renderNextBlock (AudioBuffer<float>& outputBuffer, int star
             l *= lgain * envelopeValue;
             r *= rgain * envelopeValue;
             
+            l = mCompressor.processSample(0, l);
+            r = mCompressor.processSample(1, r);
+            
             // filtering
             l = mFilter.processSample(l);
             r = mFilter.processSample(r);
@@ -170,6 +173,7 @@ void MySamplerVoice::reset()
 {
     mGain.reset();
     mFilter.reset();
+    mCompressor.reset();
 }
 
 void MySamplerVoice::prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannels)
@@ -182,6 +186,7 @@ void MySamplerVoice::prepareToPlay (double sampleRate, int samplesPerBlock, int 
     
     mGain.prepare(spec);
     mFilter.prepare(spec);
+    mCompressor.prepare(spec);
 }
 
 void MySamplerVoice::updateGain(float newVal)
@@ -197,4 +202,12 @@ void MySamplerVoice::updateFilter(float srate, float newMenu, float newFreq, flo
         mFilter.parameters->type = dsp::StateVariableFilter::Parameters<float>::Type::highPass;
     }
     mFilter.parameters->setCutOffFrequency(srate, newFreq, newRes);
+}
+
+void MySamplerVoice::updateCompressor(float thresh, float ratio, float attack, float release)
+{
+    mCompressor.setThreshold(thresh);
+    mCompressor.setRatio(ratio);
+    mCompressor.setAttack(attack);
+    mCompressor.setRelease(release);
 }

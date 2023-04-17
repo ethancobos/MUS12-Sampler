@@ -89,6 +89,7 @@ public:
     void reset();
     void updateGain(float newVal);
     void updateFilter(float srate, float newMenu, float newFreq, float newRes);
+    void updateCompressor(float thresh, float ratio, float attack, float release);
     
     
 private:
@@ -99,6 +100,7 @@ private:
     
     dsp::Gain<float> mGain;
     dsp::StateVariableFilter::Filter<float> mFilter;
+    dsp::Compressor<float> mCompressor;
     ADSR adsr;
     
     JUCE_LEAK_DETECTOR (MySamplerVoice)

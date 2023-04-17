@@ -29,7 +29,10 @@ public:
     static const juce::String ampSustain;
     static const juce::String ampRelease;
     static const juce::String outputGain;
-    
+    static const juce::String compAttack;
+    static const juce::String compRelease;
+    static const juce::String compThresh;
+    static const juce::String compRatio;
     
     //==============================================================================
     MUS_12_SamplerAudioProcessor();
@@ -80,6 +83,7 @@ public:
     void updateAmpEnvelope();
     void updateGain();
     void updateFilter();
+    void updateCompressor();
 
 private:
     

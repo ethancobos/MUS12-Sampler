@@ -9,7 +9,7 @@
 
 //==============================================================================
 MUS_12_SamplerAudioProcessorEditor::MUS_12_SamplerAudioProcessorEditor (MUS_12_SamplerAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p), mWaveThumbnail(p), mAmpEnv(p), mGain(p), mFilter(p)
+    : AudioProcessorEditor (&p), audioProcessor (p), mWaveThumbnail(p), mAmpEnv(p), mGain(p), mFilter(p), mCompresh(p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -17,6 +17,7 @@ MUS_12_SamplerAudioProcessorEditor::MUS_12_SamplerAudioProcessorEditor (MUS_12_S
     addAndMakeVisible(mAmpEnv);
     addAndMakeVisible(mGain);
     addAndMakeVisible(mFilter);
+    addAndMakeVisible(mCompresh);
     startTimerHz(30);
     setSize (900, 600);
 }
@@ -43,6 +44,7 @@ void MUS_12_SamplerAudioProcessorEditor::resized()
     mAmpEnv.setBoundsRelative(0.01f, 0.5f, 0.3f, 0.3f);
     mGain.setBoundsRelative(0.35f, 0.5f, (0.3f / 4.0f), 0.3f);
     mFilter.setBounds(450.0f, 300.0f, 200.0f, 200.0f);
+    mCompresh.setBounds(650.0f, 300.0f, 200.0f, 200.0f);
 }
 
 void MUS_12_SamplerAudioProcessorEditor::timerCallback()
