@@ -30,10 +30,12 @@ private:
     
     juce::ComboBox filterMenu;
     juce::Slider cutoffS, resonanceS;
+    juce::ToggleButton filterBypass;
     
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> cutoffAtach;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> resonanceAtach;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> menuAtach;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> bypassAtach;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SamplerFilter)
 };

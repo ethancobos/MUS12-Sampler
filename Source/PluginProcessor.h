@@ -24,6 +24,7 @@ public:
     static const juce::String filterFreq;
     static const juce::String filterRes;
     static const juce::String filterCoice;
+    static const juce::String filterBypass;
     static const juce::String ampAttack;
     static const juce::String ampDecay;
     static const juce::String ampSustain;

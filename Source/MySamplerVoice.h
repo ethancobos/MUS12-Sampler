@@ -88,7 +88,7 @@ public:
     void prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannels);
     void reset();
     void updateGain(float newVal);
-    void updateFilter(float srate, float newMenu, float newFreq, float newRes);
+    void updateFilter(float srate, float newMenu, float newFreq, float newRes, bool bypass);
     void updateCompressor(float thresh, float ratio, float attack, float release);
     
     
@@ -100,8 +100,10 @@ private:
     
     dsp::Gain<float> mGain;
     dsp::StateVariableFilter::Filter<float> mFilter;
+    bool filterNotBypassed;
     dsp::Compressor<float> mCompressor;
     ADSR adsr;
+    
     
     JUCE_LEAK_DETECTOR (MySamplerVoice)
 };

@@ -141,9 +141,11 @@ void MySamplerVoice::renderNextBlock (AudioBuffer<float>& outputBuffer, int star
             r = mCompressor.processSample(1, r);
             
             // filtering
-            l = mFilter.processSample(l);
-            r = mFilter.processSample(r);
-            
+            if (filterNotBypassed){
+                l = mFilter.processSample(l);
+                r = mFilter.processSample(r);
+            }
+
             // output gain
             l = mGain.processSample(l);
             r = mGain.processSample(r);
@@ -194,7 +196,7 @@ void MySamplerVoice::updateGain(float newVal)
     mGain.setGainLinear(newVal);
 }
 
-void MySamplerVoice::updateFilter(float srate, float newMenu, float newFreq, float newRes)
+void MySamplerVoice::updateFilter(float srate, float newMenu, float newFreq, float newRes, bool bypass)
 {
     if (newMenu == 0){
         mFilter.parameters->type = dsp::StateVariableFilter::Parameters<float>::Type::lowPass;
@@ -202,6 +204,7 @@ void MySamplerVoice::updateFilter(float srate, float newMenu, float newFreq, flo
         mFilter.parameters->type = dsp::StateVariableFilter::Parameters<float>::Type::highPass;
     }
     mFilter.parameters->setCutOffFrequency(srate, newFreq, newRes);
+    filterNotBypassed = bypass;
 }
 
 void MySamplerVoice::updateCompressor(float thresh, float ratio, float attack, float release)

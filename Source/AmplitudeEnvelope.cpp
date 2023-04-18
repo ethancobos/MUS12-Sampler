@@ -74,7 +74,7 @@ AmplitudeEnvelope::~AmplitudeEnvelope()
 
 void AmplitudeEnvelope::paint (juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::black);
+    
 }
 
 void AmplitudeEnvelope::resized()

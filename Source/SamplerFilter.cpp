@@ -35,6 +35,12 @@ SamplerFilter::SamplerFilter(MUS_12_SamplerAudioProcessor& p) : audioProcessor(p
     resonanceAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
                                                                                             audioProcessor.filterRes,
                                                                                             resonanceS);
+    
+    addAndMakeVisible(&filterBypass);
+    bypassAtach = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.getAPVTS(),
+                                                                                         audioProcessor.filterBypass,
+                                                                                         filterBypass);
+    
     cutoffS.setSkewFactorFromMidPoint(1000.0f);
 }
 
@@ -46,17 +52,18 @@ void SamplerFilter::paint (juce::Graphics& g)
 {
     //background ui stuff
     juce::Rectangle<int> titleArea (0, 10, getWidth(), 20);
-    
-    g.fillAll (juce::Colours::black);
-    g.setColour(juce::Colours::white);
+    g.setColour(getLookAndFeel().findColour(juce::TextButton::buttonColourId));
+    g.fillRoundedRectangle(5.0f, 0.0f, getWidth() - 5.0f, getHeight(), 10.0f);
+//    g.fillAll (juce::Colours::black);
+//    g.setColour(juce::Colours::white);
     g.drawText("Filter", titleArea, juce::Justification::centredTop);
     g.drawText("Cutoff", 46, 70, 50, 25, juce::Justification::centredLeft);
     g.drawText("Resonance", 107, 70, 70, 25, juce::Justification::centredLeft);
-    
-    juce::Rectangle <float> area (25, 25, 150, 150);
-    
-    g.setColour(juce::Colours::yellow);
-    g.drawRoundedRectangle(area, 20.0f, 2.0f);
+//
+//    juce::Rectangle <float> area (25, 25, 150, 150);
+//
+//    g.setColour(juce::Colours::yellow);
+//    g.drawRoundedRectangle(area, 20.0f, 2.0f);
 }
 
 void SamplerFilter::resized()
@@ -67,4 +74,6 @@ void SamplerFilter::resized()
     filterMenu.setBounds(area.removeFromTop(20));
     cutoffS.setBounds (30, 90, 70, 70);
     resonanceS.setBounds (100, 90, 70, 70);
+    filterBypass.setBounds(5, 5, 50, 50);
+    
 }

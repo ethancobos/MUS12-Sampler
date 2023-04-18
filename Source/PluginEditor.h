@@ -15,6 +15,9 @@
 #include "OutputGain.h"
 #include "SamplerFilter.h"
 #include "SamplerCompresh.h"
+#include "CustomGUI.h"
+
+using namespace juce;
 
 //==============================================================================
 /**
@@ -34,6 +37,14 @@ public:
     void timerCallback() override;
 
 private:
+    
+    juce::CustomGUI customGUI;
+    
+    float fullWidth = 1000.0f;
+    float fullHeight = 500.0f;
+    float one6th = 1.0f / 6.0f;
+    float one12th = 1.0f / 12.0f;
+    float one3rd = 1.0f / 3.0f;
     
     MUS_12_SamplerAudioProcessor& audioProcessor;
     WaveFormThumbnail mWaveThumbnail;

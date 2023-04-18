@@ -22,6 +22,7 @@ const juce::String MUS_12_SamplerAudioProcessor::ampRelease = "AMPRELEASE";
 const juce::String MUS_12_SamplerAudioProcessor::filterFreq = "FILTERFREQ";
 const juce::String MUS_12_SamplerAudioProcessor::filterRes = "FILTERRES";
 const juce::String MUS_12_SamplerAudioProcessor::filterCoice = "FILTERCHOSE";
+const juce::String MUS_12_SamplerAudioProcessor::filterBypass = "FILTERBYPASS";
 
 const juce::String MUS_12_SamplerAudioProcessor::outputGain = "OUTGAIN";
 
@@ -276,6 +277,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout MUS_12_SamplerAudioProcessor
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>(filterFreq, "Frequency", 20.0f, 20000.0f, 1000.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>(filterRes, "Q", 01.0f, 5.0f, 2.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterChoice>(filterCoice, "filters", filters, 0));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>(filterBypass, "filterBypass", false));
     
     // output gain
     parameters.push_back (std::make_unique<juce::AudioParameterFloat>(outputGain, "Gain", 0.0f, 2.0f, 0.5f));
@@ -318,10 +320,11 @@ void MUS_12_SamplerAudioProcessor::updateFilter()
     float menu = mAPVTS.getRawParameterValue(filterCoice)->load();
     float freq = mAPVTS.getRawParameterValue(filterFreq)->load();
     float res = mAPVTS.getRawParameterValue(filterRes)->load();
+    bool bypass = mAPVTS.getRawParameterValue(filterBypass)->load();
     
     for (int i = 0; i < mSampler.getNumVoices(); i++) {
         if (auto voice = dynamic_cast<MySamplerVoice*>(mSampler.getVoice(i))){
-            voice->updateFilter(44100, menu, freq, res);
+            voice->updateFilter(44100, menu, freq, res, bypass);
         }
     }
 }

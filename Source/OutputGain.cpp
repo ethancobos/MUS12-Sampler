@@ -34,7 +34,7 @@ OutputGain::~OutputGain()
 
 void OutputGain::paint (juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::black);
+
 }
 
 void OutputGain::resized()

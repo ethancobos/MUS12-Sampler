@@ -54,7 +54,7 @@ SamplerCompresh::~SamplerCompresh()
 
 void SamplerCompresh::paint (juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::black);
+
 }
 
 void SamplerCompresh::resized()
