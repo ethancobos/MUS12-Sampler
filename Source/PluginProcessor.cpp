@@ -187,22 +187,17 @@ void MUS_12_SamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
         if (message.isNoteOn()) {
             // start increasing sample counter
             mIsNotePlayed = true;
+            noteHzm = message.getMidiNoteInHertz(message.getNoteNumber()) / 261.625565;
         } else if (message.isNoteOff()) {
             // reset sample counter
             mIsNotePlayed = false;
         }
     }
 
-    mSampleCount = mIsNotePlayed ? mSampleCount += buffer.getNumSamples() : 0;
+    mSampleCount = mIsNotePlayed ? mSampleCount += (buffer.getNumSamples()  * noteHzm) : 0;
     
-    if (mIsNotePlayed){
-        if(mSampleCount <= mNumSamplesInWF){
-            mReducedSampleCount += buffer.getNumSamples();
-        } else{
-            mReducedSampleCount = mNumSamplesInWF;
-        }
-    } else{
-        mReducedSampleCount = 0;
+    if(mSampleCount > mNumSamplesInWF){
+        mSampleCount = mNumSamplesInWF;
     }
     
     mSampler.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());

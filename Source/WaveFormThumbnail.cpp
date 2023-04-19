@@ -95,13 +95,13 @@ void WaveFormThumbnail::paintIfFileLoaded (juce::Graphics& g)
     
     thumbnail.drawChannels(g, waveBounds, 0.0, audioLength, 1.0f);
     
-    auto playheadPos = juce::jmap<int>(audioProcessor.getReducedSC(),
+    auto playheadPos = juce::jmap<int>(audioProcessor.getSampleCount(),
                                        0,
                                        audioProcessor.getNumSIWF(),
                                        0,
                                        newWidth);
 
-    g.setColour (juce::Colours::green);
+    g.setColour (getLookAndFeel().findColour(juce::Toolbar::separatorColourId));
     g.drawLine (playheadPos + newX, newY, playheadPos + newX, newHeight + 10.0f, 2.0f);
     g.setColour(juce::Colours::black.withAlpha(0.2f));
     g.fillRect(newX, newY, float(playheadPos), newHeight);

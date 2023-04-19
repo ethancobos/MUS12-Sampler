@@ -30,7 +30,6 @@ private:
     MUS_12_SamplerAudioProcessor& audioProcessor;
     
     juce::Slider mGainS;
-    juce::Label mGainL;
     
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mGainAtach;
     

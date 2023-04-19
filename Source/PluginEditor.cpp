@@ -35,6 +35,10 @@ void MUS_12_SamplerAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll(getLookAndFeel().findColour(Toolbar::backgroundColourId));
+    g.setColour(getLookAndFeel().findColour(juce::Toolbar::buttonMouseOverBackgroundColourId));
+    g.fillRoundedRectangle(10.0f, 10.0f, getWidth() - 20.0f, (getHeight() / 12) - 15.0f, 10.0f);
+    g.setColour(getLookAndFeel().findColour(juce::Toolbar::separatorColourId));
+    g.fillRoundedRectangle(15.0f, 15.0f, getWidth() - 30.0f, (getHeight() / 12) - 25.0f, 10.0f);
 }
 
 void MUS_12_SamplerAudioProcessorEditor::resized()

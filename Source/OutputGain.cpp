@@ -18,11 +18,6 @@ OutputGain::OutputGain(MUS_12_SamplerAudioProcessor& p) : audioProcessor(p)
     mGainS.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
     addAndMakeVisible(mGainS);
     
-    mGainL.setFont(10.0f);
-    mGainL.setText("Gain", juce::NotificationType::dontSendNotification);
-    mGainL.setJustificationType(juce::Justification::centredTop);
-    mGainL.attachToComponent(&mGainS, false);
-    
     mGainAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
                                                                                         audioProcessor.outputGain,
                                                                                           mGainS);
@@ -38,6 +33,11 @@ void OutputGain::paint (juce::Graphics& g)
     
     g.setColour(getLookAndFeel().findColour(juce::Toolbar::buttonMouseOverBackgroundColourId));
     g.fillRoundedRectangle(5.0f, 5.0f, getWidth() - 15.0f, getHeight() - 10.0f, 10.0f);
+    
+    g.setColour(getLookAndFeel().findColour(juce::Toolbar::labelTextColourId));
+    g.setFont(juce::Font("Ableton Sans Medium", (getHeight() / 5) - 5.0f, juce::Font::plain));
+    g.drawFittedText("GAIN", 15.0f, 5.0f, getWidth() - 25.0f, (getHeight() / 5), juce::Justification::centred, 1);
+    
     g.setColour(getLookAndFeel().findColour(juce::Toolbar::separatorColourId));
     g.fillRoundedRectangle(10.0f, yStart, getWidth() - 25.0f, getHeight() - yStart - 10.0f, 10.0f);
 }

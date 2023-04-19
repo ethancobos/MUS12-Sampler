@@ -77,7 +77,6 @@ public:
     int getNumSamplerSounds() { return mSampler.getNumSounds(); };
     std::atomic<bool>& isNotePlayed() { return mIsNotePlayed; };
     std::atomic<int>& getSampleCount() { return mSampleCount; };
-    std::atomic<int>& getReducedSC() { return mReducedSampleCount; };
     int getSampleTime() { return sampleTime; };
     int getNumSIWF() { return mNumSamplesInWF; };
     juce::AudioProcessorValueTreeState& getAPVTS(){ return mAPVTS; };
@@ -101,7 +100,7 @@ private:
     
     std::atomic<bool> mIsNotePlayed { false };
     std::atomic<int> mSampleCount { 0 };
-    std::atomic<int> mReducedSampleCount { 0 };
+    std::atomic<float> noteHzm { 1 };
     
     juce::AudioProcessorValueTreeState mAPVTS;
     juce::AudioProcessorValueTreeState::ParameterLayout createParameters();

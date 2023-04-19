@@ -40,7 +40,9 @@ inline void CustomGUI::applyThreeColourScheme()
         TextButton::textColourOnId,                 bg,
         TextButton::textColourOffId,                bg,
 
-        ToggleButton::textColourId,                 fg,
+        ToggleButton::textColourId,                 text,
+        ToggleButton::tickDisabledColourId,         black,
+        ToggleButton::tickColourId,                 accent,
 
         TextEditor::backgroundColourId,             bg,
         TextEditor::textColourId,                   fg,
@@ -91,7 +93,7 @@ inline void CustomGUI::applyThreeColourScheme()
         ListBox::textColourId,                      fg,
 
         Slider::backgroundColourId,                 transparent,
-        Slider::thumbColourId,                      fg,
+        Slider::thumbColourId,                      bg,
         Slider::trackColourId,                      accent,
         Slider::rotarySliderFillColourId,           accent,
         Slider::rotarySliderOutlineColourId,        black,
@@ -178,6 +180,39 @@ inline void CustomGUI::applyThreeColourScheme()
         setColour(int(standardColours[i]), Colour(juce::uint32(standardColours[i + 1])));
 }
 
+void CustomGUI::drawToggleButton (Graphics& g, ToggleButton& button,
+                                       bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown)
+{
+    auto fontSize = jmin (15.0f, (float) button.getHeight() * 0.75f);
+    auto tickWidth = fontSize * 1.1f;
+    
+    Rectangle<float> tickBounds (4.0f, ((float) button.getHeight() - tickWidth) * 0.5f, tickWidth, tickWidth);
+
+    g.setColour (button.findColour (ToggleButton::tickDisabledColourId));
+    g.fillRoundedRectangle (tickBounds, 4.0f);
+    g.setColour (button.findColour (Toolbar::separatorColourId));
+    g.drawRoundedRectangle (tickBounds, 4.0f, 2.0f);
+
+    if (button.getToggleState())
+    {
+        g.setColour (button.findColour (ToggleButton::tickColourId));
+        g.fillRoundedRectangle (tickBounds, 4.0f);
+        g.setColour (button.findColour (Toolbar::separatorColourId));
+        g.drawRoundedRectangle (tickBounds, 4.0f, 2.0f);
+    }
+    
+    g.setColour (button.findColour (ToggleButton::textColourId));
+    g.setFont (fontSize);
+
+    if (! button.isEnabled())
+        g.setOpacity (0.5f);
+
+    g.drawFittedText (button.getButtonText(),
+                      button.getLocalBounds().withTrimmedLeft (roundToInt (tickWidth) + 10)
+                                             .withTrimmedRight (2),
+                      Justification::centredLeft, 10);
+}
+
 
 void CustomGUI::drawRotarySlider (Graphics& g, int x, int y, int width, int height, float sliderPos, float rotaryStartAngle, float rotaryEndAngle, Slider& slider)
 {
@@ -202,7 +237,7 @@ void CustomGUI::drawRotarySlider (Graphics& g, int x, int y, int width, int heig
                                  true);
     
     g.setColour (outline);
-    g.strokePath (backgroundArc, PathStrokeType (lineW, PathStrokeType::curved, PathStrokeType::rounded));
+    g.strokePath (backgroundArc, PathStrokeType (lineW, PathStrokeType::curved, PathStrokeType::square));
     
     if (slider.isEnabled())
     {
@@ -217,7 +252,7 @@ void CustomGUI::drawRotarySlider (Graphics& g, int x, int y, int width, int heig
                                 true);
         
         g.setColour (fill);
-        g.strokePath (valueArc, PathStrokeType (lineW, PathStrokeType::curved, PathStrokeType::rounded));
+        g.strokePath (valueArc, PathStrokeType (lineW, PathStrokeType::curved, PathStrokeType::square));
     }
     
     Point<float> thumbPoint (bounds.getCentreX() + (arcRadius - lineW) * std::cos (toAngle - MathConstants<float>::halfPi),
@@ -225,6 +260,104 @@ void CustomGUI::drawRotarySlider (Graphics& g, int x, int y, int width, int heig
     
     g.setColour (slider.findColour (Slider::rotarySliderFillColourId));
     g.drawLine(backgroundArc.getBounds().getCentreX(), backgroundArc.getBounds().getCentreY(), thumbPoint.getX(), thumbPoint.getY(), lineW);
+    g.fillEllipse(backgroundArc.getBounds().getCentreX() - (lineW / 2), backgroundArc.getBounds().getCentreY() - (lineW / 2), lineW, lineW);
 }
+
+void CustomGUI::drawLinearSlider (Graphics& g, int x, int y, int width, int height,
+                                       float sliderPos,
+                                       float minSliderPos,
+                                       float maxSliderPos,
+                                       const Slider::SliderStyle style, Slider& slider)
+{
+    if (slider.isBar())
+    {
+        g.setColour (slider.findColour (Slider::trackColourId));
+        g.fillRect (slider.isHorizontal() ? Rectangle<float> (static_cast<float> (x), (float) y + 0.5f, sliderPos - (float) x, (float) height - 1.0f)
+                                          : Rectangle<float> ((float) x + 0.5f, sliderPos, (float) width - 1.0f, (float) y + ((float) height - sliderPos)));
+    }
+    else
+    {
+        auto isTwoVal   = (style == Slider::SliderStyle::TwoValueVertical   || style == Slider::SliderStyle::TwoValueHorizontal);
+        auto isThreeVal = (style == Slider::SliderStyle::ThreeValueVertical || style == Slider::SliderStyle::ThreeValueHorizontal);
+
+        auto trackWidth = jmin (6.0f, slider.isHorizontal() ? (float) height * 0.25f : (float) width * 0.25f);
+
+        Point<float> startPoint (slider.isHorizontal() ? (float) x : (float) x + (float) width * 0.5f,
+                                 slider.isHorizontal() ? (float) y + (float) height * 0.5f : (float) (height + y));
+
+        Point<float> endPoint (slider.isHorizontal() ? (float) (width + x) : startPoint.x,
+                               slider.isHorizontal() ? startPoint.y : (float) y);
+
+        Path backgroundTrack;
+        backgroundTrack.startNewSubPath (startPoint);
+        backgroundTrack.lineTo (endPoint);
+        g.setColour (Colours::black);
+        g.strokePath (backgroundTrack, { trackWidth, PathStrokeType::curved, PathStrokeType::rounded });
+
+        Path valueTrack;
+        Point<float> minPoint, maxPoint, thumbPoint;
+
+        if (isTwoVal || isThreeVal)
+        {
+            minPoint = { slider.isHorizontal() ? minSliderPos : (float) width * 0.5f,
+                         slider.isHorizontal() ? (float) height * 0.5f : minSliderPos };
+
+            if (isThreeVal)
+                thumbPoint = { slider.isHorizontal() ? sliderPos : (float) width * 0.5f,
+                               slider.isHorizontal() ? (float) height * 0.5f : sliderPos };
+
+            maxPoint = { slider.isHorizontal() ? maxSliderPos : (float) width * 0.5f,
+                         slider.isHorizontal() ? (float) height * 0.5f : maxSliderPos };
+        }
+        else
+        {
+            auto kx = slider.isHorizontal() ? sliderPos : ((float) x + (float) width * 0.5f);
+            auto ky = slider.isHorizontal() ? ((float) y + (float) height * 0.5f) : sliderPos;
+
+            minPoint = startPoint;
+            maxPoint = { kx, ky };
+        }
+
+        auto thumbWidth = getSliderThumbRadius (slider);
+
+        valueTrack.startNewSubPath (minPoint);
+        valueTrack.lineTo (isThreeVal ? thumbPoint : maxPoint);
+        g.setColour (slider.findColour (Slider::trackColourId));
+        g.strokePath (valueTrack, { trackWidth, PathStrokeType::curved, PathStrokeType::rounded });
+
+        if (! isTwoVal)
+        {
+            g.setColour (slider.findColour (Slider::thumbColourId));
+            g.fillEllipse (Rectangle<float> (static_cast<float> (thumbWidth), static_cast<float> (thumbWidth)).withCentre (isThreeVal ? thumbPoint : maxPoint));
+        }
+
+        if (isTwoVal || isThreeVal)
+        {
+            auto sr = jmin (trackWidth, (slider.isHorizontal() ? (float) height : (float) width) * 0.4f);
+            auto pointerColour = slider.findColour (Slider::thumbColourId);
+
+            if (slider.isHorizontal())
+            {
+                drawPointer (g, minSliderPos - sr,
+                             jmax (0.0f, (float) y + (float) height * 0.5f - trackWidth * 2.0f),
+                             trackWidth * 2.0f, pointerColour, 2);
+
+                drawPointer (g, maxSliderPos - trackWidth,
+                             jmin ((float) (y + height) - trackWidth * 2.0f, (float) y + (float) height * 0.5f),
+                             trackWidth * 2.0f, pointerColour, 4);
+            }
+            else
+            {
+                drawPointer (g, jmax (0.0f, (float) x + (float) width * 0.5f - trackWidth * 2.0f),
+                             minSliderPos - trackWidth,
+                             trackWidth * 2.0f, pointerColour, 1);
+
+                drawPointer (g, jmin ((float) (x + width) - trackWidth * 2.0f, (float) x + (float) width * 0.5f), maxSliderPos - sr,
+                             trackWidth * 2.0f, pointerColour, 3);
+            }
+        }
+    }
+}
+
 
 }
