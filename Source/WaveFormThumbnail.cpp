@@ -71,9 +71,9 @@ void WaveFormThumbnail::resized()
 
 void WaveFormThumbnail::paintIfNoFileLoaded(juce::Graphics& g)
 {
-    g.setColour(juce::Colours::white);
+    g.setColour(getLookAndFeel().findColour(juce::Toolbar::labelTextColourId));
     g.fillRoundedRectangle(10.0f, 10.0f, getWidth() - 20.0f, getHeight() - 20.0f, 10.0f);
-    g.setColour (getLookAndFeel().findColour(juce::Toolbar::labelTextColourId));
+    g.setColour (juce::Colours::black);
     g.drawText ("Drag File To Load", getLocalBounds(), juce::Justification::centred, true);
 }
 
@@ -85,7 +85,7 @@ void WaveFormThumbnail::paintIfFileLoaded (juce::Graphics& g)
     float newY = 10.0f;
     
     juce::Rectangle<int> waveBounds = juce::Rectangle<int>(newX, newY, newWidth, newHeight);
-    g.setColour (juce::Colours::white);
+    g.setColour(getLookAndFeel().findColour(juce::Toolbar::labelTextColourId));
     g.fillRect(waveBounds);
     g.setColour(getLookAndFeel().findColour(juce::TextButton::buttonOnColourId));
     

@@ -77,6 +77,11 @@ void AmplitudeEnvelope::paint (juce::Graphics& g)
     
     g.setColour(getLookAndFeel().findColour(juce::Toolbar::buttonMouseOverBackgroundColourId));
     g.fillRoundedRectangle(10.0f, 5.0f, getWidth() - 15.0f, getHeight() - 10.0f, 10.0f);
+    
+    g.setColour(getLookAndFeel().findColour(juce::Toolbar::labelTextColourId));
+    g.setFont(juce::Font("Ableton Sans Medium", (getHeight() / 5) - 5.0f, juce::Font::plain));
+    g.drawFittedText("AMP ENV", 15.0f, 5.0f, getWidth() - 25.0f, (getHeight() / 5), juce::Justification::centred, 1);
+    
     g.setColour(getLookAndFeel().findColour(juce::Toolbar::separatorColourId));
     g.fillRoundedRectangle(15.0f, yStart, getWidth() - 25.0f, getHeight() - yStart - 10.0f, 10.0f);
 }
