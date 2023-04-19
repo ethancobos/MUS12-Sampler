@@ -54,7 +54,12 @@ SamplerCompresh::~SamplerCompresh()
 
 void SamplerCompresh::paint (juce::Graphics& g)
 {
-
+    float yStart = (getHeight() / 5) + 5.0f;
+    
+    g.setColour(getLookAndFeel().findColour(juce::Toolbar::buttonMouseOverBackgroundColourId));
+    g.fillRoundedRectangle(5.0f, 5.0f, getWidth() - 15.0f, getHeight() - 15.0f, 10.0f);
+    g.setColour(getLookAndFeel().findColour(juce::Toolbar::separatorColourId));
+    g.fillRoundedRectangle(10.0f, yStart, getWidth() - 25.0f, getHeight() - yStart - 15.0f, 10.0f);
 }
 
 void SamplerCompresh::resized()

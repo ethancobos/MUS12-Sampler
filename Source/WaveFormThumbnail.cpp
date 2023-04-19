@@ -17,7 +17,6 @@ WaveFormThumbnail::WaveFormThumbnail(MUS_12_SamplerAudioProcessor& p) : audioPro
 {
     // support for most audio file formats
     mFormatManager.registerBasicFormats();
-
 }
 
 WaveFormThumbnail::~WaveFormThumbnail()
@@ -54,6 +53,8 @@ void WaveFormThumbnail::setThumbnail(const juce::String& path)
 
 void WaveFormThumbnail::paint (juce::Graphics& g)
 {
+    g.setColour(getLookAndFeel().findColour(juce::Toolbar::buttonMouseOverBackgroundColourId));
+    g.fillRoundedRectangle(5.0f, 5.0f, getWidth() - 10.0f, getHeight() - 10.0f, 10.0f);
     if (audioProcessor.getNumSamplerSounds() > 0){
         paintIfFileLoaded (g);
     } else{
@@ -70,30 +71,40 @@ void WaveFormThumbnail::resized()
 
 void WaveFormThumbnail::paintIfNoFileLoaded(juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::darkgrey);
-    g.setColour (juce::Colours::white);
+    g.setColour(juce::Colours::white);
+    g.fillRoundedRectangle(10.0f, 10.0f, getWidth() - 20.0f, getHeight() - 20.0f, 10.0f);
+    g.setColour (getLookAndFeel().findColour(juce::Toolbar::labelTextColourId));
     g.drawText ("Drag File To Load", getLocalBounds(), juce::Justification::centred, true);
 }
 
 void WaveFormThumbnail::paintIfFileLoaded (juce::Graphics& g)
 {
-    g.fillAll (juce::Colours::white);
-    g.setColour (juce::Colours::red);
+    float newHeight = getHeight() - 20.0f;
+    float newWidth = getWidth() - 20.0f;
+    float newX = 10.0f;
+    float newY = 10.0f;
+    
+    juce::Rectangle<int> waveBounds = juce::Rectangle<int>(newX, newY, newWidth, newHeight);
+    g.setColour (juce::Colours::white);
+    g.fillRect(waveBounds);
+    g.setColour(getLookAndFeel().findColour(juce::TextButton::buttonOnColourId));
     
     int sTime = audioProcessor.getSampleTime();
     float totAudioLen = (float) thumbnail.getTotalLength();
     float audioLength = totAudioLen < sTime ? totAudioLen : sTime;
     
-    thumbnail.drawChannels(g, getLocalBounds(), 0.0, audioLength, 1.0f);
+    thumbnail.drawChannels(g, waveBounds, 0.0, audioLength, 1.0f);
     
     auto playheadPos = juce::jmap<int>(audioProcessor.getReducedSC(),
                                        0,
                                        audioProcessor.getNumSIWF(),
                                        0,
-                                       getWidth());
+                                       newWidth);
 
     g.setColour (juce::Colours::green);
-    g.drawLine (playheadPos, 0, playheadPos, getHeight(), 2.0f);
+    g.drawLine (playheadPos + newX, newY, playheadPos + newX, newHeight + 10.0f, 2.0f);
     g.setColour(juce::Colours::black.withAlpha(0.2f));
-    g.fillRect(0, 0, playheadPos, getHeight());
+    g.fillRect(newX, newY, float(playheadPos), newHeight);
+    g.setColour(getLookAndFeel().findColour(juce::Toolbar::buttonMouseOverBackgroundColourId));
+    g.drawRoundedRectangle(getLocalBounds().toFloat().reduced(7.5), 10.0f, 5.0f);
 }

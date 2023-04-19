@@ -50,20 +50,15 @@ SamplerFilter::~SamplerFilter()
 
 void SamplerFilter::paint (juce::Graphics& g)
 {
+    float yStart = (getHeight() / 5) + 5.0f;
+    
     //background ui stuff
-    juce::Rectangle<int> titleArea (0, 10, getWidth(), 20);
-    g.setColour(getLookAndFeel().findColour(juce::TextButton::buttonColourId));
-    g.fillRoundedRectangle(5.0f, 0.0f, getWidth() - 5.0f, getHeight(), 10.0f);
-//    g.fillAll (juce::Colours::black);
-//    g.setColour(juce::Colours::white);
-    g.drawText("Filter", titleArea, juce::Justification::centredTop);
+    g.setColour(getLookAndFeel().findColour(juce::Toolbar::buttonMouseOverBackgroundColourId));
+    g.fillRoundedRectangle(5.0f, 5.0f, getWidth() - 10.0f, getHeight() - 15.0f, 10.0f);
+    g.setColour(getLookAndFeel().findColour(juce::Toolbar::separatorColourId));
+    g.fillRoundedRectangle(10.0f, yStart, getWidth() - 20.0f, getHeight() - yStart - 15.0f, 10.0f);
     g.drawText("Cutoff", 46, 70, 50, 25, juce::Justification::centredLeft);
     g.drawText("Resonance", 107, 70, 70, 25, juce::Justification::centredLeft);
-//
-//    juce::Rectangle <float> area (25, 25, 150, 150);
-//
-//    g.setColour(juce::Colours::yellow);
-//    g.drawRoundedRectangle(area, 20.0f, 2.0f);
 }
 
 void SamplerFilter::resized()

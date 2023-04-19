@@ -12,20 +12,26 @@
 
 namespace juce {
 
+const Colour CustomGUI::accentC = Colour(0xFFA1BD).withAlpha(1.0f);
+const Colour CustomGUI::textC = Colour(0xE8DDB5).withAlpha(1.0f);
+const Colour CustomGUI::backgroundC = Colour(0x456990).withAlpha(1.0f);
+const Colour CustomGUI::foregroundC = Colour(0x558B6E).withAlpha(1.0f);
+
 CustomGUI::CustomGUI()
 {
-    applyThreeColourScheme(Colour(0xFFA1BD).withAlpha(1.0f), Colour(0xA69888).withAlpha(1.0f), Colour(0x6B6D76).withAlpha(1.0f));
+    applyThreeColourScheme();
 }
 
-inline void CustomGUI::applyThreeColourScheme(Colour accentBaseColour, Colour foregroundBaseColour, Colour backgroundBaseColour)
+inline void CustomGUI::applyThreeColourScheme()
 {
-    auto fg = foregroundBaseColour.getARGB();
-    auto bright = foregroundBaseColour.withMultipliedBrightness(1.5f).getARGB();
-    auto dim = foregroundBaseColour.withMultipliedBrightness(0.6f).getARGB();
-    auto bg = backgroundBaseColour.getARGB();
-    auto accent = accentBaseColour.getARGB();
+    auto fg = foregroundC.getARGB();
+    auto bright = foregroundC.withMultipliedBrightness(1.5f).getARGB();
+    auto dim = foregroundC.withMultipliedBrightness(0.6f).getARGB();
+    auto bg = backgroundC.getARGB();
+    auto accent = accentC.getARGB();
     auto transparent = Colours::transparentBlack.getARGB();
     auto black = Colours::black.getARGB();
+    auto text = textC.getARGB();
 
     static const juce::uint32 standardColours[] =
     {
@@ -47,7 +53,7 @@ inline void CustomGUI::applyThreeColourScheme(Colour accentBaseColour, Colour fo
         CaretComponent::caretColourId,              fg,
 
         Label::backgroundColourId,                  transparent,
-        Label::textColourId,                        fg,
+        Label::textColourId,                        text,
         Label::outlineColourId,                     transparent,
 
         ScrollBar::backgroundColourId,              transparent,
@@ -89,13 +95,13 @@ inline void CustomGUI::applyThreeColourScheme(Colour accentBaseColour, Colour fo
         Slider::trackColourId,                      accent,
         Slider::rotarySliderFillColourId,           accent,
         Slider::rotarySliderOutlineColourId,        black,
-        Slider::textBoxTextColourId,                fg,
+        Slider::textBoxTextColourId,                text,
         Slider::textBoxBackgroundColourId,          bg,
         Slider::textBoxHighlightColourId,           bright,
-        Slider::textBoxOutlineColourId,             dim,
+        Slider::textBoxOutlineColourId,             transparent,
 
         ResizableWindow::backgroundColourId,        bg,
-        //DocumentWindow::textColourId,               0xff000000, // (this is deliberately not set)
+//        DocumentWindow::textColourId,               text, // (this is deliberately not set)
 
         AlertWindow::backgroundColourId,            bg,
         AlertWindow::textColourId,                  fg,
@@ -113,11 +119,13 @@ inline void CustomGUI::applyThreeColourScheme(Colour accentBaseColour, Colour fo
         TabbedButtonBar::tabOutlineColourId,        dim,
         TabbedButtonBar::frontOutlineColourId,      fg,
 
+        
+        // DONT CHANGE THESE
         Toolbar::backgroundColourId,                bg,
         Toolbar::separatorColourId,                 fg,
-        Toolbar::buttonMouseOverBackgroundColourId, accent,
-        Toolbar::buttonMouseDownBackgroundColourId, bg,
-        Toolbar::labelTextColourId,                 fg,
+        Toolbar::buttonMouseOverBackgroundColourId, dim,
+        Toolbar::buttonMouseDownBackgroundColourId, accent,
+        Toolbar::labelTextColourId,                 text,
         Toolbar::editingModeOutlineColourId,        accent,
 
         DrawableButton::textColourId,               fg,

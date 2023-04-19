@@ -34,15 +34,20 @@ OutputGain::~OutputGain()
 
 void OutputGain::paint (juce::Graphics& g)
 {
-
+    float yStart = (getHeight() / 5) + 5.0f;
+    
+    g.setColour(getLookAndFeel().findColour(juce::Toolbar::buttonMouseOverBackgroundColourId));
+    g.fillRoundedRectangle(5.0f, 5.0f, getWidth() - 15.0f, getHeight() - 10.0f, 10.0f);
+    g.setColour(getLookAndFeel().findColour(juce::Toolbar::separatorColourId));
+    g.fillRoundedRectangle(10.0f, yStart, getWidth() - 25.0f, getHeight() - yStart - 10.0f, 10.0f);
 }
 
 void OutputGain::resized()
 {
-    const auto startx = 0.0f;
-    const auto startY = 0.1f;
-    const auto width = 1.0f;
-    const auto height = 0.9f;
+    const auto startX = 15.0f;
+    const auto startY = (getHeight() / 5) + 5.0f;
+    const auto width = getWidth() - 25.0f;
+    const auto height = getHeight() - startY - 15.0f;
     
-    mGainS.setBoundsRelative(startx, startY, width, height);
+    mGainS.setBounds(startX, startY, width, height);
 }

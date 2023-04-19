@@ -17,23 +17,15 @@ class CustomGUI : public juce::LookAndFeel_V4
 {
 public:
     CustomGUI();
+    
     void drawRotarySlider (juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float rotaryStartAngle, float rotaryEndAngle, juce::Slider& slider) override;
+    
 private:
-    inline void applyThreeColourScheme(Colour accentBaseColour, Colour foregroundBaseColour, Colour backgroundBaseColour);
+    inline void applyThreeColourScheme();
+    const static Colour accentC;
+    const static Colour textC;
+    const static Colour backgroundC;
+    const static Colour foregroundC;
 };
-
-//class CustomDial : public Slider
-//{
-//public:
-//    CustomDial(){
-//        setSliderStyle(SliderStyle::RotaryHorizontalVerticalDrag);
-//        setColour(juce::Slider::ColourIds::rotarySliderFillColourId, juce::Colours::orange);
-//        setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::orange);
-//    }
-//
-//private:
-//
-//
-//};
 
 }
