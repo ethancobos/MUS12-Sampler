@@ -29,6 +29,7 @@ private:
     MUS_12_SamplerAudioProcessor& audioProcessor;
     
     juce::Slider attackS, releaseS, threshS, ratioS;
+    juce::Label attackL, releaseL, threshL, ratioL;
     
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> attackAtach;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> releaseAtach;

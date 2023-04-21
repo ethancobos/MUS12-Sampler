@@ -36,7 +36,7 @@ void OutputGain::paint (juce::Graphics& g)
     
     g.setColour(getLookAndFeel().findColour(juce::Toolbar::labelTextColourId));
     g.setFont(juce::Font("Ableton Sans Medium", (getHeight() / 5) - 5.0f, juce::Font::plain));
-    g.drawFittedText("GAIN", 15.0f, 5.0f, getWidth() - 25.0f, (getHeight() / 5), juce::Justification::centred, 1);
+    g.drawFittedText("GAIN", 10.0f, 5.0f, getWidth() - 25.0f, (getHeight() / 5), juce::Justification::centred, 1);
     
     g.setColour(getLookAndFeel().findColour(juce::Toolbar::separatorColourId));
     g.fillRoundedRectangle(10.0f, yStart, getWidth() - 25.0f, getHeight() - yStart - 10.0f, 10.0f);
@@ -44,7 +44,7 @@ void OutputGain::paint (juce::Graphics& g)
 
 void OutputGain::resized()
 {
-    const auto startX = 15.0f;
+    const auto startX = 10.0f;
     const auto startY = (getHeight() / 5) + 5.0f;
     const auto width = getWidth() - 25.0f;
     const auto height = getHeight() - startY - 15.0f;

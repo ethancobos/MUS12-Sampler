@@ -15,52 +15,48 @@
 AmplitudeEnvelope::AmplitudeEnvelope(MUS_12_SamplerAudioProcessor& p) : audioProcessor(p)
 {
     mAttackS.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
-    mAttackS.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 40, 20);
+    mAttackS.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
     addAndMakeVisible(mAttackS);
     
-//    mAttackL.setFont(10.0f);
-//    mAttackL.setText("Attack", juce::NotificationType::dontSendNotification);
-//    mAttackL.setJustificationType(juce::Justification::centredTop);
-//    mAttackL.attachToComponent(&mAttackS, false);
+    mAttackL.setText("Attack", juce::NotificationType::dontSendNotification);
+    mAttackL.setJustificationType(juce::Justification::centred);
+    addAndMakeVisible(mAttackL);
     
     mAttackAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
                                                                                           audioProcessor.ampAttack,
                                                                                           mAttackS);
     
     mDecayS.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
-    mDecayS.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 40, 20);
+    mDecayS.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
     addAndMakeVisible(mDecayS);
     
-//    mDecayL.setFont(10.0f);
-//    mDecayL.setText("Decay", juce::NotificationType::dontSendNotification);
-//    mDecayL.setJustificationType(juce::Justification::centredTop);
-//    mDecayL.attachToComponent(&mDecayS, false);
+    mDecayL.setText("Decay", juce::NotificationType::dontSendNotification);
+    mDecayL.setJustificationType(juce::Justification::centredBottom);
+    addAndMakeVisible(mDecayL);
     
     mDecayAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
                                                                                          audioProcessor.ampDecay,
                                                                                           mDecayS);
     
     mSustainS.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
-    mSustainS.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 40, 20);
+    mSustainS.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
     addAndMakeVisible(mSustainS);
     
-//    mSustainL.setFont(10.0f);
-//    mSustainL.setText("Sustain", juce::NotificationType::dontSendNotification);
-//    mSustainL.setJustificationType(juce::Justification::centredTop);
-//    mSustainL.attachToComponent(&mSustainS, false);
+    mSustainL.setText("Sustain", juce::NotificationType::dontSendNotification);
+    mSustainL.setJustificationType(juce::Justification::centredBottom);
+    addAndMakeVisible(mSustainL);
     
     mSustainAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
                                                                                            audioProcessor.ampSustain,
                                                                                           mSustainS);
     
     mReleaseS.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
-    mReleaseS.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 40, 20);
+    mReleaseS.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
     addAndMakeVisible(mReleaseS);
     
-//    mReleaseL.setFont(10.0f);
-//    mReleaseL.setText("Release", juce::NotificationType::dontSendNotification);
-//    mReleaseL.setJustificationType(juce::Justification::centredTop);
-//    mReleaseL.attachToComponent(&mReleaseS, false);
+    mReleaseL.setText("Release", juce::NotificationType::dontSendNotification);
+    mReleaseL.setJustificationType(juce::Justification::centredBottom);
+    addAndMakeVisible(mReleaseL);
     
     mReleaseAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
                                                                                            audioProcessor.ampRelease,
@@ -92,9 +88,21 @@ void AmplitudeEnvelope::resized()
     const auto startY = (getHeight() / 5) + 5.0f;
     const auto width = (getWidth() - 25.0f) / 2;
     const auto height = (getHeight() - startY - 15.0f) / 2;
+    const auto height4th = height / 4;
     
-    mAttackS.setBounds(startX, startY, width, height);
-    mDecayS.setBounds(startX + width, startY, width, height);
-    mSustainS.setBounds(startX, startY + height, width, height);
-    mReleaseS.setBounds(startX + width, startY + height, width, height);
+    mAttackS.setBounds(startX, startY + height4th, width, height4th * 3);
+    mAttackL.setBounds(startX, startY + (height4th / 4), width, height4th);
+    mAttackL.setFont(height / 5);
+    
+    mDecayS.setBounds(startX + width, startY + height4th, width, height4th * 3);
+    mDecayL.setBounds(startX + width, startY + (height4th / 4), width, height4th);
+    mDecayL.setFont(height / 5);
+    
+    mSustainS.setBounds(startX, startY + height + height4th, width, height4th * 3);
+    mSustainL.setBounds(startX, startY + height + (height4th / 4), width, height4th);
+    mSustainL.setFont(height / 5);
+    
+    mReleaseS.setBounds(startX + width, startY + height + height4th, width, height4th * 3);
+    mReleaseL.setBounds(startX + width, startY + height + (height4th / 4), width, height4th);
+    mReleaseL.setFont(height / 5);
 }
