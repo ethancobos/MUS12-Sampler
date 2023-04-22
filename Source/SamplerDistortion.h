@@ -37,5 +37,5 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> blendAtach;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> gainAtach;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> bypassAtach;
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SamplerDistortion)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SamplerDistortion) 
 };
