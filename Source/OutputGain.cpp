@@ -15,7 +15,7 @@
 OutputGain::OutputGain(MUS_12_SamplerAudioProcessor& p) : audioProcessor(p)
 {
     mGainS.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
-    mGainS.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
+    mGainS.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 40, 20);
     addAndMakeVisible(mGainS);
     
     mGainAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),

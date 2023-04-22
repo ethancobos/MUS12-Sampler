@@ -39,6 +39,10 @@ void MUS_12_SamplerAudioProcessorEditor::paint (juce::Graphics& g)
     g.fillRoundedRectangle(10.0f, 10.0f, getWidth() - 20.0f, (getHeight() / 12) - 15.0f, 10.0f);
     g.setColour(getLookAndFeel().findColour(juce::Toolbar::separatorColourId));
     g.fillRoundedRectangle(15.0f, 15.0f, getWidth() - 30.0f, (getHeight() / 12) - 25.0f, 10.0f);
+    
+    g.setColour(getLookAndFeel().findColour(juce::Toolbar::labelTextColourId));
+    g.setFont(juce::Font("Ableton Sans Medium", (getHeight() / 12) - 25.0f, juce::Font::plain));
+    g.drawFittedText("Ethan Cobos, Music Scholarship at Tufts Final Project", 15.0f, 15.0f, getWidth() - 30.0f, (getHeight() / 12) - 25.0f, juce::Justification::centred, 1);
 }
 
 void MUS_12_SamplerAudioProcessorEditor::resized()

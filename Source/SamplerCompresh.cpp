@@ -67,7 +67,7 @@ SamplerCompresh::SamplerCompresh(MUS_12_SamplerAudioProcessor& p) : audioProcess
                                                                                           releaseS);
     
     gainS.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
-    gainS.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
+    gainS.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 40, 20);
     addAndMakeVisible(gainS);
     
     gainAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
