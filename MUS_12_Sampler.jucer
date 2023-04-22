@@ -37,6 +37,13 @@
             file="Source/MySamplerVoice.h"/>
       <FILE id="YfDvaQ" name="SamplerDist.cpp" compile="1" resource="0" file="Source/SamplerDist.cpp"/>
       <FILE id="lgq6Hx" name="SamplerDist.h" compile="0" resource="0" file="Source/SamplerDist.h"/>
+      <FILE id="OjyXWw" name="MyDistortion.cpp" compile="1" resource="0"
+            file="Source/MyDistortion.cpp"/>
+      <FILE id="fA35kl" name="MyDistortion.h" compile="0" resource="0" file="Source/MyDistortion.h"/>
+      <FILE id="vokB1U" name="SamplerDistortion.cpp" compile="1" resource="0"
+            file="Source/SamplerDistortion.cpp"/>
+      <FILE id="ml3uqD" name="SamplerDistortion.h" compile="0" resource="0"
+            file="Source/SamplerDistortion.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>

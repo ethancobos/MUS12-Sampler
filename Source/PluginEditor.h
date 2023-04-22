@@ -16,7 +16,7 @@
 #include "SamplerFilter.h"
 #include "SamplerCompresh.h"
 #include "CustomGUI.h"
-#include "SamplerDist.h"
+#include "SamplerDistortion.h"
 
 using namespace juce;
 
@@ -53,7 +53,7 @@ private:
     OutputGain mGain;
     SamplerFilter mFilter;
     SamplerCompresh mCompresh;
-    SamplerDist mDist;
+    SamplerDistortion mDist;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MUS_12_SamplerAudioProcessorEditor)
 };

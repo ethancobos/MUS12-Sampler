@@ -137,13 +137,23 @@ void MySamplerVoice::renderNextBlock (AudioBuffer<float>& outputBuffer, int star
             l *= lgain * envelopeValue;
             r *= rgain * envelopeValue;
             
-            l = mCompressor.processSample(0, l);
-            r = mCompressor.processSample(1, r);
+            if(distNotBypassed){
+                l = dist.processSample(l);
+                r = dist.processSample(r);
+            }
             
             // filtering
             if (filterNotBypassed){
                 l = mFilter.processSample(l);
                 r = mFilter.processSample(r);
+            }
+            
+            // compression
+            if (compNotBypassed){
+                l = mCompressor.processSample(0, l);
+                r = mCompressor.processSample(1, r);
+                l = compGain.processSample(l);
+                r = compGain.processSample(r);
             }
 
             // output gain
@@ -176,6 +186,7 @@ void MySamplerVoice::reset()
     mGain.reset();
     mFilter.reset();
     mCompressor.reset();
+    compGain.reset();
 }
 
 void MySamplerVoice::prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannels)
@@ -187,6 +198,7 @@ void MySamplerVoice::prepareToPlay (double sampleRate, int samplesPerBlock, int 
     spec.numChannels = outputChannels;
     
     mGain.prepare(spec);
+    compGain.prepare(spec);
     mFilter.prepare(spec);
     mCompressor.prepare(spec);
 }
@@ -207,10 +219,57 @@ void MySamplerVoice::updateFilter(float srate, float newMenu, float newFreq, flo
     filterNotBypassed = bypass;
 }
 
-void MySamplerVoice::updateCompressor(float thresh, float ratio, float attack, float release)
+void MySamplerVoice::updateCompressorThresh(float thresh)
 {
     mCompressor.setThreshold(thresh);
+}
+
+void MySamplerVoice::updateCompressorRatio(float ratio)
+{
     mCompressor.setRatio(ratio);
+}
+
+void MySamplerVoice::updateCompressorAttack(float attack)
+{
     mCompressor.setAttack(attack);
+}
+
+void MySamplerVoice::updateCompressorRelease(float release)
+{
     mCompressor.setRelease(release);
+}
+
+void MySamplerVoice::updateCompressorGain(float gain)
+{
+    compGain.setGainLinear(gain);
+}
+
+void MySamplerVoice::updateCompressorBypass(bool bypass)
+{
+    compNotBypassed = bypass;
+}
+
+void MySamplerVoice::updateDistDrive(float newDrive)
+{
+    dist.updateDrive(newDrive);
+}
+
+void MySamplerVoice::updateDistRange(float newRange)
+{
+    dist.updateRange(newRange);
+}
+
+void MySamplerVoice::updateDistBlend(float newBlend)
+{
+    dist.updateBlend(newBlend);
+}
+
+void MySamplerVoice::updateDistGain(float newGain)
+{
+    dist.updateGain(newGain);
+}
+
+void MySamplerVoice::updateDistBypass(bool bypass)
+{
+    distNotBypassed = bypass;
 }

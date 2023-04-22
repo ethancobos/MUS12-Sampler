@@ -24,13 +24,23 @@ const juce::String MUS_12_SamplerAudioProcessor::filterRes = "FILTERRES";
 const juce::String MUS_12_SamplerAudioProcessor::filterCoice = "FILTERCHOSE";
 const juce::String MUS_12_SamplerAudioProcessor::filterBypass = "FILTERBYPASS";
 
+// main gain
 const juce::String MUS_12_SamplerAudioProcessor::outputGain = "OUTGAIN";
 
+// compression
 const juce::String MUS_12_SamplerAudioProcessor::compAttack = "COMPATT";
 const juce::String MUS_12_SamplerAudioProcessor::compRelease = "COMPREL";
 const juce::String MUS_12_SamplerAudioProcessor::compThresh = "COMPTHRESH";
 const juce::String MUS_12_SamplerAudioProcessor::compRatio = "COMPRATIO";
+const juce::String MUS_12_SamplerAudioProcessor::compGain = "COMPGAIN";
+const juce::String MUS_12_SamplerAudioProcessor::compBypass = "COMPBYPASS";
 
+// distortion
+const juce::String MUS_12_SamplerAudioProcessor::distDrive = "DISTDRIVE";
+const juce::String MUS_12_SamplerAudioProcessor::distRange = "DISTRANGE";
+const juce::String MUS_12_SamplerAudioProcessor::distBlend = "DISTBLEND";
+const juce::String MUS_12_SamplerAudioProcessor::distGain = "DISTGAIN";
+const juce::String MUS_12_SamplerAudioProcessor::distBypass = "DISTBYPASS";
 
 MUS_12_SamplerAudioProcessor::MUS_12_SamplerAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -45,11 +55,22 @@ MUS_12_SamplerAudioProcessor::MUS_12_SamplerAudioProcessor()
 #endif
 {
     mFormatManager.registerBasicFormats();
-    mAPVTS.state.addListener(this);
     
     for (int i = 0; i < mNumVoices; i++){
         mSampler.addVoice(new MySamplerVoice());
     }
+    
+    mAPVTS.addParameterListener(compThresh, this);
+    mAPVTS.addParameterListener(compRatio, this);
+    mAPVTS.addParameterListener(compAttack, this);
+    mAPVTS.addParameterListener(compRelease, this);
+    mAPVTS.addParameterListener(compGain, this);
+    mAPVTS.addParameterListener(compBypass, this);
+    mAPVTS.addParameterListener(distDrive, this);
+    mAPVTS.addParameterListener(distRange, this);
+    mAPVTS.addParameterListener(distGain, this);
+    mAPVTS.addParameterListener(distBlend, this);
+    mAPVTS.addParameterListener(distBypass, this);
     
 }
 
@@ -128,6 +149,7 @@ void MUS_12_SamplerAudioProcessor::prepareToPlay (double sampleRate, int samples
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
     mSampler.setCurrentPlaybackSampleRate(sampleRate);
+    lastSampleRate = sampleRate;
     
     for (int i = 0; i < mSampler.getNumVoices(); i++) {
         if (auto voice = dynamic_cast<MySamplerVoice*>(mSampler.getVoice(i))){
@@ -254,35 +276,17 @@ void MUS_12_SamplerAudioProcessor::loadFile(const juce::String& path)
     updateAmpEnvelope();
     updateGain();
     updateFilter();
-    updateCompressor();
-}
-
-juce::AudioProcessorValueTreeState::ParameterLayout MUS_12_SamplerAudioProcessor::createParameters()
-{
-    std::vector<std::unique_ptr<juce::RangedAudioParameter>> parameters;
-    juce::StringArray filters = {"HP", "LP"};
-    
-    // Amp env
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ampAttack, "Attack", 0.0f, 5.0f, 0.1f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ampDecay, "Decay", 0.0f, 3.0f, 0.0f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ampSustain, "Sustain", 0.0f, 1.0f, 1.0f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ampRelease, "Release", 0.0f, 5.0f, 0.1f));
-    
-    // filter stuff
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(filterFreq, "Frequency", 20.0f, 20000.0f, 1000.0f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(filterRes, "Q", 01.0f, 5.0f, 2.0f));
-    parameters.push_back(std::make_unique<juce::AudioParameterChoice>(filterCoice, "filters", filters, 0));
-    parameters.push_back(std::make_unique<juce::AudioParameterBool>(filterBypass, "filterBypass", false));
-    
-    // output gain
-    parameters.push_back (std::make_unique<juce::AudioParameterFloat>(outputGain, "Gain", 0.0f, 2.0f, 0.5f));
-    
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(compAttack, "comp attack", 0.0f, 200.0f, 10.0f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(compRelease, "comp release", 0.0f, 200.0f, 10.0f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(compRatio, "comp ratio", 1.0f, 5.0f, 2.0f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(compThresh, "comp thresh", -40.0f, 0.0f, -10.0f));
-    
-    return { parameters.begin(), parameters.end() };
+    updateCompressorThresh();
+    updateCompressorRatio();
+    updateCompressorAttack();
+    updateCompressorRelease();
+    updateCompressorGain();
+    updateCompressorBypass();
+    updateDistortionDrive();
+    updateDistortionRange();
+    updateDistortionBlend();
+    updateDistortionGain();
+    updateDistortionBypass();
 }
 
 void MUS_12_SamplerAudioProcessor::updateAmpEnvelope()
@@ -319,31 +323,209 @@ void MUS_12_SamplerAudioProcessor::updateFilter()
     
     for (int i = 0; i < mSampler.getNumVoices(); i++) {
         if (auto voice = dynamic_cast<MySamplerVoice*>(mSampler.getVoice(i))){
-            voice->updateFilter(44100, menu, freq, res, bypass);
+            voice->updateFilter(lastSampleRate, menu, freq, res, bypass);
         }
     }
 }
 
-void MUS_12_SamplerAudioProcessor::updateCompressor()
+
+//========================== Compression ======================================
+
+void MUS_12_SamplerAudioProcessor::updateCompressorThresh()
 {
     float thresh = mAPVTS.getRawParameterValue(compThresh)->load();
+    
+    for (int i = 0; i < mSampler.getNumVoices(); i++) {
+        if (auto voice = dynamic_cast<MySamplerVoice*>(mSampler.getVoice(i))){
+            voice->updateCompressorThresh(thresh);
+        }
+    }
+}
+
+void MUS_12_SamplerAudioProcessor::updateCompressorRatio()
+{
     float ratio = mAPVTS.getRawParameterValue(compRatio)->load();
+    
+    for (int i = 0; i < mSampler.getNumVoices(); i++) {
+        if (auto voice = dynamic_cast<MySamplerVoice*>(mSampler.getVoice(i))){
+            voice->updateCompressorRatio(ratio);
+        }
+    }
+}
+
+void MUS_12_SamplerAudioProcessor::updateCompressorAttack()
+{
     float attack = mAPVTS.getRawParameterValue(compAttack)->load();
+    
+    for (int i = 0; i < mSampler.getNumVoices(); i++) {
+        if (auto voice = dynamic_cast<MySamplerVoice*>(mSampler.getVoice(i))){
+            voice->updateCompressorAttack(attack);
+        }
+    }
+}
+
+void MUS_12_SamplerAudioProcessor::updateCompressorRelease()
+{
     float release = mAPVTS.getRawParameterValue(compRelease)->load();
     
     for (int i = 0; i < mSampler.getNumVoices(); i++) {
         if (auto voice = dynamic_cast<MySamplerVoice*>(mSampler.getVoice(i))){
-            voice->updateCompressor(thresh, ratio, attack, release);
+            voice->updateCompressorRelease(release);
         }
     }
 }
 
-void MUS_12_SamplerAudioProcessor::valueTreePropertyChanged (juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
+void MUS_12_SamplerAudioProcessor::updateCompressorGain()
 {
-    updateAmpEnvelope();
-    updateGain();
-    updateFilter();
-    updateCompressor();
+    float gain = mAPVTS.getRawParameterValue(compGain)->load();
+    
+    for (int i = 0; i < mSampler.getNumVoices(); i++) {
+        if (auto voice = dynamic_cast<MySamplerVoice*>(mSampler.getVoice(i))){
+            voice->updateCompressorGain(gain);
+        }
+    }
+}
+
+void MUS_12_SamplerAudioProcessor::updateCompressorBypass()
+{
+    bool bypass = mAPVTS.getRawParameterValue(compBypass)->load();
+    
+    for (int i = 0; i < mSampler.getNumVoices(); i++) {
+        if (auto voice = dynamic_cast<MySamplerVoice*>(mSampler.getVoice(i))){
+            voice->updateCompressorBypass(bypass);
+        }
+    }
+}
+
+//========================== Distortion =====================================
+
+void MUS_12_SamplerAudioProcessor::updateDistortionDrive()
+{
+    float drive = mAPVTS.getRawParameterValue(distDrive)->load();
+    
+    for (int i = 0; i < mSampler.getNumVoices(); i++) {
+        if (auto voice = dynamic_cast<MySamplerVoice*>(mSampler.getVoice(i))){
+            voice->updateDistDrive(drive);
+        }
+    }
+}
+
+void MUS_12_SamplerAudioProcessor::updateDistortionRange()
+{
+    float range = mAPVTS.getRawParameterValue(distRange)->load();
+    
+    for (int i = 0; i < mSampler.getNumVoices(); i++) {
+        if (auto voice = dynamic_cast<MySamplerVoice*>(mSampler.getVoice(i))){
+            voice->updateDistRange(range);
+        }
+    }
+}
+
+void MUS_12_SamplerAudioProcessor::updateDistortionBlend()
+{
+    float blend = mAPVTS.getRawParameterValue(distBlend)->load();
+    
+    for (int i = 0; i < mSampler.getNumVoices(); i++) {
+        if (auto voice = dynamic_cast<MySamplerVoice*>(mSampler.getVoice(i))){
+            voice->updateDistBlend(blend);
+        }
+    }
+}
+
+void MUS_12_SamplerAudioProcessor::updateDistortionGain()
+{
+    float gain = mAPVTS.getRawParameterValue(distGain)->load();
+    
+    for (int i = 0; i < mSampler.getNumVoices(); i++) {
+        if (auto voice = dynamic_cast<MySamplerVoice*>(mSampler.getVoice(i))){
+            voice->updateDistGain(gain);
+        }
+    }
+}
+
+void MUS_12_SamplerAudioProcessor::updateDistortionBypass()
+{
+    bool bypass = mAPVTS.getRawParameterValue(distBypass)->load();
+    
+    for (int i = 0; i < mSampler.getNumVoices(); i++) {
+        if (auto voice = dynamic_cast<MySamplerVoice*>(mSampler.getVoice(i))){
+            voice->updateDistBypass(bypass);
+        }
+    }
+}
+
+//========================== ValueTree ======================================
+
+void MUS_12_SamplerAudioProcessor::parameterChanged (const String &parameterID, float newValue)
+{
+    if (parameterID == compThresh){
+        updateCompressorThresh();
+    } else if (parameterID == compRatio){
+        updateCompressorRatio();
+    } else if (parameterID == compAttack){
+        updateCompressorAttack();
+    } else if (parameterID == compRelease){
+        updateCompressorRelease();
+    } else if (parameterID == compGain){
+        updateCompressorGain();
+    } else if (parameterID == compBypass){
+        updateCompressorBypass();
+    } else if (parameterID == distDrive){
+        updateDistortionDrive();
+    } else if (parameterID == distRange){
+        updateDistortionRange();
+    } else if (parameterID == distBlend){
+        updateDistortionBlend();
+    } else if (parameterID == distGain){
+        updateDistortionGain();
+    } else if (parameterID == distBypass){
+        updateDistortionBypass();
+    }
+    
+    
+    else {
+        updateAmpEnvelope();
+        updateGain();
+        updateFilter();
+    }
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout MUS_12_SamplerAudioProcessor::createParameters()
+{
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> parameters;
+    juce::StringArray filters = {"HP", "LP"};
+    
+    // Amp env
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ampAttack, "Attack", 0.0f, 5.0f, 0.1f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ampDecay, "Decay", 0.0f, 3.0f, 0.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ampSustain, "Sustain", 0.0f, 1.0f, 1.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ampRelease, "Release", 0.0f, 5.0f, 0.1f));
+    
+    // filter stuff
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(filterFreq, "Frequency", 20.0f, 20000.0f, 1000.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(filterRes, "Q", 01.0f, 5.0f, 2.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterChoice>(filterCoice, "filters", filters, 0));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>(filterBypass, "filterBypass", false));
+    
+    // output gain
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat>(outputGain, "Gain", 0.0f, 2.0f, 0.5f));
+    
+    // compressor
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(compAttack, "comp attack", 0.0f, 200.0f, 10.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(compRelease, "comp release", 0.0f, 200.0f, 10.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(compRatio, "comp ratio", 1.0f, 5.0f, 2.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(compThresh, "comp thresh", -40.0f, 0.0f, -10.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(compGain, "comp gain", 0.0f, 2.0f, 1.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>(compBypass, "compBypass", false));
+    
+    // Distotion
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(distDrive, "dist drive", 0.0f, 1.0f, 0.01f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(distRange, "dist range", 0.0f, 3000.0f, 1000.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(distBlend, "dist blend", 0.0f, 1.0f, 0.5f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(distGain, "dist gain", 0.0f, 2.0f, 1.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>(distBypass, "compBypass", false));
+    
+    return { parameters.begin(), parameters.end() };
 }
 
 

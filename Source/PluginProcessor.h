@@ -14,7 +14,7 @@
 /**
 */
 class MUS_12_SamplerAudioProcessor  : public juce::AudioProcessor,
-                                      public juce::ValueTree::Listener
+                                      public juce::AudioProcessorValueTreeState::Listener
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
                             #endif
@@ -34,6 +34,13 @@ public:
     static const juce::String compRelease;
     static const juce::String compThresh;
     static const juce::String compRatio;
+    static const juce::String compGain;
+    static const juce::String compBypass;
+    static const juce::String distDrive;
+    static const juce::String distRange;
+    static const juce::String distBlend;
+    static const juce::String distGain;
+    static const juce::String distBypass;
     
     //==============================================================================
     MUS_12_SamplerAudioProcessor();
@@ -83,9 +90,26 @@ public:
     void updateAmpEnvelope();
     void updateGain();
     void updateFilter();
-    void updateCompressor();
-
+    
+    //========================== Compression ======================================
+    void updateCompressorThresh();
+    void updateCompressorRatio();
+    void updateCompressorAttack();
+    void updateCompressorRelease();
+    void updateCompressorGain();
+    void updateCompressorBypass();
+    
+    //========================== Distortion ======================================
+    void updateDistortionDrive();
+    void updateDistortionRange();
+    void updateDistortionBlend();
+    void updateDistortionGain();
+    void updateDistortionBypass();
+    
+    
 private:
+    
+    float lastSampleRate = 44100;
     
     // sampler
     juce::Synthesiser mSampler;
@@ -106,7 +130,7 @@ private:
     juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
     
     juce::ADSR::Parameters mAmpParams;
-    void valueTreePropertyChanged (juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property) override;
+    void parameterChanged(const juce::String &parameterID, float newValue) override;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MUS_12_SamplerAudioProcessor)

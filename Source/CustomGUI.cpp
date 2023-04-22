@@ -186,7 +186,7 @@ void CustomGUI::drawToggleButton (Graphics& g, ToggleButton& button,
     auto fontSize = jmin (15.0f, (float) button.getHeight() * 0.75f);
     auto tickWidth = fontSize * 1.1f;
     
-    Rectangle<float> tickBounds (4.0f, ((float) button.getHeight() - tickWidth) * 0.5f, tickWidth, tickWidth);
+    Rectangle<float> tickBounds (1.0f, 1.0f, button.getWidth() - 2.0f, button.getHeight() - 2.0f);
 
     g.setColour (button.findColour (ToggleButton::tickDisabledColourId));
     g.fillRoundedRectangle (tickBounds, 4.0f);

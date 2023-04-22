@@ -65,6 +65,19 @@ SamplerCompresh::SamplerCompresh(MUS_12_SamplerAudioProcessor& p) : audioProcess
     releaseAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
                                                                                         audioProcessor.compRelease,
                                                                                           releaseS);
+    
+    gainS.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
+    gainS.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
+    addAndMakeVisible(gainS);
+    
+    gainAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
+                                                                                        audioProcessor.compGain,
+                                                                                          gainS);
+    
+    addAndMakeVisible(&compBypass);
+    bypassAtach = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.getAPVTS(),
+                                                                                         audioProcessor.compBypass,
+                                                                                         compBypass);
 
 }
 
@@ -81,7 +94,7 @@ void SamplerCompresh::paint (juce::Graphics& g)
     
     g.setColour(getLookAndFeel().findColour(juce::Toolbar::labelTextColourId));
     g.setFont(juce::Font("Ableton Sans Medium", (getHeight() / 5) - 5.0f, juce::Font::plain));
-    g.drawFittedText("COMPRESSION", 10.0f, 5.0f, getWidth() - 25.0f, (getHeight() / 5), juce::Justification::centred, 1);
+    g.drawFittedText("COMPRESSION", getHeight() / 10, 5.0f, getWidth() - (getHeight() / 10 + 5), (getHeight() / 5), juce::Justification::centred, 1);
     
     g.setColour(getLookAndFeel().findColour(juce::Toolbar::separatorColourId));
     g.fillRoundedRectangle(10.0f, yStart, getWidth() - 25.0f, getHeight() - yStart - 15.0f, 10.0f);
@@ -94,6 +107,7 @@ void SamplerCompresh::resized()
     const auto width = (getWidth() - 25.0f) / 3;
     const auto height = (getHeight() - startY - 15.0f) / 2;
     const auto height4th = height / 4;
+    const auto buttonW = getHeight() / 12.5;
     
     threshS.setBounds(startX, startY + height4th, width, height4th * 3);
     threshL.setBounds(startX, startY + (height4th / 4), width, height4th);
@@ -103,7 +117,6 @@ void SamplerCompresh::resized()
     ratioL.setBounds(startX + width, startY + (height4th / 4), width, height4th);
     ratioL.setFont(height / 5);
     
-    
     attackS.setBounds(startX, startY + height + height4th, width, height4th * 3);
     attackL.setBounds(startX, startY + height + (height4th / 4), width, height4th);
     attackL.setFont(height / 5);
@@ -111,4 +124,9 @@ void SamplerCompresh::resized()
     releaseS.setBounds(startX + width, startY + height + height4th, width, height4th * 3);
     releaseL.setBounds(startX + width, startY + height + (height4th / 4), width, height4th);
     releaseL.setFont(height / 5);
+    
+    gainS.setBounds(startX + (2 * width), startY, width, height * 2 - 5.0f);
+    
+    compBypass.setSize(buttonW, buttonW);
+    compBypass.setCentrePosition(getHeight() / 10 + 5, getHeight() / 10 + 5);
 }

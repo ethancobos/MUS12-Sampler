@@ -16,6 +16,7 @@
   ==============================================================================
 */
 #include <JuceHeader.h>
+#include "MyDistortion.h"
 
 using namespace juce;
 
@@ -89,8 +90,20 @@ public:
     void reset();
     void updateGain(float newVal);
     void updateFilter(float srate, float newMenu, float newFreq, float newRes, bool bypass);
-    void updateCompressor(float thresh, float ratio, float attack, float release);
     
+    // compressor
+    void updateCompressorThresh(float thresh);
+    void updateCompressorRatio(float ratio);
+    void updateCompressorAttack(float attack);
+    void updateCompressorRelease(float release);
+    void updateCompressorGain(float gain);
+    void updateCompressorBypass(bool bypass);
+    
+    void updateDistDrive(float newDrive);
+    void updateDistRange(float newRange);
+    void updateDistBlend(float newBlend);
+    void updateDistGain(float newGain);
+    void updateDistBypass(bool bypass);
     
 private:
     //==============================================================================
@@ -101,7 +114,12 @@ private:
     dsp::Gain<float> mGain;
     dsp::StateVariableFilter::Filter<float> mFilter;
     bool filterNotBypassed;
+    bool compNotBypassed;
+    bool distNotBypassed;
     dsp::Compressor<float> mCompressor;
+    dsp::Gain<float> compGain;
+    MyDistortion dist;
+    
     ADSR adsr;
     
     
