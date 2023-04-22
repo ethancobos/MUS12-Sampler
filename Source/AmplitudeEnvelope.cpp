@@ -16,6 +16,7 @@ AmplitudeEnvelope::AmplitudeEnvelope(MUS_12_SamplerAudioProcessor& p) : audioPro
 {
     mAttackS.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     mAttackS.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+    mAttackS.setPopupDisplayEnabled(true, true, this);
     addAndMakeVisible(mAttackS);
     
     mAttackL.setText("Attack", juce::NotificationType::dontSendNotification);
@@ -28,6 +29,7 @@ AmplitudeEnvelope::AmplitudeEnvelope(MUS_12_SamplerAudioProcessor& p) : audioPro
     
     mDecayS.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     mDecayS.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+    mDecayS.setPopupDisplayEnabled(true, true, this);
     addAndMakeVisible(mDecayS);
     
     mDecayL.setText("Decay", juce::NotificationType::dontSendNotification);
@@ -40,6 +42,7 @@ AmplitudeEnvelope::AmplitudeEnvelope(MUS_12_SamplerAudioProcessor& p) : audioPro
     
     mSustainS.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     mSustainS.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+    mSustainS.setPopupDisplayEnabled(true, true, this);
     addAndMakeVisible(mSustainS);
     
     mSustainL.setText("Sustain", juce::NotificationType::dontSendNotification);
@@ -52,6 +55,7 @@ AmplitudeEnvelope::AmplitudeEnvelope(MUS_12_SamplerAudioProcessor& p) : audioPro
     
     mReleaseS.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     mReleaseS.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+    mReleaseS.setPopupDisplayEnabled(true, true, this);
     addAndMakeVisible(mReleaseS);
     
     mReleaseL.setText("Release", juce::NotificationType::dontSendNotification);

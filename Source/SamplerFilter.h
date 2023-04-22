@@ -29,11 +29,12 @@ private:
     MUS_12_SamplerAudioProcessor& audioProcessor;
     
     juce::ComboBox filterMenu;
-    juce::Slider cutoffS, resonanceS;
+    juce::Slider cutoffS, resonanceS, gainS;
     juce::ToggleButton filterBypass;
     
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> cutoffAtach;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> resonanceAtach;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> gainAtach;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> menuAtach;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> bypassAtach;
     

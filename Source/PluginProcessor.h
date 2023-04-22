@@ -24,6 +24,7 @@ public:
     static const juce::String filterFreq;
     static const juce::String filterRes;
     static const juce::String filterCoice;
+    static const juce::String filterGain;
     static const juce::String filterBypass;
     static const juce::String ampAttack;
     static const juce::String ampDecay;
@@ -88,8 +89,20 @@ public:
     int getNumSIWF() { return mNumSamplesInWF; };
     juce::AudioProcessorValueTreeState& getAPVTS(){ return mAPVTS; };
     void updateAmpEnvelope();
-    void updateGain();
-    void updateFilter();
+    
+    //========================== Distortion ======================================
+    void updateDistortionDrive();
+    void updateDistortionRange();
+    void updateDistortionBlend();
+    void updateDistortionGain();
+    void updateDistortionBypass();
+    
+    //========================== Filter ======================================
+    void updateFilterMenu();
+    void updateFilterFreq();
+    void updateFilterRes();
+    void updateFilterBypass();
+    void updateFilterGain();
     
     //========================== Compression ======================================
     void updateCompressorThresh();
@@ -99,13 +112,8 @@ public:
     void updateCompressorGain();
     void updateCompressorBypass();
     
-    //========================== Distortion ======================================
-    void updateDistortionDrive();
-    void updateDistortionRange();
-    void updateDistortionBlend();
-    void updateDistortionGain();
-    void updateDistortionBypass();
-    
+    //========================== Gain ======================================
+    void updateGain();
     
 private:
     

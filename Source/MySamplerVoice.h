@@ -88,8 +88,20 @@ public:
     using SynthesiserVoice::renderNextBlock;
     void prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannels);
     void reset();
-    void updateGain(float newVal);
-    void updateFilter(float srate, float newMenu, float newFreq, float newRes, bool bypass);
+    
+    // filter
+    void updateFilterMenu(float newMenu);
+    void updateFilterFreq(float newFreq);
+    void updateFilterRes(float newRes);
+    void updateFilterBypass(float newBypass);
+    void updateFilterGain(float newGain);
+    
+    // distortion
+    void updateDistDrive(float newDrive);
+    void updateDistRange(float newRange);
+    void updateDistBlend(float newBlend);
+    void updateDistGain(float newGain);
+    void updateDistBypass(bool bypass);
     
     // compressor
     void updateCompressorThresh(float thresh);
@@ -99,11 +111,8 @@ public:
     void updateCompressorGain(float gain);
     void updateCompressorBypass(bool bypass);
     
-    void updateDistDrive(float newDrive);
-    void updateDistRange(float newRange);
-    void updateDistBlend(float newBlend);
-    void updateDistGain(float newGain);
-    void updateDistBypass(bool bypass);
+    // gain
+    void updateGain(float newVal);
     
 private:
     //==============================================================================
@@ -112,12 +121,13 @@ private:
     float lgain = 0, rgain = 0;
     
     dsp::Gain<float> mGain;
-    dsp::StateVariableFilter::Filter<float> mFilter;
+    dsp::StateVariableTPTFilter<float> mFilter;
     bool filterNotBypassed;
     bool compNotBypassed;
     bool distNotBypassed;
     dsp::Compressor<float> mCompressor;
     dsp::Gain<float> compGain;
+    dsp::Gain<float> filterGain;
     MyDistortion dist;
     
     ADSR adsr;

@@ -144,8 +144,10 @@ void MySamplerVoice::renderNextBlock (AudioBuffer<float>& outputBuffer, int star
             
             // filtering
             if (filterNotBypassed){
-                l = mFilter.processSample(l);
-                r = mFilter.processSample(r);
+                l = mFilter.processSample(0, l);
+                r = mFilter.processSample(1, r);
+                l = filterGain.processSample(l);
+                r = filterGain.processSample(r);
             }
             
             // compression
@@ -187,6 +189,7 @@ void MySamplerVoice::reset()
     mFilter.reset();
     mCompressor.reset();
     compGain.reset();
+    filterGain.reset();
 }
 
 void MySamplerVoice::prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannels)
@@ -199,25 +202,50 @@ void MySamplerVoice::prepareToPlay (double sampleRate, int samplesPerBlock, int 
     
     mGain.prepare(spec);
     compGain.prepare(spec);
+    filterGain.prepare(spec);
     mFilter.prepare(spec);
     mCompressor.prepare(spec);
 }
+
+//========================== Gain ======================================
 
 void MySamplerVoice::updateGain(float newVal)
 {
     mGain.setGainLinear(newVal);
 }
 
-void MySamplerVoice::updateFilter(float srate, float newMenu, float newFreq, float newRes, bool bypass)
+//========================== Filter ======================================
+
+void MySamplerVoice::updateFilterMenu(float newMenu)
 {
     if (newMenu == 0){
-        mFilter.parameters->type = dsp::StateVariableFilter::Parameters<float>::Type::lowPass;
+        mFilter.setType(dsp::StateVariableTPTFilterType::lowpass);
     } else {
-        mFilter.parameters->type = dsp::StateVariableFilter::Parameters<float>::Type::highPass;
+        mFilter.setType(dsp::StateVariableTPTFilterType::highpass);
     }
-    mFilter.parameters->setCutOffFrequency(srate, newFreq, newRes);
-    filterNotBypassed = bypass;
 }
+
+void MySamplerVoice::updateFilterFreq(float newFreq)
+{
+    mFilter.setCutoffFrequency(newFreq);
+}
+
+void MySamplerVoice::updateFilterRes(float newRes)
+{
+    mFilter.setResonance(newRes);
+}
+
+void MySamplerVoice::updateFilterBypass(float newBypass)
+{
+    filterNotBypassed = newBypass;
+}
+
+void MySamplerVoice::updateFilterGain(float newGain)
+{
+    filterGain.setGainLinear(newGain);
+}
+
+//========================== Compression ======================================
 
 void MySamplerVoice::updateCompressorThresh(float thresh)
 {
@@ -248,6 +276,8 @@ void MySamplerVoice::updateCompressorBypass(bool bypass)
 {
     compNotBypassed = bypass;
 }
+
+//========================== Distortion ======================================
 
 void MySamplerVoice::updateDistDrive(float newDrive)
 {

@@ -21,20 +21,26 @@ SamplerFilter::SamplerFilter(MUS_12_SamplerAudioProcessor& p) : audioProcessor(p
                                                                                          filterMenu);
        
     cutoffS.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
-    cutoffS.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
-    cutoffS.setPopupDisplayEnabled(true, true, this);
+    cutoffS.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 70, 20);
     addAndMakeVisible(&cutoffS);
     cutoffAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
                                                                                          audioProcessor.filterFreq,
                                                                                          cutoffS);
        
     resonanceS.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
-    resonanceS.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
-    resonanceS.setPopupDisplayEnabled(true, true, this);
+    resonanceS.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
     addAndMakeVisible(&resonanceS);
     resonanceAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
                                                                                             audioProcessor.filterRes,
                                                                                             resonanceS);
+    
+    gainS.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    gainS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 50, 20);
+    addAndMakeVisible(gainS);
+    
+    gainAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
+                                                                                       audioProcessor.filterGain,
+                                                                                       gainS);
     
     addAndMakeVisible(&filterBypass);
     bypassAtach = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.getAPVTS(),
@@ -52,23 +58,32 @@ void SamplerFilter::paint (juce::Graphics& g)
 {
     float yStart = (getHeight() / 5) + 5.0f;
     
-    //background ui stuff
     g.setColour(getLookAndFeel().findColour(juce::Toolbar::buttonMouseOverBackgroundColourId));
     g.fillRoundedRectangle(5.0f, 5.0f, getWidth() - 10.0f, getHeight() - 15.0f, 10.0f);
+    
+    g.setColour(getLookAndFeel().findColour(juce::Toolbar::labelTextColourId));
+    g.setFont(juce::Font("Ableton Sans Medium", (getHeight() / 5) - 5.0f, juce::Font::plain));
+    g.drawFittedText("FILTER", 5.0f, 5.0f, getWidth() - 10.0f, (getHeight() / 5), juce::Justification::centred, 1);
+    
     g.setColour(getLookAndFeel().findColour(juce::Toolbar::separatorColourId));
     g.fillRoundedRectangle(10.0f, yStart, getWidth() - 20.0f, getHeight() - yStart - 15.0f, 10.0f);
-    g.drawText("Cutoff", 46, 70, 50, 25, juce::Justification::centredLeft);
-    g.drawText("Resonance", 107, 70, 70, 25, juce::Justification::centredLeft);
 }
 
 void SamplerFilter::resized()
 {
-    //need to come back and dynamically set these...ok for now
-    juce::Rectangle<int> area = getLocalBounds().reduced(40);
+    const auto startX = 10.0f;
+    const auto startY = (getHeight() / 5) + 5.0f;
+    const auto width = (getWidth() - 25.0f) / 3;
+    const auto height = (getHeight() - startY - 15.0f) / 3;
+    const auto buttonW = getHeight() / 12.5;
     
-    filterMenu.setBounds(area.removeFromTop(20));
-    cutoffS.setBounds (30, 90, 70, 70);
-    resonanceS.setBounds (100, 90, 70, 70);
-    filterBypass.setBounds(5, 5, 50, 50);
+    cutoffS.setBounds(startX, startY, width, height * 2);
+    resonanceS.setBounds(startX + width, startY, width, height * 2);
+    filterMenu.setBounds(startX + (2 * width) + 5.0f, startY + 10.0f, width - 10.0f, height / 2);
+
+    gainS.setBounds(startX, startY + (2 * height), getWidth() - 25.0f, height);
+    
+    filterBypass.setSize(buttonW, buttonW);
+    filterBypass.setCentrePosition(getHeight() / 10 + 5, getHeight() / 10 + 5);
     
 }

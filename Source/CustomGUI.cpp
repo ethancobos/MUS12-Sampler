@@ -67,16 +67,16 @@ inline void CustomGUI::applyThreeColourScheme()
         TreeView::selectedItemBackgroundColourId,   fg,
 
         PopupMenu::backgroundColourId,              bg,
-        PopupMenu::textColourId,                    fg,
+        PopupMenu::textColourId,                    text,
         PopupMenu::headerTextColourId,              bright,
         PopupMenu::highlightedTextColourId,         bg,
         PopupMenu::highlightedBackgroundColourId,   accent,
 
         ComboBox::buttonColourId,                   fg,
         ComboBox::outlineColourId,                  dim,
-        ComboBox::textColourId,                     fg,
-        ComboBox::backgroundColourId,               bg,
-        ComboBox::arrowColourId,                    fg,
+        ComboBox::textColourId,                     text,
+        ComboBox::backgroundColourId,               dim,
+        ComboBox::arrowColourId,                    text,
 
         PropertyComponent::backgroundColourId,      bg,
         PropertyComponent::labelTextColourId,       fg,
