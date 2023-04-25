@@ -19,7 +19,7 @@ float MyDistortion::processSample(float sample)
     
     modified_sample *= drive * range;
     
-    return (((M_2_PI * atan(modified_sample) * blend) + (clean_sample * (1 - blend))) / 2) * gain;
+    return ((M_2_PI * atan(modified_sample) * blend) + (clean_sample * (1 - blend))) * gain;
 }
 
 void MyDistortion::updateDrive(float newDrive)
