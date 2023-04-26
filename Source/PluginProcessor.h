@@ -23,7 +23,25 @@ public:
     
     static const juce::String filterFreq;
     static const juce::String filterRes;
-    
+    static const juce::String filterCoice;
+    static const juce::String filterGain;
+    static const juce::String filterBypass;
+    static const juce::String ampAttack;
+    static const juce::String ampDecay;
+    static const juce::String ampSustain;
+    static const juce::String ampRelease;
+    static const juce::String outputGain;
+    static const juce::String compAttack;
+    static const juce::String compRelease;
+    static const juce::String compThresh;
+    static const juce::String compRatio;
+    static const juce::String compGain;
+    static const juce::String compBypass;
+    static const juce::String distDrive;
+    static const juce::String distRange;
+    static const juce::String distBlend;
+    static const juce::String distGain;
+    static const juce::String distBypass;
     
     //==============================================================================
     MUS_12_SamplerAudioProcessor();
@@ -67,38 +85,60 @@ public:
     int getNumSamplerSounds() { return mSampler.getNumSounds(); };
     std::atomic<bool>& isNotePlayed() { return mIsNotePlayed; };
     std::atomic<int>& getSampleCount() { return mSampleCount; };
-    std::atomic<int>& getReducedSC() { return mReducedSampleCount; };
     int getSampleTime() { return sampleTime; };
     int getNumSIWF() { return mNumSamplesInWF; };
     juce::AudioProcessorValueTreeState& getAPVTS(){ return mAPVTS; };
-    void parameterChanged (const juce::String& parameter, float newValue) override;
-//    void updateAmpEnvelope();
-    void updatefilter(float freq, float res);
-
+    void updateAmpEnvelope();
+    
+    //========================== Distortion ======================================
+    void updateDistortionDrive();
+    void updateDistortionRange();
+    void updateDistortionBlend();
+    void updateDistortionGain();
+    void updateDistortionBypass();
+    
+    //========================== Filter ======================================
+    void updateFilterMenu();
+    void updateFilterFreq();
+    void updateFilterRes();
+    void updateFilterBypass();
+    void updateFilterGain();
+    
+    //========================== Compression ======================================
+    void updateCompressorThresh();
+    void updateCompressorRatio();
+    void updateCompressorAttack();
+    void updateCompressorRelease();
+    void updateCompressorGain();
+    void updateCompressorBypass();
+    
+    //========================== Gain ======================================
+    void updateGain();
+    
 private:
     
-    double mSampleRate = 44100;
+    float lastSampleRate = 44100;
     
     // sampler
     juce::Synthesiser mSampler;
     
     // number of voices for the sampler
-    const int mNumVoices { 3 };
+    const int mNumVoices { 5 };
     const int sampleTime { 10 };
     
-    // boilerplate audiofile input stuff
     juce::AudioFormatManager mFormatManager;
     juce::AudioFormatReader* mFormatReader { nullptr };
-    
-    // for waveform math and logic
     int mNumSamplesInWF = 0;
+    
     std::atomic<bool> mIsNotePlayed { false };
     std::atomic<int> mSampleCount { 0 };
-    std::atomic<int> mReducedSampleCount { 0 };
+    std::atomic<float> noteHzm { 1 };
     
-    // for parameters
     juce::AudioProcessorValueTreeState mAPVTS;
     juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
+    
+    juce::ADSR::Parameters mAmpParams;
+    void parameterChanged(const juce::String &parameterID, float newValue) override;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MUS_12_SamplerAudioProcessor)

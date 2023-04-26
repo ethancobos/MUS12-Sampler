@@ -12,7 +12,13 @@
 #include "PluginProcessor.h"
 #include "WaveFormThumbnail.h"
 #include "AmplitudeEnvelope.h"
+#include "OutputGain.h"
 #include "SamplerFilter.h"
+#include "SamplerCompresh.h"
+#include "CustomGUI.h"
+#include "SamplerDistortion.h"
+
+using namespace juce;
 
 //==============================================================================
 /**
@@ -33,10 +39,21 @@ public:
 
 private:
     
+    juce::CustomGUI customGUI;
+    
+    float fullWidth = 1000.0f;
+    float fullHeight = 500.0f;
+    float one6th = 1.0f / 6.0f;
+    float one12th = 1.0f / 12.0f;
+    float one3rd = 1.0f / 3.0f;
+    
     MUS_12_SamplerAudioProcessor& audioProcessor;
     WaveFormThumbnail mWaveThumbnail;
-//    AmplitudeEnvelope mAmpEnv;
+    AmplitudeEnvelope mAmpEnv;
+    OutputGain mGain;
     SamplerFilter mFilter;
+    SamplerCompresh mCompresh;
+    SamplerDistortion mDist;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MUS_12_SamplerAudioProcessorEditor)
 };

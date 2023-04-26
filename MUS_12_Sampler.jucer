@@ -5,30 +5,43 @@
               pluginFormats="buildAU,buildVST3" displaySplashScreen="1" defines="JUCE_MODAL_LOOPS_PERMITTED=1">
   <MAINGROUP id="ubyID1" name="MUS_12_Sampler">
     <GROUP id="{F0796A71-ECBA-A4CA-FDC0-72AB17FC9A73}" name="Source">
-      <FILE id="iirOwL" name="AmplitudeEnvelope.h" compile="0" resource="0"
-            file="Source/AmplitudeEnvelope.h"/>
-      <FILE id="Ce4VBw" name="customSamplerSound.h" compile="0" resource="0"
-            file="Source/customSamplerSound.h"/>
-      <FILE id="T3rFZD" name="customSamplerVoice.cpp" compile="1" resource="0"
-            file="Source/customSamplerVoice.cpp"/>
-      <FILE id="NzAMpJ" name="customSamplerVoice.h" compile="0" resource="0"
-            file="Source/customSamplerVoice.h"/>
-      <FILE id="eT4ULS" name="SamplerFilter.cpp" compile="1" resource="0"
-            file="Source/SamplerFilter.cpp"/>
-      <FILE id="kn9fg4" name="SamplerFilter.h" compile="0" resource="0" file="Source/SamplerFilter.h"/>
-      <FILE id="GjefFR" name="WaveFormThumbnail.cpp" compile="1" resource="0"
-            file="Source/WaveFormThumbnail.cpp"/>
-      <FILE id="yj1uBC" name="WaveFormThumbnail.h" compile="0" resource="0"
-            file="Source/WaveFormThumbnail.h"/>
       <FILE id="B9r9ag" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
-      <FILE id="OX91PH" name="AmplitudeEnvelope.cpp" compile="1" resource="0"
-            file="Source/AmplitudeEnvelope.cpp"/>
       <FILE id="nzyO2P" name="PluginProcessor.h" compile="0" resource="0"
             file="Source/PluginProcessor.h"/>
       <FILE id="kjCVsq" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="LXlP0E" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="GjefFR" name="WaveFormThumbnail.cpp" compile="1" resource="0"
+            file="Source/WaveFormThumbnail.cpp"/>
+      <FILE id="yj1uBC" name="WaveFormThumbnail.h" compile="0" resource="0"
+            file="Source/WaveFormThumbnail.h"/>
+      <FILE id="OX91PH" name="AmplitudeEnvelope.cpp" compile="1" resource="0"
+            file="Source/AmplitudeEnvelope.cpp"/>
+      <FILE id="iirOwL" name="AmplitudeEnvelope.h" compile="0" resource="0"
+            file="Source/AmplitudeEnvelope.h"/>
+      <FILE id="sZGnfq" name="SamplerFilter.cpp" compile="1" resource="0"
+            file="Source/SamplerFilter.cpp"/>
+      <FILE id="lP0oow" name="SamplerFilter.h" compile="0" resource="0" file="Source/SamplerFilter.h"/>
+      <FILE id="RHlnaY" name="CustomGUI.cpp" compile="1" resource="0" file="Source/CustomGUI.cpp"/>
+      <FILE id="F6tQET" name="CustomGUI.h" compile="0" resource="0" file="Source/CustomGUI.h"/>
+      <FILE id="R5MoTM" name="OutputGain.cpp" compile="1" resource="0" file="Source/OutputGain.cpp"/>
+      <FILE id="qr5ric" name="OutputGain.h" compile="0" resource="0" file="Source/OutputGain.h"/>
+      <FILE id="LQAI7l" name="SamplerCompresh.cpp" compile="1" resource="0"
+            file="Source/SamplerCompresh.cpp"/>
+      <FILE id="CwMAwN" name="SamplerCompresh.h" compile="0" resource="0"
+            file="Source/SamplerCompresh.h"/>
+      <FILE id="hMFe13" name="MySamplerVoice.cpp" compile="1" resource="0"
+            file="Source/MySamplerVoice.cpp"/>
+      <FILE id="WFT1HQ" name="MySamplerVoice.h" compile="0" resource="0"
+            file="Source/MySamplerVoice.h"/>
+      <FILE id="OjyXWw" name="MyDistortion.cpp" compile="1" resource="0"
+            file="Source/MyDistortion.cpp"/>
+      <FILE id="fA35kl" name="MyDistortion.h" compile="0" resource="0" file="Source/MyDistortion.h"/>
+      <FILE id="vokB1U" name="SamplerDistortion.cpp" compile="1" resource="0"
+            file="Source/SamplerDistortion.cpp"/>
+      <FILE id="ml3uqD" name="SamplerDistortion.h" compile="0" resource="0"
+            file="Source/SamplerDistortion.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
@@ -56,19 +69,19 @@
     </XCODE_MAC>
   </EXPORTFORMATS>
   <MODULES>
-    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
-    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
-    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
-    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="1"
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
             useGlobalPath="1"/>
-    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
-    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
-    <MODULE id="juce_core" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
-    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
-    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
-    <MODULE id="juce_events" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
-    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
-    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
-    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
   </MODULES>
 </JUCERPROJECT>
