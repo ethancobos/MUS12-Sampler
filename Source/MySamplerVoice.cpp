@@ -269,7 +269,7 @@ void MySamplerVoice::updateCompressorRelease(float release)
 
 void MySamplerVoice::updateCompressorGain(float gain)
 {
-    compGain.setGainLinear(gain);
+    compGain.setGainDecibels(gain);
 }
 
 void MySamplerVoice::updateCompressorBypass(bool bypass)

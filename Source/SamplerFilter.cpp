@@ -46,8 +46,6 @@ SamplerFilter::SamplerFilter(MUS_12_SamplerAudioProcessor& p) : audioProcessor(p
     bypassAtach = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.getAPVTS(),
                                                                                          audioProcessor.filterBypass,
                                                                                          filterBypass);
-    
-    cutoffS.setSkewFactorFromMidPoint(1000.0f);
 }
 
 SamplerFilter::~SamplerFilter()

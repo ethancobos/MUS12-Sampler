@@ -17,6 +17,7 @@ SamplerCompresh::SamplerCompresh(MUS_12_SamplerAudioProcessor& p) : audioProcess
     threshS.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     threshS.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
     threshS.setPopupDisplayEnabled(true, true, this);
+    threshS.setTextValueSuffix (" dB");
     addAndMakeVisible(&threshS);
     
     threshL.setText("Threshhold", juce::NotificationType::dontSendNotification);
@@ -30,6 +31,7 @@ SamplerCompresh::SamplerCompresh(MUS_12_SamplerAudioProcessor& p) : audioProcess
     ratioS.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     ratioS.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
     ratioS.setPopupDisplayEnabled(true, true, this);
+    ratioS.setTextValueSuffix (":1");
     addAndMakeVisible(&ratioS);
     
     ratioL.setText("Ratio", juce::NotificationType::dontSendNotification);
@@ -43,6 +45,7 @@ SamplerCompresh::SamplerCompresh(MUS_12_SamplerAudioProcessor& p) : audioProcess
     attackS.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     attackS.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
     attackS.setPopupDisplayEnabled(true, true, this);
+    attackS.setTextValueSuffix (" ms");
     addAndMakeVisible(&attackS);
     
     attackL.setText("Attack", juce::NotificationType::dontSendNotification);
@@ -56,6 +59,7 @@ SamplerCompresh::SamplerCompresh(MUS_12_SamplerAudioProcessor& p) : audioProcess
     releaseS.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     releaseS.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
     releaseS.setPopupDisplayEnabled(true, true, this);
+    releaseS.setTextValueSuffix (" ms");
     addAndMakeVisible(&releaseS);
     
     releaseL.setText("Release", juce::NotificationType::dontSendNotification);
@@ -67,7 +71,8 @@ SamplerCompresh::SamplerCompresh(MUS_12_SamplerAudioProcessor& p) : audioProcess
                                                                                           releaseS);
     
     gainS.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
-    gainS.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 40, 20);
+    gainS.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 70, 20);
+    gainS.setTextValueSuffix (" dB");
     addAndMakeVisible(gainS);
     
     gainAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
