@@ -579,7 +579,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout MUS_12_SamplerAudioProcessor
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>(filterGain, "filter gain", 0.0f, 2.0f, 1.0f));
     
     // output gain
-    parameters.push_back (std::make_unique<juce::AudioParameterFloat>(outputGain, "Gain", 0.0f, 2.0f, 0.5f));
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat>(outputGain, "Gain", 0.0f, 2.0f, 1.0f));
     
     // compressor
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>(compAttack, "comp attack", 0.0f, 200.0f, 10.0f));
