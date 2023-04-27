@@ -21,7 +21,8 @@ SamplerFilter::SamplerFilter(MUS_12_SamplerAudioProcessor& p) : audioProcessor(p
                                                                                          filterMenu);
        
     cutoffS.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
-    cutoffS.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 70, 20);
+    cutoffS.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 90, 20);
+    cutoffS.setTextValueSuffix(" Hz");
     addAndMakeVisible(&cutoffS);
     cutoffAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
                                                                                          audioProcessor.filterFreq,
@@ -35,7 +36,8 @@ SamplerFilter::SamplerFilter(MUS_12_SamplerAudioProcessor& p) : audioProcessor(p
                                                                                             resonanceS);
     
     gainS.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    gainS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 50, 20);
+    gainS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 70, 20);
+    gainS.setTextValueSuffix (" dB");
     addAndMakeVisible(gainS);
     
     gainAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),

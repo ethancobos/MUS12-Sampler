@@ -211,7 +211,7 @@ void MySamplerVoice::prepareToPlay (double sampleRate, int samplesPerBlock, int 
 
 void MySamplerVoice::updateGain(float newVal)
 {
-    mGain.setGainLinear(newVal);
+    mGain.setGainDecibels(newVal);
 }
 
 //========================== Filter ======================================
@@ -242,7 +242,7 @@ void MySamplerVoice::updateFilterBypass(float newBypass)
 
 void MySamplerVoice::updateFilterGain(float newGain)
 {
-    filterGain.setGainLinear(newGain);
+    filterGain.setGainDecibels(newGain);
 }
 
 //========================== Compression ======================================
@@ -296,7 +296,7 @@ void MySamplerVoice::updateDistBlend(float newBlend)
 
 void MySamplerVoice::updateDistGain(float newGain)
 {
-    dist.updateGain(newGain);
+    dist.updateGain(juce::Decibels::decibelsToGain(newGain));
 }
 
 void MySamplerVoice::updateDistBypass(bool bypass)

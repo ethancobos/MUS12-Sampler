@@ -15,7 +15,8 @@
 SamplerDistortion::SamplerDistortion(MUS_12_SamplerAudioProcessor& p) : audioProcessor(p)
 {
     gainS.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    gainS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 50, 20);
+    gainS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 65, 20);
+    gainS.setTextValueSuffix (" dB");
     addAndMakeVisible(gainS);
     
     gainL.setText("Gain", juce::NotificationType::dontSendNotification);
@@ -27,7 +28,7 @@ SamplerDistortion::SamplerDistortion(MUS_12_SamplerAudioProcessor& p) : audioPro
                                                                                           gainS);
     
     driveS.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    driveS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 50, 20);
+    driveS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 65, 20);
     addAndMakeVisible(driveS);
     
     driveL.setText("Drive", juce::NotificationType::dontSendNotification);
@@ -39,7 +40,7 @@ SamplerDistortion::SamplerDistortion(MUS_12_SamplerAudioProcessor& p) : audioPro
                                                                                           driveS);
     
     rangeS.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    rangeS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 50, 20);
+    rangeS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 65, 20);
     addAndMakeVisible(rangeS);
     
     rangeL.setText("Range", juce::NotificationType::dontSendNotification);
@@ -51,7 +52,7 @@ SamplerDistortion::SamplerDistortion(MUS_12_SamplerAudioProcessor& p) : audioPro
                                                                                           rangeS);
     
     blendS.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    blendS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 50, 20);
+    blendS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 65, 20);
     addAndMakeVisible(blendS);
     
     blendL.setText("Blend", juce::NotificationType::dontSendNotification);
