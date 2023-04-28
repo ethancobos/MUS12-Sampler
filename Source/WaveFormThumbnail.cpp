@@ -17,6 +17,9 @@ WaveFormThumbnail::WaveFormThumbnail(MUS_12_SamplerAudioProcessor& p) : audioPro
 {
     // support for most audio file formats
     mFormatManager.registerBasicFormats();
+    if(audioProcessor.getAPVTS().state.hasProperty(audioProcessor.fileForWave)){
+        setThumbnail(audioProcessor.getAPVTS().state.getProperty(audioProcessor.fileForWave));
+    }
 }
 
 WaveFormThumbnail::~WaveFormThumbnail()
@@ -40,6 +43,7 @@ void WaveFormThumbnail::filesDropped(const juce::StringArray& files, int x, int 
         if(isInterestedInFileDrag(file)){
             audioProcessor.loadFile(file);
             setThumbnail(file);
+            audioProcessor.getAPVTS().state.setProperty(audioProcessor.fileForWave, juce::var(file), nullptr);
         }
     }
     repaint();

@@ -12,6 +12,9 @@
 
 //==============================================================================
 
+// sampled file
+const juce::String MUS_12_SamplerAudioProcessor::fileForWave = "FILETHING";
+
 // ampenv idents
 const juce::String MUS_12_SamplerAudioProcessor::ampAttack = "AMPATTACK";
 const juce::String MUS_12_SamplerAudioProcessor::ampDecay = "AMPDECAY";
@@ -82,7 +85,6 @@ MUS_12_SamplerAudioProcessor::MUS_12_SamplerAudioProcessor()
     mAPVTS.addParameterListener(ampDecay, this);
     mAPVTS.addParameterListener(ampSustain, this);
     mAPVTS.addParameterListener(ampRelease, this);
-    
 }
 
 MUS_12_SamplerAudioProcessor::~MUS_12_SamplerAudioProcessor()
@@ -270,7 +272,6 @@ void MUS_12_SamplerAudioProcessor::setStateInformation (const void* data, int si
 }
 
 //========================== My Functions ======================================
-
 
 // function to get the file to be sampled through drag and drop
 void MUS_12_SamplerAudioProcessor::loadFile(const juce::String& path)
@@ -641,6 +642,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout MUS_12_SamplerAudioProcessor
                                                                      0.0f));
     
     parameters.push_back(std::make_unique<juce::AudioParameterBool>(distBypass, "distBypass", false));
+    
+    
     
     return { parameters.begin(), parameters.end() };
 }

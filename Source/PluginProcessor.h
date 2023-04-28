@@ -21,6 +21,7 @@ class MUS_12_SamplerAudioProcessor  : public juce::AudioProcessor,
 {
 public:
     
+    static const juce::String fileForWave;
     static const juce::String filterFreq;
     static const juce::String filterRes;
     static const juce::String filterCoice;
