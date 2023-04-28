@@ -31,6 +31,7 @@ public:
 
 private:
     
+    std::atomic<bool> fileLoaded { false };
     MUS_12_SamplerAudioProcessor& audioProcessor;
     juce::AudioFormatManager mFormatManager;
     juce::AudioThumbnailCache thumbnailCache;

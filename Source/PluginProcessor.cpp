@@ -266,9 +266,15 @@ void MUS_12_SamplerAudioProcessor::setStateInformation (const void* data, int si
     // whose contents will have been created by the getStateInformation() call.
     std::unique_ptr<juce::XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
 
-    if (xmlState.get() != nullptr)
-        if (xmlState->hasTagName (mAPVTS.state.getType()))
+    if (xmlState.get() != nullptr){
+        if (xmlState->hasTagName (mAPVTS.state.getType())){
             mAPVTS.replaceState (juce::ValueTree::fromXml (*xmlState));
+            if(mAPVTS.state.hasProperty(fileForWave)){
+                auto filePath = mAPVTS.state.getProperty(fileForWave).toString();
+                loadFile(filePath);
+            }
+        }
+    }
 }
 
 //========================== My Functions ======================================
