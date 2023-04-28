@@ -567,81 +567,81 @@ juce::AudioProcessorValueTreeState::ParameterLayout MUS_12_SamplerAudioProcessor
     juce::StringArray filters = {"HP", "LP"};
     
     // Amp env
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ampAttack, "Attack", 0.0f, 5.0f, 0.1f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ampDecay, "Decay", 0.0f, 3.0f, 0.0f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ampSustain, "Sustain", 0.0f, 1.0f, 1.0f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ampRelease, "Release", 0.0f, 5.0f, 0.1f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ParameterID{ampAttack, 1}, "Attack", 0.0f, 5.0f, 0.1f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ParameterID{ampDecay, 1}, "Decay", 0.0f, 3.0f, 0.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ParameterID{ampSustain, 1}, "Sustain", 0.0f, 1.0f, 1.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ParameterID{ampRelease, 1}, "Release", 0.0f, 5.0f, 0.1f));
     
     // filter stuff
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(filterFreq,
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ParameterID{filterFreq, 1},
                                                                      "Frequency",
                                                                      juce::NormalisableRange<float> { 20.0f, 20000.0f, 0.1f, 0.6f },
                                                                      1000.0f));
     
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(filterRes,
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ParameterID{filterRes, 1},
                                                                      "Q",
                                                                      juce::NormalisableRange<float> { 1.0f, 10.0f, 0.1f },
                                                                      1.0f));
     
-    parameters.push_back(std::make_unique<juce::AudioParameterChoice>(filterCoice, "filters", filters, 0));
-    parameters.push_back(std::make_unique<juce::AudioParameterBool>(filterBypass, "filterBypass", false));
+    parameters.push_back(std::make_unique<juce::AudioParameterChoice>(ParameterID{filterCoice, 1}, "filters", filters, 0));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>(ParameterID{filterBypass, 1}, "filterBypass", false));
     
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(filterGain,
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ParameterID{filterGain, 1},
                                                                      "filter gain",
                                                                      juce::NormalisableRange<float>(-36.0f, 36.0f, 0.1f),
                                                                      0.0f));
     
     // output gain
-    parameters.push_back (std::make_unique<juce::AudioParameterFloat>(outputGain,
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat>(ParameterID{outputGain, 1},
                                                                       "Gain",
                                                                       juce::NormalisableRange<float>(-100.00f, 6.0f, 0.1f, 4.0f),
                                                                       0.0f));
     
     // compressor
     
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(compAttack,
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ParameterID{compAttack, 1},
                                                                      "comp attack",
                                                                      juce::NormalisableRange<float>(0.01f, 1000.0f, 0.01f, 0.4f),
                                                                      1.0f));
     
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(compRelease,
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ParameterID{compRelease, 1},
                                                                      "comp release",
                                                                      juce::NormalisableRange<float>(1.0f, 3000.0f, 0.01f, 0.4f),
                                                                      30.0f));
     
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(compRatio,
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ParameterID{compRatio, 1},
                                                                      "comp ratio",
                                                                      juce::NormalisableRange<float>(1.0f, 68.0f, 0.01f, 0.5f),
                                                                      4.0f));
     
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(compThresh,
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ParameterID{compThresh, 1},
                                                                      "comp thresh",
                                                                      juce::NormalisableRange<float>(-68.0f, 6.0f, 0.01f, 1.5f),
                                                                      0.0f));
     
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(compGain,
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ParameterID{compGain, 1},
                                                                      "comp gain",
                                                                      juce::NormalisableRange<float>(-36.0f, 36.0f, 0.1f),
                                                                      0.0f));
     
-    parameters.push_back(std::make_unique<juce::AudioParameterBool>(compBypass, "compBypass", false));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>(ParameterID{compBypass, 1}, "compBypass", false));
     
     // Distotion
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(distDrive, "dist drive", 0.0f, 1.0f, 0.5f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ParameterID{distDrive, 1}, "dist drive", 0.0f, 1.0f, 0.5f));
     
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(distRange,
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ParameterID{distRange, 1},
                                                                      "dist range",
                                                                      juce::NormalisableRange<float>(0.0f, 3000.0f, 1.0f),
                                                                      1000.0f));
     
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(distBlend, "dist blend", 0.0f, 1.0f, 0.5f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ParameterID{distBlend, 1}, "dist blend", 0.0f, 1.0f, 0.5f));
     
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(distGain,
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(ParameterID{distGain, 1},
                                                                      "dist gain",
                                                                      juce::NormalisableRange<float>(-36.0f, 36.0f, 0.1f),
                                                                      0.0f));
     
-    parameters.push_back(std::make_unique<juce::AudioParameterBool>(distBypass, "distBypass", false));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>(ParameterID{distBypass, 1}, "distBypass", false));
     
     
     
