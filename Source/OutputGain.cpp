@@ -15,8 +15,6 @@
 OutputGain::OutputGain(MUS_12_SamplerAudioProcessor& p) : audioProcessor(p)
 {
     mGainS.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
-    mGainS.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 70, 20);
-    mGainS.setTextValueSuffix(" dB");
     addAndMakeVisible(mGainS);
     
     mGainAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
@@ -51,4 +49,6 @@ void OutputGain::resized()
     const auto height = getHeight() - startY - 15.0f;
     
     mGainS.setBounds(startX, startY, width, height);
+    mGainS.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 70, 20);
+    mGainS.setTextValueSuffix(" dB");
 }

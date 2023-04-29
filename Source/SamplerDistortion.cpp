@@ -15,8 +15,6 @@
 SamplerDistortion::SamplerDistortion(MUS_12_SamplerAudioProcessor& p) : audioProcessor(p)
 {
     gainS.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    gainS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 65, 20);
-    gainS.setTextValueSuffix (" dB");
     addAndMakeVisible(gainS);
     
     gainL.setText("Gain", juce::NotificationType::dontSendNotification);
@@ -28,7 +26,6 @@ SamplerDistortion::SamplerDistortion(MUS_12_SamplerAudioProcessor& p) : audioPro
                                                                                           gainS);
     
     driveS.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    driveS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 65, 20);
     addAndMakeVisible(driveS);
     
     driveL.setText("Drive", juce::NotificationType::dontSendNotification);
@@ -40,7 +37,6 @@ SamplerDistortion::SamplerDistortion(MUS_12_SamplerAudioProcessor& p) : audioPro
                                                                                           driveS);
     
     rangeS.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    rangeS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 65, 20);
     addAndMakeVisible(rangeS);
     
     rangeL.setText("Range", juce::NotificationType::dontSendNotification);
@@ -52,7 +48,6 @@ SamplerDistortion::SamplerDistortion(MUS_12_SamplerAudioProcessor& p) : audioPro
                                                                                           rangeS);
     
     blendS.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    blendS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 65, 20);
     addAndMakeVisible(blendS);
     
     blendL.setText("Blend", juce::NotificationType::dontSendNotification);
@@ -67,8 +62,6 @@ SamplerDistortion::SamplerDistortion(MUS_12_SamplerAudioProcessor& p) : audioPro
     bypassAtach = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.getAPVTS(),
                                                                                          audioProcessor.distBypass,
                                                                                          distBypass);
-    
-    
 }
 
 SamplerDistortion::~SamplerDistortion()
@@ -100,20 +93,26 @@ void SamplerDistortion::resized()
     
     driveS.setBounds(startX, startY, width, height);
     driveL.setBounds(startX, startY, width, height / 3);
+    driveS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 65, 20);
     driveL.setFont(height / 3);
     
     rangeS.setBounds(startX, startY + height, width, height);
     rangeL.setBounds(startX, startY + height, width, height / 3 + 2);
     rangeL.setFont(height / 3);
+    rangeS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 65, 20);
     
     blendS.setBounds(startX, startY + (2 * height), width, height);
     blendL.setBounds(startX, startY + (2 * height), width, height / 3);
     blendL.setFont(height / 3);
+    blendS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 65, 20);
     
     gainS.setBounds(startX, startY + (3 * height), width, height);
     gainL.setBounds(startX, startY + (3 * height), width, height / 3);
     gainL.setFont(height / 3);
+    gainS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 65, 20);
+    gainS.setTextValueSuffix (" dB");
     
     distBypass.setSize(buttonW, buttonW);
     distBypass.setCentrePosition(getHeight() / 10 + 10, getHeight() / 10 + 5);
+    
 }

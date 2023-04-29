@@ -32,7 +32,7 @@ public:
     JUCE_DECLARE_SINGLETON(CustomGUI, false)
     
 private:
-    inline void applyThreeColourScheme();
+    void applyThreeColourScheme();
     const static Colour accentC;
     const static Colour textC;
     const static Colour backgroundC;

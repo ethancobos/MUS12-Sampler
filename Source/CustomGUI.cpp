@@ -27,7 +27,7 @@ CustomGUI::~CustomGUI()
     clearSingletonInstance();
 }
 
-inline void CustomGUI::applyThreeColourScheme()
+void CustomGUI::applyThreeColourScheme()
 {
     auto fg = foregroundC.getARGB();
     auto bright = foregroundC.withMultipliedBrightness(1.5f).getARGB();
@@ -38,64 +38,117 @@ inline void CustomGUI::applyThreeColourScheme()
     auto black = Colours::black.getARGB();
     auto text = textC.getARGB();
 
-    static const juce::uint32 standardColours[] =
+    juce::uint32 standardColours[] =
     {
-        ToggleButton::textColourId,                 text,
-        ToggleButton::tickDisabledColourId,         black,
-        ToggleButton::tickColourId,                 accent,
+        TextButton::buttonColourId,                 fg,
+                TextButton::buttonOnColourId,               accent,
+                TextButton::textColourOnId,                 bg,
+                TextButton::textColourOffId,                bg,
 
-        TextEditor::backgroundColourId,             bg,
-        TextEditor::textColourId,                   fg,
-        TextEditor::highlightColourId,              bg,
-        TextEditor::highlightedTextColourId,        fg,
-        TextEditor::outlineColourId,                transparent,
-        TextEditor::focusedOutlineColourId,         fg,
-        TextEditor::shadowColourId,                 transparent,
+                ToggleButton::textColourId,                 text,
+                ToggleButton::tickDisabledColourId,         black,
+                ToggleButton::tickColourId,                 accent,
 
-        Label::backgroundColourId,                  transparent,
-        Label::textColourId,                        text,
-        Label::outlineColourId,                     transparent,
+                TextEditor::backgroundColourId,             bg,
+                TextEditor::textColourId,                   text,
+                TextEditor::highlightColourId,              bg,
+                TextEditor::highlightedTextColourId,        fg,
+                TextEditor::outlineColourId,                transparent,
+                TextEditor::focusedOutlineColourId,         fg,
+                TextEditor::shadowColourId,                 transparent,
 
-        PopupMenu::backgroundColourId,              bg,
-        PopupMenu::textColourId,                    text,
-        PopupMenu::headerTextColourId,              bright,
-        PopupMenu::highlightedTextColourId,         bg,
-        PopupMenu::highlightedBackgroundColourId,   accent,
+                CaretComponent::caretColourId,              fg,
 
-        ComboBox::buttonColourId,                   fg,
-        ComboBox::outlineColourId,                  dim,
-        ComboBox::textColourId,                     text,
-        ComboBox::backgroundColourId,               dim,
-        ComboBox::arrowColourId,                    text,
+                Label::backgroundColourId,                  transparent,
+                Label::textColourId,                        text,
+                Label::outlineColourId,                     transparent,
 
-        TextPropertyComponent::backgroundColourId,  bg,
-        TextPropertyComponent::textColourId,        fg,
-        TextPropertyComponent::outlineColourId,     dim,
+                ScrollBar::backgroundColourId,              transparent,
+                ScrollBar::thumbColourId,                   fg,
 
-        BooleanPropertyComponent::backgroundColourId, bg,
-        BooleanPropertyComponent::outlineColourId,  dim,
+                TreeView::linesColourId,                    dim,
+                TreeView::backgroundColourId,               transparent,
+                TreeView::dragAndDropIndicatorColourId,     accent,
+                TreeView::selectedItemBackgroundColourId,   fg,
 
-        ListBox::backgroundColourId,                bg,
-        ListBox::outlineColourId,                   fg,
-        ListBox::textColourId,                      fg,
+                PopupMenu::backgroundColourId,              bg,
+                PopupMenu::textColourId,                    text,
+                PopupMenu::headerTextColourId,              bright,
+                PopupMenu::highlightedTextColourId,         bg,
+                PopupMenu::highlightedBackgroundColourId,   accent,
 
-        Slider::backgroundColourId,                 transparent,
-        Slider::thumbColourId,                      bg,
-        Slider::trackColourId,                      accent,
-        Slider::rotarySliderFillColourId,           accent,
-        Slider::rotarySliderOutlineColourId,        black,
-        Slider::textBoxTextColourId,                text,
-        Slider::textBoxBackgroundColourId,          bg,
-        Slider::textBoxHighlightColourId,           bright,
-        Slider::textBoxOutlineColourId,             transparent,
-        
-        // DONT CHANGE THESE
-        Toolbar::backgroundColourId,                bg,
-        Toolbar::separatorColourId,                 fg,
-        Toolbar::buttonMouseOverBackgroundColourId, dim,
-        Toolbar::buttonMouseDownBackgroundColourId, accent,
-        Toolbar::labelTextColourId,                 text,
-        Toolbar::editingModeOutlineColourId,        accent,
+                ComboBox::buttonColourId,                   fg,
+                ComboBox::outlineColourId,                  dim,
+                ComboBox::textColourId,                     text,
+                ComboBox::backgroundColourId,               dim,
+                ComboBox::arrowColourId,                    text,
+
+                PropertyComponent::backgroundColourId,      bg,
+                PropertyComponent::labelTextColourId,       fg,
+
+                TextPropertyComponent::backgroundColourId,  bg,
+                TextPropertyComponent::textColourId,        fg,
+                TextPropertyComponent::outlineColourId,     dim,
+
+                BooleanPropertyComponent::backgroundColourId, bg,
+                BooleanPropertyComponent::outlineColourId,  dim,
+
+                ListBox::backgroundColourId,                bg,
+                ListBox::outlineColourId,                   fg,
+                ListBox::textColourId,                      fg,
+
+                Slider::backgroundColourId,                 transparent,
+                Slider::thumbColourId,                      bg,
+                Slider::trackColourId,                      accent,
+                Slider::rotarySliderFillColourId,           accent,
+                Slider::rotarySliderOutlineColourId,        black,
+                Slider::textBoxTextColourId,                text,
+                Slider::textBoxBackgroundColourId,          transparent,
+                Slider::textBoxHighlightColourId,           bright,
+                Slider::textBoxOutlineColourId,             dim,
+
+                ResizableWindow::backgroundColourId,        bg,
+
+                AlertWindow::backgroundColourId,            bg,
+                AlertWindow::textColourId,                  fg,
+                AlertWindow::outlineColourId,               accent,
+
+                ProgressBar::backgroundColourId,            bg,
+                ProgressBar::foregroundColourId,            accent,
+
+                TooltipWindow::backgroundColourId,          bg,
+                TooltipWindow::textColourId,                fg,
+                TooltipWindow::outlineColourId,             dim,
+
+                TabbedComponent::backgroundColourId,        transparent,
+                TabbedComponent::outlineColourId,           dim,
+                TabbedButtonBar::tabOutlineColourId,        dim,
+                TabbedButtonBar::frontOutlineColourId,      fg,
+
+                
+                // DONT CHANGE THESE
+                Toolbar::backgroundColourId,                bg,
+                Toolbar::separatorColourId,                 fg,
+                Toolbar::buttonMouseOverBackgroundColourId, dim,
+                Toolbar::buttonMouseDownBackgroundColourId, accent,
+                Toolbar::labelTextColourId,                 text,
+                Toolbar::editingModeOutlineColourId,        accent,
+
+                DrawableButton::textColourId,               fg,
+                DrawableButton::textColourOnId,             bg,
+                DrawableButton::backgroundColourId,         bg,
+                DrawableButton::backgroundOnColourId,       accent,
+
+                HyperlinkButton::textColourId,              accent,
+
+                GroupComponent::outlineColourId,            0x66000000,
+                GroupComponent::textColourId,               0xff000000,
+
+                BubbleComponent::backgroundColourId,        0xeeeeeebb,
+                BubbleComponent::outlineColourId,           0x77000000,
+
+                DirectoryContentsDisplayComponent::highlightColourId,   accent,
+                DirectoryContentsDisplayComponent::textColourId,        fg,
     };
 
     for (int i = 0; i < numElementsInArray(standardColours); i += 2)

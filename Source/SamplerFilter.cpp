@@ -21,23 +21,17 @@ SamplerFilter::SamplerFilter(MUS_12_SamplerAudioProcessor& p) : audioProcessor(p
                                                                                          filterMenu);
        
     cutoffS.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
-    cutoffS.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 90, 20);
-    cutoffS.setTextValueSuffix(" Hz");
     addAndMakeVisible(&cutoffS);
     cutoffAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
                                                                                          audioProcessor.filterFreq,
                                                                                          cutoffS);
        
     resonanceS.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
-    resonanceS.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
-    addAndMakeVisible(&resonanceS);
     resonanceAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
                                                                                             audioProcessor.filterRes,
                                                                                             resonanceS);
     
     gainS.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    gainS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 70, 20);
-    gainS.setTextValueSuffix (" dB");
     addAndMakeVisible(gainS);
     
     gainAtach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
@@ -78,10 +72,18 @@ void SamplerFilter::resized()
     const auto buttonW = getHeight() / 12.5;
     
     cutoffS.setBounds(startX, startY, width, height * 2);
+    cutoffS.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 90, 20);
+    cutoffS.setTextValueSuffix(" Hz");
+    
     resonanceS.setBounds(startX + width, startY, width, height * 2);
+    resonanceS.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+    addAndMakeVisible(&resonanceS);
+    
     filterMenu.setBounds(startX + (2 * width) + 5.0f, startY + 10.0f, width - 10.0f, height / 2);
 
     gainS.setBounds(startX, startY + (2 * height), getWidth() - 25.0f, height);
+    gainS.setTextBoxStyle(juce::Slider::TextBoxRight, false, 70, 20);
+    gainS.setTextValueSuffix (" dB");
     
     filterBypass.setSize(buttonW, buttonW);
     filterBypass.setCentrePosition(getHeight() / 10 + 5, getHeight() / 10 + 5);
