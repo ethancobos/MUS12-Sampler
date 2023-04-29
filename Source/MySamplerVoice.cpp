@@ -140,27 +140,29 @@ void MySamplerVoice::renderNextBlock (AudioBuffer<float>& outputBuffer, int star
             if(distNotBypassed){
                 l = dist.processSample(l);
                 r = dist.processSample(r);
+                l *= envelopeValue;
+                r *= envelopeValue;
             }
             
             // filtering
             if (filterNotBypassed){
                 l = mFilter.processSample(0, l);
                 r = mFilter.processSample(1, r);
-                l = filterGain.processSample(l);
-                r = filterGain.processSample(r);
+                l = filterGain.processSample(l * envelopeValue);
+                r = filterGain.processSample(r * envelopeValue);
             }
             
             // compression
             if (compNotBypassed){
                 l = mCompressor.processSample(0, l);
                 r = mCompressor.processSample(1, r);
-                l = compGain.processSample(l);
-                r = compGain.processSample(r);
+                l = compGain.processSample(l * envelopeValue);
+                r = compGain.processSample(r * envelopeValue);
             }
 
             // output gain
-            l = mGain.processSample(l);
-            r = mGain.processSample(r);
+            l = mGain.processSample(l * envelopeValue);
+            r = mGain.processSample(r * envelopeValue);
             
             if (outR != nullptr)
             {
