@@ -94,7 +94,7 @@ void WaveFormThumbnail::paintIfFileLoaded (juce::Graphics& g)
     juce::Rectangle<int> waveBounds = juce::Rectangle<int>(newX, newY, newWidth, newHeight);
     g.setColour(getLookAndFeel().findColour(juce::Toolbar::labelTextColourId));
     g.fillRect(waveBounds);
-    g.setColour(getLookAndFeel().findColour(juce::TextButton::buttonOnColourId));
+    g.setColour(getLookAndFeel().findColour(juce::Toolbar::buttonMouseDownBackgroundColourId));
     
     int sTime = audioProcessor.getSampleTime();
     float totAudioLen = (float) thumbnail.getTotalLength();

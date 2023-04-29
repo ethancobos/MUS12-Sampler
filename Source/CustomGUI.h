@@ -29,7 +29,7 @@ public:
                                            float maxSliderPos,
                            const Slider::SliderStyle style, Slider& slider) override;
     
-    JUCE_DECLARE_SINGLETON(CustomGUI, true)
+    JUCE_DECLARE_SINGLETON(CustomGUI, false)
     
 private:
     inline void applyThreeColourScheme();

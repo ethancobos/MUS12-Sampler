@@ -40,11 +40,6 @@ inline void CustomGUI::applyThreeColourScheme()
 
     static const juce::uint32 standardColours[] =
     {
-        TextButton::buttonColourId,                 fg,
-        TextButton::buttonOnColourId,               accent,
-        TextButton::textColourOnId,                 bg,
-        TextButton::textColourOffId,                bg,
-
         ToggleButton::textColourId,                 text,
         ToggleButton::tickDisabledColourId,         black,
         ToggleButton::tickColourId,                 accent,
@@ -57,19 +52,9 @@ inline void CustomGUI::applyThreeColourScheme()
         TextEditor::focusedOutlineColourId,         fg,
         TextEditor::shadowColourId,                 transparent,
 
-        CaretComponent::caretColourId,              fg,
-
         Label::backgroundColourId,                  transparent,
         Label::textColourId,                        text,
         Label::outlineColourId,                     transparent,
-
-        ScrollBar::backgroundColourId,              transparent,
-        ScrollBar::thumbColourId,                   fg,
-
-        TreeView::linesColourId,                    dim,
-        TreeView::backgroundColourId,               transparent,
-        TreeView::dragAndDropIndicatorColourId,     accent,
-        TreeView::selectedItemBackgroundColourId,   fg,
 
         PopupMenu::backgroundColourId,              bg,
         PopupMenu::textColourId,                    text,
@@ -82,9 +67,6 @@ inline void CustomGUI::applyThreeColourScheme()
         ComboBox::textColourId,                     text,
         ComboBox::backgroundColourId,               dim,
         ComboBox::arrowColourId,                    text,
-
-        PropertyComponent::backgroundColourId,      bg,
-        PropertyComponent::labelTextColourId,       fg,
 
         TextPropertyComponent::backgroundColourId,  bg,
         TextPropertyComponent::textColourId,        fg,
@@ -106,26 +88,6 @@ inline void CustomGUI::applyThreeColourScheme()
         Slider::textBoxBackgroundColourId,          bg,
         Slider::textBoxHighlightColourId,           bright,
         Slider::textBoxOutlineColourId,             transparent,
-
-        ResizableWindow::backgroundColourId,        bg,
-//        DocumentWindow::textColourId,               text, // (this is deliberately not set)
-
-        AlertWindow::backgroundColourId,            bg,
-        AlertWindow::textColourId,                  fg,
-        AlertWindow::outlineColourId,               accent,
-
-        ProgressBar::backgroundColourId,            bg,
-        ProgressBar::foregroundColourId,            accent,
-
-        TooltipWindow::backgroundColourId,          bg,
-        TooltipWindow::textColourId,                fg,
-        TooltipWindow::outlineColourId,             dim,
-
-        TabbedComponent::backgroundColourId,        transparent,
-        TabbedComponent::outlineColourId,           dim,
-        TabbedButtonBar::tabOutlineColourId,        dim,
-        TabbedButtonBar::frontOutlineColourId,      fg,
-
         
         // DONT CHANGE THESE
         Toolbar::backgroundColourId,                bg,
@@ -134,51 +96,6 @@ inline void CustomGUI::applyThreeColourScheme()
         Toolbar::buttonMouseDownBackgroundColourId, accent,
         Toolbar::labelTextColourId,                 text,
         Toolbar::editingModeOutlineColourId,        accent,
-
-        DrawableButton::textColourId,               fg,
-        DrawableButton::textColourOnId,             bg,
-        DrawableButton::backgroundColourId,         bg,
-        DrawableButton::backgroundOnColourId,       accent,
-
-        HyperlinkButton::textColourId,              accent,
-
-        GroupComponent::outlineColourId,            0x66000000,
-        GroupComponent::textColourId,               0xff000000,
-
-        BubbleComponent::backgroundColourId,        0xeeeeeebb,
-        BubbleComponent::outlineColourId,           0x77000000,
-
-        DirectoryContentsDisplayComponent::highlightColourId,   accent,
-        DirectoryContentsDisplayComponent::textColourId,        fg,
-
-        0x1000440, /*LassoComponent::lassoFillColourId*/        transparent,
-        0x1000441, /*LassoComponent::lassoOutlineColourId*/     accent,
-
-        0x1005000, /*MidiKeyboardComponent::whiteNoteColourId*/               bg,
-        0x1005001, /*MidiKeyboardComponent::blackNoteColourId*/               fg,
-        0x1005002, /*MidiKeyboardComponent::keySeparatorLineColourId*/        dim,
-        0x1005003, /*MidiKeyboardComponent::mouseOverKeyOverlayColourId*/     accent,
-        0x1005004, /*MidiKeyboardComponent::keyDownOverlayColourId*/          dim,
-        0x1005005, /*MidiKeyboardComponent::textLabelColourId*/               fg,
-        0x1005006, /*MidiKeyboardComponent::upDownButtonBackgroundColourId*/  fg,
-        0x1005007, /*MidiKeyboardComponent::upDownButtonArrowColourId*/       bg,
-        0x1005008, /*MidiKeyboardComponent::shadowColourId*/                  transparent,
-
-        0x1004500, /*CodeEditorComponent::backgroundColourId*/                bg,
-        0x1004502, /*CodeEditorComponent::highlightColourId*/                 dim,
-        0x1004503, /*CodeEditorComponent::defaultTextColourId*/               fg,
-        0x1004504, /*CodeEditorComponent::lineNumberBackgroundId*/            bg,
-        0x1004505, /*CodeEditorComponent::lineNumberTextId*/                  dim,
-
-        0x1007000, /*ColourSelector::backgroundColourId*/                     bg,
-        0x1007001, /*ColourSelector::labelTextColourId*/                      fg,
-
-        0x100ad00, /*KeyMappingEditorComponent::backgroundColourId*/          bg,
-        0x100ad01, /*KeyMappingEditorComponent::textColourId*/                fg,
-
-        FileSearchPathListComponent::backgroundColourId,        bg,
-
-        FileChooserDialogBox::titleTextColourId,                fg,
     };
 
     for (int i = 0; i < numElementsInArray(standardColours); i += 2)
