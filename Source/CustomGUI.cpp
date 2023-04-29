@@ -10,7 +10,7 @@
 
 #include "CustomGUI.h"
 
-namespace juce {
+using namespace juce;
 
 const Colour CustomGUI::accentC = Colour(0xFFA1BD).withAlpha(1.0f);
 const Colour CustomGUI::textC = Colour(0xE8DDB5).withAlpha(1.0f);
@@ -20,6 +20,11 @@ const Colour CustomGUI::foregroundC = Colour(0x558B6E).withAlpha(1.0f);
 CustomGUI::CustomGUI()
 {
     applyThreeColourScheme();
+}
+
+CustomGUI::~CustomGUI()
+{
+    clearSingletonInstance();
 }
 
 inline void CustomGUI::applyThreeColourScheme()
@@ -359,5 +364,4 @@ void CustomGUI::drawLinearSlider (Graphics& g, int x, int y, int width, int heig
     }
 }
 
-
-}
+JUCE_IMPLEMENT_SINGLETON(CustomGUI)

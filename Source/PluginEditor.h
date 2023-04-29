@@ -39,8 +39,6 @@ public:
 
 private:
     
-    juce::CustomGUI customGUI;
-    
     float fullWidth = 1000.0f;
     float fullHeight = 500.0f;
     float one6th = 1.0f / 6.0f;

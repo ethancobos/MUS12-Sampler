@@ -11,12 +11,13 @@
 #pragma once
 #include <JuceHeader.h>
 
-namespace juce {
+using namespace juce;
 
-class CustomGUI : public juce::LookAndFeel_V4
+class CustomGUI : public juce::LookAndFeel_V4, public DeletedAtShutdown
 {
 public:
     CustomGUI();
+    ~CustomGUI();
     
     void drawToggleButton (Graphics& g, ToggleButton& button, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override;
     
@@ -28,6 +29,8 @@ public:
                                            float maxSliderPos,
                            const Slider::SliderStyle style, Slider& slider) override;
     
+    JUCE_DECLARE_SINGLETON(CustomGUI, true)
+    
 private:
     inline void applyThreeColourScheme();
     const static Colour accentC;
@@ -35,5 +38,3 @@ private:
     const static Colour backgroundC;
     const static Colour foregroundC;
 };
-
-}

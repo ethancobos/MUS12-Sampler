@@ -13,7 +13,7 @@ using namespace juce;
 MUS_12_SamplerAudioProcessorEditor::MUS_12_SamplerAudioProcessorEditor (MUS_12_SamplerAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p), mWaveThumbnail(p), mAmpEnv(p), mGain(p), mFilter(p), mCompresh(p), mDist(p)
 {
-    juce::LookAndFeel::setDefaultLookAndFeel(&customGUI);
+    LookAndFeel::setDefaultLookAndFeel(CustomGUI::getInstance());
     addAndMakeVisible(mWaveThumbnail);
     addAndMakeVisible(mAmpEnv);
     addAndMakeVisible(mGain);
@@ -27,7 +27,6 @@ MUS_12_SamplerAudioProcessorEditor::MUS_12_SamplerAudioProcessorEditor (MUS_12_S
 MUS_12_SamplerAudioProcessorEditor::~MUS_12_SamplerAudioProcessorEditor()
 {
     stopTimer();
-    juce::LookAndFeel::setDefaultLookAndFeel(nullptr);
 }
 
 //==============================================================================
