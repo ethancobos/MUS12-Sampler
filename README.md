@@ -1,3 +1,7 @@
+Hi! Shown below is my audio sampler designed using the JUCE framework.
+
+<img width="1003" alt="Screenshot 2023-08-07 at 8 49 32 PM" src="https://github.com/ethancobos/MUS12-Sampler/assets/90016437/a306c3f9-a90b-4bd4-a583-e5244f961b72">
+
 To download on Mac:
 
   1. navigate to the release section of the right sidebar and click on the latest release
